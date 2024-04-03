@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  nestjs_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - opensearch
+
+  opensearch:
+    image: opensearchproject/opensearch
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    environment:
+      - "discovery.type=single-node"
