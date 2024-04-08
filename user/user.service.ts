@@ -6,6 +6,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 @Injectable()
 export class UserService {
   private readonly users: User[] = [];
+  findOneByEmail: any;
 
   async signup(createUserDto: CreateUserDto): Promise<User> {
     const user: User = {
