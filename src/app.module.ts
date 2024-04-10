@@ -5,6 +5,9 @@ import { RegularUser } from './user/regularU.entity';
 import { AdminUser } from './user/adminU.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { PDFDoc } from './pdfDocument/document.entity';
+import { UserModule } from './user/user.module';
+import { DocumentModule } from './pdfDocument/document.module';
 
 @Module({
    imports: [  TypeOrmModule.forRoot({
@@ -17,9 +20,8 @@ import { AuthModule } from './auth/auth.module';
     "entities": [__dirname + '/**/*.entity{.ts,.js}'],
     "synchronize": true, // No usar en producción
   }),
-  TypeOrmModule.forFeature([RegularUser,AdminUser]), 
-    AuthModule],
+  TypeOrmModule.forFeature([RegularUser,AdminUser,PDFDoc]), 
+    AuthModule,UserModule,DocumentModule],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.interface";
+import { PDFDoc } from "src/pdfDocument/document.entity";
 
 @Entity()
 export class RegularUser implements User {
@@ -20,5 +21,8 @@ export class RegularUser implements User {
 
   @Column()
   company: string;
+
+   @OneToMany(()=>PDFDoc, document=> document.userId)
+  documents: PDFDoc[]
 
 }
