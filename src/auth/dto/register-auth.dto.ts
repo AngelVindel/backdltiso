@@ -6,7 +6,7 @@ export class RegisterAuthDto extends LoginAuthDto{
     username: string;
 
    
-    serType: string;
+    userType: string;
 
     //company: string;
 
