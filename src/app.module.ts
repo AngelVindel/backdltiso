@@ -23,5 +23,7 @@ import { DocumentModule } from './pdfDocument/document.module';
   TypeOrmModule.forFeature([RegularUser,AdminUser,PDFDoc]), 
     AuthModule,UserModule,DocumentModule],
   controllers: [AppController],
+  providers: [AppService],
+
 })
 export class AppModule {}
