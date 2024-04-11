@@ -48,4 +48,7 @@ export class UserService {
 
     return newUser;
    }
+   getEmailUsers(email:string){
+    return this.users.filter(user=>user.email==email)
+   } 
 }

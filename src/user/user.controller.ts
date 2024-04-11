@@ -19,6 +19,11 @@ export class UserController {
       return this.userService.getAllUsers();
   }
   
+  @Get()
+  getEmailUsers(@Param("email") email:string){
+    return this.userService.getEmailUsers(email);
+  }
+  
   @Post()
   createUser(@Body() newUser: CreateUserDto){
   return this.userService.createUser(newUser.username,newUser.email,newUser.password);

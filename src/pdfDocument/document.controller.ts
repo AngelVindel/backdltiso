@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Req, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Put, Req, Res, UseGuards } from "@nestjs/common";
 import { PDFDocumentService } from "./document.service";
 import { DocumentPdfDto } from "./dto/document-pdf.dto";
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -23,18 +23,12 @@ export class PDFDocumentCotroller{
     async deletePdf(@Param('id') id: number) {
       await this.pdfService.deletePdf(id);
     }
-/*
-    @Get(':id')
-    async getPdf(@Param('id') id: number, @Res() response: Response) {
-      const pdf = await this.pdfService.getPdfById(id);
-      if (!pdf) {
-        throw new NotFoundException('PDF not found');
-      }
-      response.headers.set('Content-Type', 'application/pdf');
-      response.headers.set('Content-Disposition', `inline; filename="${id}.pdf"`);
-      response.end(pdf.content, 'binary');
+
+    @Put(':id')
+    async editPdf(@Param('id') id: number,@Body() DocumentPdfDto){
+      return this.pdfService.updatePdf(id,DocumentPdfDto);
+
     }
-  */
 
 
 }
