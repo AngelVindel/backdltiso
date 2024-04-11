@@ -1,33 +1,44 @@
-// ticket.service.ts
-import { Injectable } from '@nestjs/common';
-import { Ticket } from './ticket.interface';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Ticket } from './ticket.entity';
 import { CreateTicketDto } from './dto/create-ticket.dto';
-import { User } from '../user/user.interface';
 
 @Injectable()
 export class TicketService {
-  private readonly tickets: Ticket[] = []; 
-  private readonly users: User[] = []; 
+  constructor(
+    @InjectRepository(Ticket)
+    private ticketRepository: Repository<Ticket>,
+  ) {}
 
-  async create(createTicketDto: CreateTicketDto, userId: number): Promise<Ticket> {
-    const user = this.users.find(u => u.id === userId);
-    if (!user) {
-      throw new Error('Usuario no encontrado');
-    }
-    const ticket: Ticket = {
-      id: this.tickets.length + 1,
-      userId: user.id,
+  async create(
+    createTicketDto: CreateTicketDto,
+    userId: number,
+  ): Promise<Ticket> {
+    const ticket = await this.ticketRepository.create({
+      userId: userId,
       title: createTicketDto.title,
       description: createTicketDto.description,
       status: 'open',
-      createdAt: new Date() 
-    };
-    this.tickets.push(ticket);
-    return ticket;
+      createdAt: new Date(),
+    });
+    return await this.ticketRepository.save(ticket);
   }
 
-  async getResolvedTickets(userId: number): Promise<Ticket[]> {
-    const userTickets = this.tickets.filter(ticket => ticket.userId === userId && ticket.status === 'closed');
-    return userTickets;
+  async updateStatus(
+    ticketId: number,
+    status: 'open' | 'in progress' | 'closed',
+  ): Promise<Ticket> {
+    const ticket = await this.ticketRepository.findOneBy({ id: ticketId });
+    if (!ticket) {
+      throw new NotFoundException(`Ticket with ID ${ticketId} not found`);
+    }
+
+    ticket.status = status;
+    return this.ticketRepository.save(ticket);
+  }
+
+  async getAllTickets(): Promise<Ticket[]> {
+    return this.ticketRepository.find();
   }
 }
