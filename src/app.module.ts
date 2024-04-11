@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { PDFDoc } from './pdfDocument/document.entity';
 import { UserModule } from './user/user.module';
 import { DocumentModule } from './pdfDocument/document.module';
+import { QuestionsModule } from './questions/questions.module';
+import { AnswersModule } from './answers/answers.module';
 
 @Module({
    imports: [  TypeOrmModule.forRoot({
@@ -21,7 +23,7 @@ import { DocumentModule } from './pdfDocument/document.module';
     "synchronize": true, // No usar en producción
   }),
   TypeOrmModule.forFeature([RegularUser,AdminUser,PDFDoc]), 
-    AuthModule,UserModule,DocumentModule],
+    AuthModule,UserModule,DocumentModule, QuestionsModule, AnswersModule],
   controllers: [AppController],
   providers: [AppService],
 
