@@ -18,7 +18,7 @@ import { Ticket } from './ticket/ticket.entity';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: '',
+      password: '1234abc',
       database: 'prueba2',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // No usar en producción
