@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -40,16 +41,17 @@ export class PDFDocumentService {
     return new Promise((resolve, reject) => {
       doc.on('end', async () => {
         const pdf = this.pdfRepository.create({
+          id: 0,
           userId: user.id, 
           content: pdfBuffer,
           creationDate: new Date(),
-          modifyDate: dto.modifyDate,
+          modifyDate:new Date(),
           permissions: dto.permissions,
         });
 
         try {
           const savedPdf = await this.pdfRepository.save(pdf);
-          resolve(savedPdf);
+          resolve(savedPdf[0]); // Return the first element of the array
         } catch (error) {
           reject(error);
         }
@@ -59,6 +61,8 @@ export class PDFDocumentService {
     });
   }
 
+ 
+
   async deletePdf(pdfId: number): Promise<void> {
     const pdf = await this.pdfRepository.findOneBy({ id: pdfId });
     if (!pdf) {
@@ -67,11 +71,54 @@ export class PDFDocumentService {
 
     await this.pdfRepository.delete(pdfId);
   }
-/*
+
+
+  async updatePdf(id_pdf: number, dto: DocumentPdfDto): Promise<PDFDoc> {
+    const existingPdf = await this.pdfRepository.findOneBy({ id: id_pdf });
+    if (!existingPdf) {
+      throw new Error('PDF not found');
+    }
+
+    const doc = new PDFDocument({ bufferPages: true });
+    let pdfBuffer = Buffer.alloc(0);
+
+    doc.font('Helvetica').fontSize(12).text(dto.content, {
+      align: 'justify',
+      indent: 30,
+      height: 300,
+      ellipsis: true
+    });
+
+    doc.end();
+
+    doc.on('data', (chunk) => {
+      pdfBuffer = Buffer.concat([pdfBuffer, chunk]);
+    });
+
+    return new Promise((resolve, reject) => {
+      doc.on('end', async () => {
+        existingPdf.content = pdfBuffer;
+        existingPdf.modifyDate = new Date();
+     
+        try {
+          const updatedPdf = await this.pdfRepository.save(existingPdf);
+          resolve(updatedPdf);
+        } catch (error) {
+          reject(error);
+        }
+      });
+
+      doc.on('error', reject);
+    });
+  }
+
+
+
+
   async getPdfById(id: number): Promise<PDFDoc | null> {
     return await this.pdfRepository.findOneBy({ id });
   }
-  */
+  
 
 
 }

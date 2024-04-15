@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { RegularUser } from 'src/user/regularU.entity';
 import { AdminUser } from 'src/user/adminU.entity';

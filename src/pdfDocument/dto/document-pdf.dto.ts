@@ -14,3 +14,4 @@ export class DocumentPdfDto{
     permissions: String;
  
  }
+ 
