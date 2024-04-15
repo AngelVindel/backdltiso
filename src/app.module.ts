@@ -15,19 +15,25 @@ import { AnswersModule } from './answers/answers.module';
 
 
 
+
 @Module({
-   imports: [  TypeOrmModule.forRoot({
-    "type" :"mysql",
-    "host" : "localhost",
-    "port":3306,
-    "username": "root",
-    "password": " ",
-    "database": "prueba2",
-    "entities": [__dirname + '/**/*.entity{.ts,.js}'],
-    "synchronize": true, // No usar en producción
-  }),
-  TypeOrmModule.forFeature([RegularUser,AdminUser,PDFDoc,Ticket]), 
-    AuthModule,UserModule,DocumentModule,TicketModule,QuestionsModule,AnswersModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: '',
+      database: 'prueba2',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true, // No usar en producción
+    }),
+    TypeOrmModule.forFeature([RegularUser, AdminUser, PDFDoc,Ticket, Ticket]),
+    AuthModule,
+    UserModule,
+    DocumentModule,TicketModule,QuestionsModule,AnswersModule,
+    TicketModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
