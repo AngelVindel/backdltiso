@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -11,6 +12,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Injectable()
 export class TicketService {
+  adminRepository: any;
   constructor(
     @InjectRepository(Ticket)
     private ticketRepository: Repository<Ticket>,
@@ -35,26 +37,38 @@ export class TicketService {
     });
     return await this.ticketRepository.save(ticket);
   }
-
   async updateStatus(
-    idTicket: number,
-    status: 'open' | 'in progress' | 'closed',
-    adminUserId: number,
-  ): Promise<Ticket> {
-    const ticket = await this.ticketRepository.findOneBy({ id: idTicket });
-
-    if (!ticket) {
-      throw new NotFoundException(`Ticket with ID ${idTicket} not found`);
-    }
-
-    // Comprobamos si el usuario es un administrador
-    if (!adminUserId) {
-      throw new UnauthorizedException('Only admins can update ticket status.');
-    }
-
-    ticket.status = status;
-    return this.ticketRepository.save(ticket);
+  idTicket: number,
+  status: 'open' | 'in progress' | 'closed',
+  adminUserId: number,
+): Promise<Ticket> {
+  // Verifica si el estado es válido
+  if (!['open', 'in progress', 'closed'].includes(status)) {
+    throw new BadRequestException(`Invalid status: ${status}`);
   }
+
+  const ticket = await this.ticketRepository.findOneBy({ id: idTicket });
+  if (!ticket) {
+    throw new NotFoundException(`Ticket with ID ${idTicket} not found`);
+  }
+
+  /*const adminUser = await this.ticketRepository.findOneBy({id:adminUserId});
+  if (!adminUser) {
+    throw new NotFoundException(`Admin user with ID ${adminUserId} not found`);
+  }*/
+
+  // Comprobamos si el usuario es un administrador
+  if (!adminUserId) {
+    throw new UnauthorizedException('Only admins can update ticket status.');
+  }
+
+  // Actualiza el estado del ticket
+  ticket.status = status;
+  ticket.adminId = adminUserId;
+  return this.ticketRepository.save(ticket);
+}
+
+
   async getAllTickets(): Promise<Ticket[]> {
     return this.ticketRepository.find();
   }
@@ -63,18 +77,18 @@ export class TicketService {
     idTicket: number,
     adminUserId: number,
   ): Promise<{ message: string }> {
-    const ticket = await this.ticketRepository.findOneBy({ id: idTicket });
 
+    const ticket = await this.ticketRepository.findOneBy({ id: idTicket });
     if (!ticket) {
       throw new NotFoundException(`Ticket with ID ${idTicket} not found`);
     }
 
-    // Comprobamos si el usuario es un administrador
+    // Comprueba si el usuario es un administrador
     if (!adminUserId) {
       throw new UnauthorizedException('Only admins can delete tickets.');
     }
 
-    await this.ticketRepository.delete({ id: idTicket });
+    await this.ticketRepository.remove(ticket);
     return { message: 'Ticket has been successfully deleted.' };
   }
 }

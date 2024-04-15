@@ -16,11 +16,12 @@ export class TicketController {
   @Patch(':id/status')
   async updateTicketStatus(
     @Param('id') id: number,
-    @Body() updateTicketDto: UpdateTicketDto, 
+    @Body() updateTicketDto: UpdateTicketDto,
   ) {
     const adminUserId = updateTicketDto.adminUserId;
+
     const { status } = updateTicketDto;
-    return this.ticketService.updateStatus(id, status, adminUserId); 
+    return this.ticketService.updateStatus(id, status, adminUserId);
   }
 
   @UseGuards(JwtAuthGuard)

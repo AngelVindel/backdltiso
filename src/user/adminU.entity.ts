@@ -7,7 +7,7 @@ export class AdminUser implements User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Ticket, (ticket) => ticket.adminUser)
+  @OneToMany(() => Ticket, (ticket) => ticket.admin)
   tickets: Ticket[];
 
   @Column()
