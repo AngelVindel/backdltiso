@@ -1,21 +1,27 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { RegularUser } from "src/user/regularU.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class PDFDoc {
   
   @PrimaryGeneratedColumn()
   id: number;
-  
+
+  @Column()
+  @ManyToOne(()=>RegularUser, user=> user.documents)
   userId: number;
 
-  contnt: string;
+  @Column({ type: 'blob' })
+  content: Buffer;
 
+  @Column()
   creationDate: Date;
 
+  @Column()
   modifyDate: Date;
 
+  @Column()
   permissions: String;
 
-  filePath: string;
 
 }

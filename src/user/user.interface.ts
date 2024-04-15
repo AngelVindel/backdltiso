@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 // user.interface.ts
 export interface User {
     id: number;
