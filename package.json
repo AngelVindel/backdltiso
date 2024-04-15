@@ -38,6 +38,7 @@
     "class-validator": "^0.14.1",
     "mysql2": "^3.9.3",
     "nestjs-opensearch": "^0.3.2",
+    "nestjs-resend": "^0.0.3",
     "next": "^14.1.4",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, NumericType, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.interface';
 import { PDFDoc } from 'src/pdfDocument/document.entity';
 import { Ticket } from 'src/ticket/ticket.entity';
@@ -24,8 +24,8 @@ export class RegularUser implements User {
   @Column({type: 'boolean', default: false})
   activated: boolean;
 
-  @Column({type: 'numeric'})
-  activation_token: NumericType;
+  @Column({type: 'numeric',default: Math.floor(100000 + Math.random() * 900000)})
+  activation_token: number;
   
   @OneToMany(() => PDFDoc, (document) => document.userId)
   documents: PDFDoc[];

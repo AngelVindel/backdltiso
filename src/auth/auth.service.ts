@@ -9,6 +9,7 @@ import {  LoginAuthDto } from './dto/login-auth.dto';
 import {  RegisterAuthDto } from './dto/register-auth.dto';
 import { User } from '../user/user.interface';
 import { RegularUser } from 'src/user/regularU.entity';
+import { ActivateAuthDto } from './dto/activate-auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -43,14 +44,9 @@ export class AuthService {
         const newUser = userRepository.create({
             ...userDto,
             password: hashedPassword,
-            //Falta añadir que cuando un usuario se registre, se le envie un correo con un token de activacion
-            //activation_token: Math.floor(100000 + Math.random() * 900000),
-            //Y si lo activa en cliente, activate tiene que estar en true, cada vez que se inicie sesión 
-            //hay que ver si está activado o no, si no está activado, no se puede iniciar sesión
-            //Intentar eliminar el usuario una vez pasadas 24 horas sin activar
+            //Solo falta enviar el token de activacion por correo electronico con RESEND
             
         });
-        console.log(newUser);
         
 
         await userRepository.save(newUser);
@@ -75,5 +71,18 @@ export class AuthService {
         const token = this.jwtService.sign(payload);
 
         return { user, token };
+    }
+
+    async activateAccount(userDto:ActivateAuthDto): Promise<{ user: User }> {
+        const { activation_token, email } = userDto;
+        const user = await this.regularUserRepository.findOne({ where: { email } });
+        try {
+            if(activation_token === user.activation_token){
+                await this.regularUserRepository.update(user.id, {activated: true,activation_token:null});
+            }
+            return {user}
+        } catch (error) {
+            throw new HttpException('Invalid token', 401);
+        }
     }
 }

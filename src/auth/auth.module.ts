@@ -14,8 +14,8 @@ imports:[
     JwtModule.register({
         secret: jwtConstants.secret,
         signOptions: {expiresIn: '60s'}
-
     }),
+
 ],
     controllers: [AuthController],
     providers: [AuthService,JwStrategy],
