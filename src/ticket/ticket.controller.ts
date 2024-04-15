@@ -1,14 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Patch,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, UseGuards, Delete} from '@nestjs/common';
 import { TicketService } from './ticket.service';
-import { CreateTicketDto, UpdateTicketDto } from './dto/create-ticket.dto';
+import { CreateTicketDto, UpdateTicketDto, DeleteTicketDto } from './dto/create-ticket.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('tickets')
@@ -24,14 +16,25 @@ export class TicketController {
   @Patch(':id/status')
   async updateTicketStatus(
     @Param('id') id: number,
-    @Body() updateTicketDto: UpdateTicketDto,
+    @Body() updateTicketDto: UpdateTicketDto, 
   ) {
-    return this.ticketService.updateStatus(id, updateTicketDto.status);
+    const adminUserId = updateTicketDto.adminUserId;
+    const { status } = updateTicketDto;
+    return this.ticketService.updateStatus(id, status, adminUserId); 
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('status')
   async getAllTickets() {
     return this.ticketService.getAllTickets();
+  }
+
+  @Delete(':id')
+  async deleteTicket(
+    @Param('id') id: number,
+    @Body() deleteTicketDto: DeleteTicketDto,
+  ) {
+    const adminUserId = deleteTicketDto.adminUserId;
+    return this.ticketService.deleteTicket(id, adminUserId);
   }
 }

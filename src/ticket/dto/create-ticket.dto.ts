@@ -8,4 +8,9 @@ export class CreateTicketDto {
 }
 export class UpdateTicketDto {
   status: 'open' | 'in progress' | 'closed';
+  adminUserId: number;
+}
+
+export class DeleteTicketDto {
+  adminUserId: number;
 }
