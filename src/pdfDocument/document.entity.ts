@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { RegularUser } from "src/user/regularU.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -21,6 +22,7 @@ export class PDFDoc {
   modifyDate: Date;
 
   @Column()
+  // eslint-disable-next-line @typescript-eslint/ban-types
   permissions: String;
 
 

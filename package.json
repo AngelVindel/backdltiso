@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^10.3.7",
+    "@nestjs/config": "^3.2.2",
     "@nestjs/core": "^10.0.0",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.3",
@@ -30,6 +31,7 @@
     "@nestjs/typeorm": "^10.0.2",
     "@opensearch-project/opensearch": "^2.6.0",
     "@stripe/stripe-js": "^3.2.0",
+    "@swc/helpers": "^0.5.9",
     "@vercel/node": "^3.0.26",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",

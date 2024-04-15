@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // user.module.ts
 import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';

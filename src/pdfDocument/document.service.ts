@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -40,6 +41,7 @@ export class PDFDocumentService {
     return new Promise((resolve, reject) => {
       doc.on('end', async () => {
         const pdf = this.pdfRepository.create({
+          id: 0,
           userId: user.id, 
           content: pdfBuffer,
           creationDate: new Date(),
@@ -49,7 +51,7 @@ export class PDFDocumentService {
 
         try {
           const savedPdf = await this.pdfRepository.save(pdf);
-          resolve(savedPdf);
+          resolve(savedPdf[0]); // Return the first element of the array
         } catch (error) {
           reject(error);
         }

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, NumericType, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.interface';
 import { PDFDoc } from 'src/pdfDocument/document.entity';
 import { Ticket } from 'src/ticket/ticket.entity';
@@ -12,7 +12,7 @@ export class RegularUser implements User {
   @Column()
   username: string;
 
-  @Column()
+  @Column() 
   password: string;
 
   @Column()
@@ -21,8 +21,11 @@ export class RegularUser implements User {
   @Column()
   company: string;
 
-  @Column({type: 'uuid',unique:true})
-  activation_token: string
+  @Column({type: 'boolean', default: false})
+  activated: boolean;
+
+  @Column({type: 'numeric'})
+  activation_token: NumericType;
   
   @OneToMany(() => PDFDoc, (document) => document.userId)
   documents: PDFDoc[];
