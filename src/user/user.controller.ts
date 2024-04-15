@@ -28,6 +28,12 @@ export class UserController {
           console.error("Error al obtener usuarios por correo electrónico:", error);
       }
   }
+  
+  @Get()
+  getEmailUsers(@Param("email") email:string){
+    return this.userService.getEmailUsers(email);
+  }
+  
   @Post()
   createUser(@Body() newUser: CreateUserDto){
   return this.userService.createUser(newUser.username,newUser.email,newUser.password);

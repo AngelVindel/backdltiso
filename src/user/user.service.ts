@@ -47,4 +47,28 @@ export class UserService {
     this.regularUserRepository.merge(user, updateField);
     return await this.regularUserRepository.save(user);
   }
+    this.users.push(user);
+    return user;
+
+   }
+   deleteUser(id: number){
+    this.users=this.users.filter(user=> user.id!=id)
+   }
+
+   getUserById(id:number ): User{
+    return this.users.find(user=>user.id==id)
+   }
+
+   updateUser(id: number, updateField: UpdateUserDto):User{
+    const user= this.getUserById(id);
+
+    const newUser=Object.assign(user,updateField)
+
+    this.users=this.users.map(user=>user.id==id ? newUser: user)
+
+    return newUser;
+   }
+   getEmailUsers(email:string){
+    return this.users.filter(user=>user.email==email)
+   } 
 }

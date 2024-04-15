@@ -13,6 +13,12 @@ import { TicketModule } from './ticket/ticket.module';
 import { Ticket } from './ticket/ticket.entity';
 import { ConfigModule } from '@nestjs/config';
 
+import { QuestionsModule } from './questions/questions.module';
+import { AnswersModule } from './answers/answers.module';
+
+
+
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,10 +34,10 @@ import { ConfigModule } from '@nestjs/config';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // No usar en producción
     }),
-    TypeOrmModule.forFeature([RegularUser, AdminUser, PDFDoc, Ticket]),
+    TypeOrmModule.forFeature([RegularUser, AdminUser, PDFDoc,Ticket, Ticket]),
     AuthModule,
     UserModule,
-    DocumentModule,
+    DocumentModule,TicketModule,QuestionsModule,AnswersModule,
     TicketModule,
   ],
   
