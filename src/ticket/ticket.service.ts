@@ -1,33 +1,80 @@
-// ticket.service.ts
-import { Injectable } from '@nestjs/common';
-import { Ticket } from './ticket.interface';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Ticket } from './ticket.entity';
 import { CreateTicketDto } from './dto/create-ticket.dto';
-import { User } from '../user/user.interface';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Injectable()
 export class TicketService {
-  private readonly tickets: Ticket[] = []; 
-  private readonly users: User[] = []; 
+  constructor(
+    @InjectRepository(Ticket)
+    private ticketRepository: Repository<Ticket>,
+  ) {}
 
-  async create(createTicketDto: CreateTicketDto, userId: number): Promise<Ticket> {
-    const user = this.users.find(u => u.id === userId);
-    if (!user) {
-      throw new Error('Usuario no encontrado');
+  async create(
+    createTicketDto: CreateTicketDto,
+    userId: number,
+  ): Promise<Ticket> {
+    const { title, description } = createTicketDto;
+
+    if (!userId) {
+      throw new UnauthorizedException('Only regular users can create tickets.');
     }
-    const ticket: Ticket = {
-      id: this.tickets.length + 1,
-      userId: user.id,
-      title: createTicketDto.title,
-      description: createTicketDto.description,
+
+    const ticket = await this.ticketRepository.create({
+      userId,
+      title,
+      description,
       status: 'open',
-      createdAt: new Date() 
-    };
-    this.tickets.push(ticket);
-    return ticket;
+      createdAt: new Date(),
+    });
+    return await this.ticketRepository.save(ticket);
   }
 
-  async getResolvedTickets(userId: number): Promise<Ticket[]> {
-    const userTickets = this.tickets.filter(ticket => ticket.userId === userId && ticket.status === 'closed');
-    return userTickets;
+  async updateStatus(
+    idTicket: number,
+    status: 'open' | 'in progress' | 'closed',
+    adminUserId: number,
+  ): Promise<Ticket> {
+    const ticket = await this.ticketRepository.findOneBy({ id: idTicket });
+
+    if (!ticket) {
+      throw new NotFoundException(`Ticket with ID ${idTicket} not found`);
+    }
+
+    // Comprobamos si el usuario es un administrador
+    if (!adminUserId) {
+      throw new UnauthorizedException('Only admins can update ticket status.');
+    }
+
+    ticket.status = status;
+    return this.ticketRepository.save(ticket);
+  }
+  async getAllTickets(): Promise<Ticket[]> {
+    return this.ticketRepository.find();
+  }
+
+  async deleteTicket(
+    idTicket: number,
+    adminUserId: number,
+  ): Promise<{ message: string }> {
+    const ticket = await this.ticketRepository.findOneBy({ id: idTicket });
+
+    if (!ticket) {
+      throw new NotFoundException(`Ticket with ID ${idTicket} not found`);
+    }
+
+    // Comprobamos si el usuario es un administrador
+    if (!adminUserId) {
+      throw new UnauthorizedException('Only admins can delete tickets.');
+    }
+
+    await this.ticketRepository.delete({ id: idTicket });
+    return { message: 'Ticket has been successfully deleted.' };
   }
 }

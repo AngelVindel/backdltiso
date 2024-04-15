@@ -1,5 +1,16 @@
 // create-ticket.dto.ts
 export class CreateTicketDto {
-  readonly title: string;
-  readonly description: string; 
+  userId: number;
+  fecha: Date;
+  estado: 'open' | 'in progress' | 'closed';
+  title: string;
+  description: string; 
+}
+export class UpdateTicketDto {
+  status: 'open' | 'in progress' | 'closed';
+  adminUserId: number;
+}
+
+export class DeleteTicketDto {
+  adminUserId: number;
 }

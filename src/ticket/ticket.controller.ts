@@ -1,25 +1,40 @@
-// ticket.controller.ts
-import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, UseGuards, Delete} from '@nestjs/common';
 import { TicketService } from './ticket.service';
-import { CreateTicketDto } from './dto/create-ticket.dto';
-import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
+import { CreateTicketDto, UpdateTicketDto, DeleteTicketDto } from './dto/create-ticket.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('tickets')
 export class TicketController {
- constructor(private readonly ticketService: TicketService) {}
+  constructor(private readonly ticketService: TicketService) {}
 
- @Post()
- @UseGuards(AuthGuard('jwt'))
- async create(@Body() createTicketDto: CreateTicketDto, @Req() req) {
-    const userId = req.user.id; 
+  @Post()
+  async createTicket(@Body() createTicketDto: CreateTicketDto) {
+    const userId = createTicketDto.userId;
     return this.ticketService.create(createTicketDto, userId);
- }
+  }
 
- @Get('resolved')
- @UseGuards(AuthGuard('jwt')) 
- async getResolvedTickets(@Req() req) { 
-    const userId = req.user.id; 
-    return this.ticketService.getResolvedTickets(userId);
- }
+  @Patch(':id/status')
+  async updateTicketStatus(
+    @Param('id') id: number,
+    @Body() updateTicketDto: UpdateTicketDto, 
+  ) {
+    const adminUserId = updateTicketDto.adminUserId;
+    const { status } = updateTicketDto;
+    return this.ticketService.updateStatus(id, status, adminUserId); 
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('status')
+  async getAllTickets() {
+    return this.ticketService.getAllTickets();
+  }
+
+  @Delete(':id')
+  async deleteTicket(
+    @Param('id') id: number,
+    @Body() deleteTicketDto: DeleteTicketDto,
+  ) {
+    const adminUserId = deleteTicketDto.adminUserId;
+    return this.ticketService.deleteTicket(id, adminUserId);
+  }
 }
