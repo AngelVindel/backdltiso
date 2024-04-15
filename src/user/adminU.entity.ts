@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.interface';
 import { Ticket } from 'src/ticket/ticket.entity';
@@ -13,6 +14,7 @@ export class AdminUser implements User {
   @Column()
   username: string;
 
+  
   @Column()
   password: string;
 

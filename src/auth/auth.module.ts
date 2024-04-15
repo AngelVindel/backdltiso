@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './jwt.constants';
@@ -13,8 +14,8 @@ imports:[
     JwtModule.register({
         secret: jwtConstants.secret,
         signOptions: {expiresIn: '60s'}
-
     }),
+
 ],
     controllers: [AuthController],
     providers: [AuthService,JwStrategy],

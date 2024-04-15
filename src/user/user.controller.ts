@@ -1,8 +1,9 @@
+/* eslint-disable prettier/prettier */
 // user.controller.ts
 import { Controller, Post, Body, Get, UseGuards, Delete, Param, Patch } from '@nestjs/common';
-import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { UserService } from './user.service';
 
 @Controller('users')
 export class UserController {
@@ -17,6 +18,15 @@ export class UserController {
   @Get()
   getAllUsers(){
       return this.userService.getAllUsers();
+  }
+  @Get(":email")
+  async getEmailUsers(@Param("email") email: string){
+      try {
+          const users =await this.userService.getEmailUsers(email);
+          return users;
+      } catch (error) {
+          console.error("Error al obtener usuarios por correo electrónico:", error);
+      }
   }
   
   @Get()

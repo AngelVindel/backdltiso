@@ -1,4 +1,5 @@
-import { Injectable, HttpException, Inject } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Injectable, HttpException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { hash, compare } from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -8,6 +9,7 @@ import {  LoginAuthDto } from './dto/login-auth.dto';
 import {  RegisterAuthDto } from './dto/register-auth.dto';
 import { User } from '../user/user.interface';
 import { RegularUser } from 'src/user/regularU.entity';
+import { ActivateAuthDto } from './dto/activate-auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -28,6 +30,7 @@ export class AuthService {
     }
 
     async register(userDto: RegisterAuthDto) {
+        
         const { email, password, userType } = userDto;
         const hashedPassword = await hash(password, 10);
         const userRepository = this.getUserRepository(userType);
@@ -36,11 +39,15 @@ export class AuthService {
         if (user) {
             throw new HttpException('Account already created', 401);
         }
-
+        console.log(userRepository);
+        
         const newUser = userRepository.create({
             ...userDto,
             password: hashedPassword,
+            //Solo falta enviar el token de activacion por correo electronico con RESEND
+            
         });
+        
 
         await userRepository.save(newUser);
         return newUser;
@@ -64,5 +71,18 @@ export class AuthService {
         const token = this.jwtService.sign(payload);
 
         return { user, token };
+    }
+
+    async activateAccount(userDto:ActivateAuthDto): Promise<{ user: User }> {
+        const { activation_token, email } = userDto;
+        const user = await this.regularUserRepository.findOne({ where: { email } });
+        try {
+            if(activation_token === user.activation_token){
+                await this.regularUserRepository.update(user.id, {activated: true,activation_token:null});
+            }
+            return {user}
+        } catch (error) {
+            throw new HttpException('Invalid token', 401);
+        }
     }
 }
