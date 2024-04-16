@@ -32,7 +32,7 @@
     "@opensearch-project/opensearch": "^2.6.0",
     "@stripe/stripe-js": "^3.2.0",
     "@swc/helpers": "^0.5.9",
-    "@vercel/node": "^3.0.26",
+    "@vercel/node": "^3.0.1",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
