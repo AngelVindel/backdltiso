@@ -11,8 +11,8 @@ export class Ticket {
   @ManyToOne(() => RegularUser, (user) => user.tickets)
   userId: number;
 
-  @ManyToOne(() => AdminUser, (adminUser) => adminUser.tickets)
-  adminUser: AdminUser;
+  @ManyToOne(() => AdminUser, (admin) => admin.tickets)
+  admin: AdminUser;
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

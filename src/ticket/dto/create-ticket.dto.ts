@@ -1,4 +1,7 @@
 // create-ticket.dto.ts
+import { IsNotEmpty, IsIn } from 'class-validator';
+
+
 export class CreateTicketDto {
   userId: number;
   fecha: Date;
@@ -7,7 +10,10 @@ export class CreateTicketDto {
   description: string; 
 }
 export class UpdateTicketDto {
+  @IsNotEmpty()
+  @IsIn(['open', 'in progress', 'closed'])
   status: 'open' | 'in progress' | 'closed';
+
   adminUserId: number;
 }
 
