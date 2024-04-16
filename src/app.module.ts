@@ -15,8 +15,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { QuestionsModule } from './questions/questions.module';
 import { AnswersModule } from './answers/answers.module';
-
-
+import { ResendModule } from './email/email.module';
 
 
 @Module({
@@ -39,6 +38,7 @@ import { AnswersModule } from './answers/answers.module';
     UserModule,
     DocumentModule,TicketModule,QuestionsModule,AnswersModule,
     TicketModule,
+    ResendModule,
   ],
   
   controllers: [AppController],

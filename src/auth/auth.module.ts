@@ -15,6 +15,7 @@ imports:[
         secret: jwtConstants.secret,
         signOptions: {expiresIn: '60s'}
     }),
+    
 
 ],
     controllers: [AuthController],
