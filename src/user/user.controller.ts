@@ -29,8 +29,6 @@ export class UserController {
       }
   }
   
-  
-  
   @Post()
   createUser(@Body() newUser: CreateUserDto){
   return this.userService.createUser(newUser.username,newUser.email,newUser.password);
