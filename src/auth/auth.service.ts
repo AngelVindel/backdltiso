@@ -31,7 +31,7 @@ export class AuthService {
 
     async register(userDto: RegisterAuthDto) {
         
-        const { email, password, userType } = userDto;
+        const { email, password, userType} = userDto;
         const hashedPassword = await hash(password, 10);
         const userRepository = this.getUserRepository(userType);
         const user = await userRepository.findOne({ where: { email } });
@@ -41,15 +41,16 @@ export class AuthService {
         }
         console.log(userRepository);
         
+        const activationToken = this.jwtService.sign({ email }, { expiresIn: '24h' }); 
         const newUser = userRepository.create({
             ...userDto,
             password: hashedPassword,
-            //Solo falta enviar el token de activacion por correo electronico con RESEND
+            activation_token:activationToken
             
         });
-        
-
         await userRepository.save(newUser);
+
+     await this.activateAccount(newUser);
         return newUser;
     }
 
@@ -83,6 +84,8 @@ export class AuthService {
             return {user}
         } catch (error) {
             throw new HttpException('Invalid token', 401);
+            return null;
         }
+       
     }
 }

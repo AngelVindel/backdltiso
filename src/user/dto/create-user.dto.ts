@@ -17,12 +17,16 @@ export class CreateUserDto {
     @IsNotEmpty()
      password: string;
 
-    
+
+
+     activation_token: string;
+
   
   }
   export class UpdateUserDto{
 
     username?: string;
+
 
   }
   

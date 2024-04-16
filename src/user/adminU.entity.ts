@@ -14,7 +14,13 @@ export class AdminUser implements User {
   @Column()
   username: string;
 
+  @Column({nullable: true})
+  activation_token: string;
   
+  
+  @Column({type: 'boolean', default: false})
+  activated: boolean;
+
   @Column()
   password: string;
 

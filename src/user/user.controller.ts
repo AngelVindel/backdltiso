@@ -29,10 +29,7 @@ export class UserController {
       }
   }
   
-  @Get()
-  getEmailUsers(@Param("email") email:string){
-    return this.userService.getEmailUsers(email);
-  }
+  
   
   @Post()
   createUser(@Body() newUser: CreateUserDto){

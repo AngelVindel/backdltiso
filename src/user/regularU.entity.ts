@@ -24,8 +24,8 @@ export class RegularUser implements User {
   @Column({type: 'boolean', default: false})
   activated: boolean;
 
-  @Column({type: 'numeric',default: Math.floor(100000 + Math.random() * 900000)})
-  activation_token: number;
+  @Column({nullable: true})
+  activation_token: string;
   
   @OneToMany(() => PDFDoc, (document) => document.userId)
   documents: PDFDoc[];
