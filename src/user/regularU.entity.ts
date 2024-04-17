@@ -3,6 +3,7 @@ import { Column, Entity, NumericType, OneToMany, PrimaryGeneratedColumn } from '
 import { User } from './user.interface';
 import { PDFDoc } from 'src/pdfDocument/document.entity';
 import { Ticket } from 'src/ticket/ticket.entity';
+import { Answer } from 'src/answers/answers.entity';
 
 @Entity()
 export class RegularUser implements User {
@@ -32,4 +33,6 @@ export class RegularUser implements User {
 
   @OneToMany(() => Ticket, (ticket) => ticket.userId)
   tickets: Ticket[];
+
+
 }

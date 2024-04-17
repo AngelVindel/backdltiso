@@ -1,5 +1,6 @@
-import { Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post } from "@nestjs/common";
 import { QuestionsService } from "./questions.service";
+import { QuestionDTO } from "./dto/questions.dto";
 
 
 @Controller('questions')
@@ -23,6 +24,12 @@ export class QuestionsController{
   async deleteQuestion(@Param('id') id: number) {
     await this.questionsService.deleteQuestion(id);
 
+  }
+
+  @Post()
+  async postNewQuestion(@Body() questionDto: QuestionDTO){
+    const question= await this.questionsService.postNewQuestion(questionDto);
+    return question;
   }
 
 
