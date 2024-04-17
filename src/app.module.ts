@@ -16,6 +16,8 @@ import { ConfigModule } from '@nestjs/config';
 import { QuestionsModule } from './questions/questions.module';
 import { AnswersModule } from './answers/answers.module';
 import { ResendModule } from './email/email.module';
+import { Question } from './questions/questions.entity';
+import { Answer } from './answers/answers.entity';
 
 
 @Module({
@@ -33,10 +35,13 @@ import { ResendModule } from './email/email.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // No usar en producción
     }),
-    TypeOrmModule.forFeature([RegularUser, AdminUser, PDFDoc,Ticket, Ticket]),
+    TypeOrmModule.forFeature([RegularUser, AdminUser, PDFDoc, Ticket,Question,Answer]),
     AuthModule,
     UserModule,
-    DocumentModule,TicketModule,QuestionsModule,AnswersModule,
+    DocumentModule,
+    TicketModule,
+    QuestionsModule,
+    AnswersModule,
     TicketModule,
     ResendModule,
   ],

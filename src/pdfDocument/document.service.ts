@@ -41,7 +41,7 @@ export class PDFDocumentService {
     return new Promise((resolve, reject) => {
       doc.on('end', async () => {
         const pdf = this.pdfRepository.create({
-          id: 0,
+        //  id: 0,
           userId: user.id, 
           content: pdfBuffer,
           creationDate: new Date(),
@@ -51,7 +51,7 @@ export class PDFDocumentService {
 
         try {
           const savedPdf = await this.pdfRepository.save(pdf);
-          resolve(savedPdf[0]); // Return the first element of the array
+          resolve(savedPdf[0]);
         } catch (error) {
           reject(error);
         }
@@ -111,8 +111,6 @@ export class PDFDocumentService {
       doc.on('error', reject);
     });
   }
-
-
 
 
   async getPdfById(id: number): Promise<PDFDoc | null> {

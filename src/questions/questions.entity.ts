@@ -8,12 +8,15 @@ export class Question{
 
     @PrimaryGeneratedColumn()
     id:number;
+
     @Column()
     text:string;
+
     @Column()
     description:string;
     
-    @OneToMany(()=>Answer, answer=> answer.questionId)
+    @Column()
+    @OneToMany(()=>Answer, (answer)=> answer.question)
     answers: Answer[];
     
     

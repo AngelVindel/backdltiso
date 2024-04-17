@@ -7,15 +7,15 @@ export class Answer{
 
     @PrimaryGeneratedColumn()
     id:number;
-    
-    @Column()
-    @ManyToOne(()=>Question, question=> question.answers)
-    questionId: number;
 
+    
     @Column()
     text: string;
 
+    @Column()
+    @ManyToOne(()=>Question, (question)=> question.answers)
+    question: Question;
 
-  
+   
     
 }
