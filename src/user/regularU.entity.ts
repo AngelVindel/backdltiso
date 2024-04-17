@@ -3,7 +3,7 @@ import { Column, Entity, NumericType, OneToMany, PrimaryGeneratedColumn } from '
 import { User } from './user.interface';
 import { PDFDoc } from 'src/pdfDocument/document.entity';
 import { Ticket } from 'src/ticket/ticket.entity';
-import { Answer } from 'src/answers/answers.entity';
+
 
 @Entity()
 export class RegularUser implements User {
@@ -25,7 +25,7 @@ export class RegularUser implements User {
   @Column({type: 'boolean', default: false})
   activated: boolean;
 
-  @Column({type: 'numeric',default: Math.floor(100000 + Math.random() * 900000)})
+  @Column({type: 'numeric',default: Math.floor(100000 + Math.random() * 900000), nullable: true})
   activation_token: NumericType;
   
   @OneToMany(() => PDFDoc, (document) => document.userId)

@@ -42,7 +42,6 @@ export class AuthService {
         if (user) {
             throw new HttpException('Account already created', 401);
         }
-        console.log(userRepository);
         
         const newUser = userRepository.create({
             ...userDto,
@@ -50,7 +49,6 @@ export class AuthService {
             
         });
         await userRepository.save(newUser);
-        console.log(newUser);
         await this.emailService.sendEmail(email, newUser);
         return newUser;
     }
@@ -75,17 +73,21 @@ export class AuthService {
         return { user, token };
     }
 
-    async activateAccount(userDto:ActivateAuthDto): Promise<{ user: User }> {
+    async activateAccount(userDto:ActivateAuthDto): Promise<boolean> {
         const { activation_token, email } = userDto;
         const user = await this.regularUserRepository.findOne({ where: { email } });
+        console.log(user.activation_token, activation_token);
+        
         try {
-            if(activation_token === user.activation_token){
+            if(activation_token == user.activation_token){
                 await this.regularUserRepository.update(user.id, {activated: true,activation_token:null});
+                return true
+            }else{
+                return false
             }
-            return {user}
+            
         } catch (error) {
-            throw new HttpException('Invalid token', 401);
-            return null;
+            throw new HttpException('Ha ocurrido un error'+error.message, 500);
         }
        
     }

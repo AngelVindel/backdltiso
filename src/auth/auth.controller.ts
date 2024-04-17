@@ -22,6 +22,9 @@ export class AuthController{
         return this.authService.login(userObjectLogin)
     }
 
-
+    @Post('activate')
+    activateUser(@Body() userObjectActivate: RegisterAuthDto){
+        return this.authService.activateAccount(userObjectActivate)
+    }
 
 }
