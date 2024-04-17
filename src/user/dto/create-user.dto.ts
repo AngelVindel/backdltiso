@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
+/* eslint-disable prettier/prettier */
+import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
 // create-user.dto.ts
 export class CreateUserDto {
@@ -19,7 +20,7 @@ export class CreateUserDto {
 
 
 
-     activation_token: string;
+     activation_token: number;
 
   
   }
