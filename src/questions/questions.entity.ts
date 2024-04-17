@@ -1,23 +1,19 @@
-/* eslint-disable prettier/prettier */
-import { Answer } from "src/answers/answers.entity";
+import { Answer } from "../answers/answers.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-
 @Entity()
-export class Question{
+export class Question {
 
     @PrimaryGeneratedColumn()
-    id:number;
+    id: number;
 
     @Column()
-    text:string;
+    text: string;
 
     @Column()
-    description:string;
-    
-    @Column()
-    @OneToMany(()=>Answer, (answer)=> answer.question)
+    description: string;
+
+    @OneToMany(() => Answer, (answer) => answer.question)
     answers: Answer[];
-    
-    
+
 }
