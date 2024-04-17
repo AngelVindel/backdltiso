@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable, HttpException, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { hash, compare } from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -10,6 +10,7 @@ import {  RegisterAuthDto } from './dto/register-auth.dto';
 import { User } from '../user/user.interface';
 import { RegularUser } from 'src/user/regularU.entity';
 import { ActivateAuthDto } from './dto/activate-auth.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,9 @@ export class AuthService {
         private adminUserRepository: Repository<AdminUser>,
         @InjectRepository(RegularUser)
         private regularUserRepository: Repository<RegularUser>,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        @Inject(EmailService) 
+        private readonly emailService: EmailService
     ) {}
 
     private getUserRepository(userType: string): Repository<User> {
@@ -41,16 +44,14 @@ export class AuthService {
         }
         console.log(userRepository);
         
-        const activationToken = this.jwtService.sign({ email }, { expiresIn: '24h' }); 
         const newUser = userRepository.create({
             ...userDto,
             password: hashedPassword,
-            activation_token:activationToken
             
         });
         await userRepository.save(newUser);
-
-     await this.activateAccount(newUser);
+        console.log(newUser);
+        await this.emailService.sendEmail(email, newUser);
         return newUser;
     }
 

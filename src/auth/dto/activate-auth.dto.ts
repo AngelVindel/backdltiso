@@ -8,7 +8,7 @@ export class ActivateAuthDto{
 @IsEmail()
 email: string;
 
-
-activation_token: string;
+@IsNumber()
+activation_token: number;
 
 }

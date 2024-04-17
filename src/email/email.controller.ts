@@ -1,27 +1,15 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Post, Body, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Post } from '@nestjs/common';
+import { EmailService } from './email.service';
 
-import { SendEmailDto } from './dto/send-email.dto';
-import { ResendService } from './email.service';
+@Controller('email')
+export class EmailController {
+  constructor(private readonly emailService: EmailService) {}
 
-@Controller('resend')
-export class ResendController {
-  constructor(private readonly resendService: ResendService) {}
-
-  @Post()
-  async create(
-    @Res() response: Response,
-    @Body() createResendDto: SendEmailDto,
-  ) {
-    try {
-      const req = await this.resendService.create(createResendDto);
-
-      return response.status(200).json({
-        message: req,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  @Post('send')
+  async sendEmail(@Body() body: { email: string, activationToken: number }) {
+    const { email,activationToken } = body;
+    await this.emailService.sendEmail(email, activationToken);
+    return true;
+  } 
 }
