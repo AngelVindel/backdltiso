@@ -10,6 +10,12 @@ import { Question } from 'src/questions/questions.entity';
 
 @Injectable()
 export class UserService {
+
+  constructor(
+    @InjectRepository(RegularUser)
+    private regularUserRepository: Repository<RegularUser>,
+  ) {}
+
     
     constructor(
         @InjectRepository(RegularUser)
@@ -18,39 +24,49 @@ export class UserService {
         private answerRepository: Repository<Answer>
     ) {}
 
-      async signup(createUserDto: CreateUserDto): Promise<User> {
-        const newUser = this.regularUserRepository.create(createUserDto);
-        return await this.regularUserRepository.save(newUser);
-      }
 
-      async getAllUsers(): Promise<User[]> {
-        return await this.regularUserRepository.find();
-      }
+  async signup(createUserDto: CreateUserDto): Promise<User> {
+    const newUser = this.regularUserRepository.create(createUserDto);
+    return await this.regularUserRepository.save(newUser);
+  }
 
-      async createUser(username: string, email: string, password: string): Promise<User> {
-        const newUser = this.regularUserRepository.create({ username, email, password });
-        return await this.regularUserRepository.save(newUser);
-      }
-      async getEmailUsers(email:string) {       
-        return await this.regularUserRepository.find({where: {email}})
-      }
+  async getAllUsers(): Promise<User[]> {
+    return await this.regularUserRepository.find();
+  }
+
+  async createUser(
+    username: string,
+    email: string,
+    password: string,
+  ): Promise<User> {
+    const newUser = this.regularUserRepository.create({
+      username,
+      email,
+      password,
+    });
+    return await this.regularUserRepository.save(newUser);
+  }
+  async getEmailUsers(email: string) {
+    return await this.regularUserRepository.find({ where: { email } });
+  }
 
   async deleteUser(id: number): Promise<void> {
     const user = await this.regularUserRepository.findOne({ where: { id } });
     if (!user) {
-      throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+      throw new NotFoundException(`User with ID ${id} not found`);
     }
     await this.regularUserRepository.delete(id);
   }
 
   async updateUser(id: number, updateField: UpdateUserDto): Promise<User> {
-    const user = await this.regularUserRepository.findOne({where: { id }});
+    const user = await this.regularUserRepository.findOne({ where: { id } });
     if (!user) {
-      throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+      throw new NotFoundException(`User with ID ${id} not found`);
     }
     this.regularUserRepository.merge(user, updateField);
     return await this.regularUserRepository.save(user);
   }
+
 
   async addAnswerToUser(userId: number, answerId: number): Promise<User> {
     const user = await this.regularUserRepository.findOne({
@@ -120,6 +136,7 @@ export class UserService {
 
   return Object.values(results);
   }
+
 
 }
   

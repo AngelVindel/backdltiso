@@ -35,7 +35,7 @@ export async function POST(request: Request) {
 
         return NextResponse.json(session);
     } catch (error) {
-        console.error("Error al crear la sesión de checkout:", error);
+        console.error('Error creating checkout session: ', error);
         return NextResponse.error();
     }
 }

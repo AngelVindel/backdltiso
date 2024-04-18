@@ -25,7 +25,7 @@ export class UserController {
           const users =await this.userService.getEmailUsers(email);
           return users;
       } catch (error) {
-          console.error("Error al obtener usuarios por correo electrónico:", error);
+          console.error('Error fetching users by email:', error);
       }
   }
   
