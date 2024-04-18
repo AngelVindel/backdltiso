@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param,Query } from '@nestjs/common';
 import { OpenSearchService } from './OpServices';
 import { MySQLService } from './mysql'; 
 
@@ -81,7 +81,7 @@ return { message: 'Datos indexados en OpenSearch correctamente' };
       throw error;
     }
   }
-  @Get('/:indice/openSearch')
+  @Get('/:indice/all')
   async searchOpenSearch(@Param('indice') indice: string) {
     try {
       // Realiza una consulta a OpenSearch para obtener los datos del índice especificado por el usuario
@@ -94,6 +94,30 @@ return { message: 'Datos indexados en OpenSearch correctamente' };
       throw error;
     }
   }
+
+  @Get('/:index/openSearch')
+  async searchKey(
+    @Param('index') index: string,
+    @Query('keywords') keywords: string,
+  ) {
+    try {
+      // Realiza una consulta a OpenSearch para buscar las palabras clave en el índice especificado por el usuario
+      const result = await this.openSearchService.searchIndexByKeywords(
+        index,
+        keywords,
+      );
+
+      // Retorna los datos obtenidos
+      return result;
+    } catch (error) {
+      console.error(
+        `Error al buscar datos en OpenSearch para el índice ${index}:`,
+        error,
+      );
+      throw error;
+    }
+  }
+
 
 }
 
