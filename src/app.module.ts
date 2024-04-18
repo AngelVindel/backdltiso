@@ -30,7 +30,7 @@ import { Answer } from './answers/answers.entity';
       host:  'localhost',
       port:  3306,
       username: 'root',
-      password: '123Rambo',
+      password: '1234abc',
       database: 'prueba2',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // No usar en producción
