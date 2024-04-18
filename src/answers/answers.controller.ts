@@ -9,14 +9,21 @@ export class AnswersController{
     constructor(private readonly answersService: AnswersService) {}
 
 
-@Get(':id')
+@Get()
+async getAllAnswers(){
+    const answers=  await this.answersService.getAllAnswers();
+    return answers;
+}
+
+
+@Get('question/:id')
 async getAnswersByQuestion(@Param('id') id: number){
 
     const answers =await this.answersService.getAnswersByQuestion(id)
     return answers;
 }
 
-@Post(':id')
+@Post('/question/:id')
 async postAnswerByQuestion(@Param('id') id: number,@Body() answerDto: AnswerDto){
 
     const answer= await this.answersService.postAnswerByQuestion(id,answerDto);
@@ -24,12 +31,18 @@ async postAnswerByQuestion(@Param('id') id: number,@Body() answerDto: AnswerDto)
     return answer;
 }
 
-@Delete(':id/idAnswer')
+@Delete(':idAnswer')
 @HttpCode(HttpStatus.NO_CONTENT)
 async deleteAnswer(@Param('idAnswer') id: number){
     await this.answersService.deleteAnswer(id);
 }
 
+
+@Get(':idAnswer')
+async getQuestionByAnswer(@Param('id') idAnswer:number){
+    const question= await this.answersService.getQuestionByAnswer(idAnswer);
+    return question;
+}
 
 
 }

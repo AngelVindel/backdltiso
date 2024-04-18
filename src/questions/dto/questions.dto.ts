@@ -8,7 +8,7 @@ export class  QuestionDTO{
 
     description: string;
 
-    answers: Answer[];
+    answers?: Answer[];
 
 
 }

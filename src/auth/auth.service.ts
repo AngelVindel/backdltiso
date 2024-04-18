@@ -84,7 +84,6 @@ export class AuthService {
             return {user}
         } catch (error) {
             throw new HttpException('Invalid token', 401);
-            return null;
         }
        
     }

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AnswersController } from './answers.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Question } from 'src/questions/questions.entity';
+import { Question } from '../questions/questions.entity';
 import { Answer } from './answers.entity';
 import { AnswersService } from './answers.service';
 
