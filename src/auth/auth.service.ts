@@ -87,10 +87,14 @@ export class AuthService {
             }
             
         } catch (error) {
+
             throw new HttpException(
               'An error has occurred' + error.message,
               500,
             );
+
+            throw new HttpException('Invalid token', 401);
+
         }
        
     }

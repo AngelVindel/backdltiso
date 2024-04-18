@@ -14,19 +14,33 @@ export class QuestionsService{
   
     
       async getQuestionById(id: number): Promise<Question> {
-        const question = await this.questionRepository.findOneBy({ id });
-        if (!question) {
-          throw new Error(`La pregunta con ${id} no ha sido encontrada`);
+        const question = await this.questionRepository.findOne({
+          where: { id: id },
+          relations: ['answers'] 
+        });
+      
+              if (!question) {
+          throw new Error(`Question with ${id}  not found`);
         }
         return question;
       }
       async deleteQuestion(id: number): Promise<void> {
-      await this.questionRepository.delete(id);
-        
+        const question = await this.questionRepository.findOneBy({ id });
+        if (!question) {
+          throw new Error(`Question with ID ${id} not found`);
+        }
+        await this.questionRepository.remove(question);        
       }
-      async postNewQuestion(questionDto: QuestionDTO): Promise<Question>{
+      async postNewQuestion(id: number,questionDto: QuestionDTO): Promise<Question>{
 
-        const newQuestion= this.questionRepository.create(questionDto);
+        const newQuestion= this.questionRepository.create({
+          id,
+          description:questionDto.description,
+          text: questionDto.text,
+          answers: questionDto.answers
+
+        }
+        );
         await this.questionRepository.save(newQuestion);
         return newQuestion;
         

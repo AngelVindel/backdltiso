@@ -26,9 +26,9 @@ export class QuestionsController{
 
   }
 
-  @Post()
-  async postNewQuestion(@Body() questionDto: QuestionDTO){
-    const question= await this.questionsService.postNewQuestion(questionDto);
+  @Post(':id')
+  async postNewQuestion(@Param('id') id: number,@Body() questionDto: QuestionDTO){
+    const question= await this.questionsService.postNewQuestion(id,questionDto);
     return question;
   }
 

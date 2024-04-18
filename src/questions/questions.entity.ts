@@ -13,7 +13,10 @@ export class Question {
     @Column()
     description: string;
 
-    @OneToMany(() => Answer, (answer) => answer.question)
+    @OneToMany(() => Answer, (answer) => answer.question,
+    {
+        cascade:['remove']
+    })
     answers: Answer[];
 
 }

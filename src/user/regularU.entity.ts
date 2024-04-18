@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, NumericType, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity,NumericType, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.interface';
 import { PDFDoc } from 'src/pdfDocument/document.entity';
 import { Ticket } from 'src/ticket/ticket.entity';
+import { Answer } from 'src/answers/answers.entity';
 
 
 @Entity()
@@ -33,6 +34,10 @@ export class RegularUser implements User {
 
   @OneToMany(() => Ticket, (ticket) => ticket.userId)
   tickets: Ticket[];
+
+  @ManyToMany(()=> Answer)
+  @JoinTable()
+  chosenAnswers: Answer[];
 
 
 }

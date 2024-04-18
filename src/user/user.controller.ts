@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 // user.controller.ts
-import { Controller, Post, Body, Get, UseGuards, Delete, Param, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Delete, Param, Patch, HttpCode, HttpStatus } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserService } from './user.service';
@@ -14,7 +14,7 @@ export class UserController {
     return this.userService.signup(createUserDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+ // @UseGuards(JwtAuthGuard)
   @Get()
   getAllUsers(){
       return this.userService.getAllUsers();
@@ -44,7 +44,22 @@ export class UserController {
       this.userService.updateUser(id,updatedFields);
   }
 
+  @Post(':id/answer/:answerId')
+  async addAnswerToUser(@Param('id') userId: number, @Param('answerId') answerId: number) {
+    const user= await this.userService.addAnswerToUser(userId, answerId);
+    return user;
+  }
 
+  @Get(':id/answers')
+  async getAnswersToUser(@Param('id') userId: number){
+    const answers= await this.userService.getAnswersToUser(userId);
+    return answers;
+  }
+
+  @Delete(':id/answers')
+  async clearAnswers(@Param('id') userId: number){
+    await this.userService.deleteAnswersToUser(userId);
+  }
 
 }
 
