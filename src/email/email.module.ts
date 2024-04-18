@@ -1,11 +1,12 @@
 /* eslint-disable prettier/prettier */
+//app.module.ts
 import { Module } from '@nestjs/common';
-
-import { ResendController } from './email.controller';
-import { ResendService } from './email.service';
+import { EmailService } from './email.service';
+import { EmailController } from './email.controller'; 
 
 @Module({
-  controllers: [ResendController],
-  providers: [ResendService],
+  providers: [EmailService],
+  controllers: [EmailController],
+  exports: [EmailService], 
 })
-export class ResendModule {}
+export class EmailModule {}

@@ -8,6 +8,8 @@ import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AdminUser } from 'src/user/adminU.entity';
 import { RegularUser } from 'src/user/regularU.entity';
+import { EmailController } from 'src/email/email.controller';
+import { EmailService } from 'src/email/email.service';
 @Module({
 imports:[
     TypeOrmModule.forFeature([AdminUser, RegularUser]),
@@ -18,8 +20,8 @@ imports:[
     
 
 ],
-    controllers: [AuthController],
-    providers: [AuthService,JwStrategy],
+    controllers: [AuthController,EmailController],
+    providers: [AuthService,JwStrategy,EmailService],
 
 })
 export class AuthModule {}

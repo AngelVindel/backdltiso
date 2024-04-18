@@ -4,7 +4,7 @@ export class RegisterAuthDto extends LoginAuthDto{
 
 
     username: string;
-    activation_token: string;
+    activation_token: number;
    
     userType: string;
 
