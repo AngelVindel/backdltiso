@@ -28,7 +28,8 @@ export class EmailService {
       });
       return true
     } catch (error) {
-      throw new Error('Error al enviar el correo de verificación')
+      throw new Error('Error sending verification email');
+
     }
   }
 }
