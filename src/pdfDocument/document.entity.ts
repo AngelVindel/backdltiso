@@ -22,7 +22,6 @@ export class PDFDoc {
   modifyDate: Date;
 
   @Column()
-  // eslint-disable-next-line @typescript-eslint/ban-types
   permissions: String;
 
 

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable, HttpException, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { hash, compare } from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -10,6 +10,7 @@ import {  RegisterAuthDto } from './dto/register-auth.dto';
 import { User } from '../user/user.interface';
 import { RegularUser } from 'src/user/regularU.entity';
 import { ActivateAuthDto } from './dto/activate-auth.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,9 @@ export class AuthService {
         private adminUserRepository: Repository<AdminUser>,
         @InjectRepository(RegularUser)
         private regularUserRepository: Repository<RegularUser>,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        @Inject(EmailService) 
+        private readonly emailService: EmailService
     ) {}
 
     private getUserRepository(userType: string): Repository<User> {
@@ -39,18 +42,14 @@ export class AuthService {
         if (user) {
             throw new HttpException('Account already created', 401);
         }
-        console.log(userRepository);
         
-        const activationToken = this.jwtService.sign({ email }, { expiresIn: '24h' }); 
         const newUser = userRepository.create({
             ...userDto,
             password: hashedPassword,
-            activation_token:activationToken
             
         });
         await userRepository.save(newUser);
-
-     await this.activateAccount(newUser);
+        await this.emailService.sendEmail(email, newUser);
         return newUser;
     }
 
@@ -74,17 +73,21 @@ export class AuthService {
         return { user, token };
     }
 
-    async activateAccount(userDto:ActivateAuthDto): Promise<{ user: User }> {
+    async activateAccount(userDto:ActivateAuthDto): Promise<boolean> {
         const { activation_token, email } = userDto;
         const user = await this.regularUserRepository.findOne({ where: { email } });
+        console.log(user.activation_token, activation_token);
+        
         try {
-            if(activation_token === user.activation_token){
+            if(activation_token == user.activation_token){
                 await this.regularUserRepository.update(user.id, {activated: true,activation_token:null});
+                return true
+            }else{
+                return false
             }
-            return {user}
+            
         } catch (error) {
-            throw new HttpException('Invalid token', 401);
-            return null;
+            throw new HttpException('Ha ocurrido un error'+error.message, 500);
         }
        
     }

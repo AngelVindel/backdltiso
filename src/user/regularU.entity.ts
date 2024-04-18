@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, NumericType, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.interface';
 import { PDFDoc } from 'src/pdfDocument/document.entity';
 import { Ticket } from 'src/ticket/ticket.entity';
+
 
 @Entity()
 export class RegularUser implements User {
@@ -24,12 +25,14 @@ export class RegularUser implements User {
   @Column({type: 'boolean', default: false})
   activated: boolean;
 
-  @Column({nullable: true})
-  activation_token: string;
+  @Column({type: 'numeric',default: Math.floor(100000 + Math.random() * 900000), nullable: true})
+  activation_token: NumericType;
   
   @OneToMany(() => PDFDoc, (document) => document.userId)
   documents: PDFDoc[];
 
   @OneToMany(() => Ticket, (ticket) => ticket.userId)
   tickets: Ticket[];
+
+
 }
