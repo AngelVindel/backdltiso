@@ -76,6 +76,18 @@ export class OpenSearchService {
       throw error;
     }
   }
+
+  async searchIndexByKeywords(index: string, keywords: string): Promise<any> {
+    const { body } = await this.client.search({
+      index,
+      body: {
+        query: {
+          match: { _all: keywords }, // Busca las palabras clave en todos los campos
+        },
+      },
+    });
+    return body.hits.hits;
+  }
  
 
 }
