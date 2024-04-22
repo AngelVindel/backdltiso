@@ -6,9 +6,11 @@ import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RegularUser } from './regularU.entity';
 import { Answer } from 'src/answers/answers.entity';
+import { DocumentModule } from 'src/pdfDocument/document.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([RegularUser,Answer])],
+  imports: [TypeOrmModule.forFeature([RegularUser,Answer]),
+  DocumentModule],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService]

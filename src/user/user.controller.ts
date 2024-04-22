@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 // user.controller.ts
-import { Controller, Post, Body, Get, UseGuards, Delete, Param, Patch, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Delete, Param, Patch, HttpCode, HttpStatus, Put } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserService } from './user.service';
@@ -59,6 +59,30 @@ export class UserController {
   @Delete(':id/answers')
   async clearAnswers(@Param('id') userId: number){
     await this.userService.deleteAnswersToUser(userId);
+  }
+
+
+  @Get(':id/pdfs')
+  async getUserDocuments(@Param('id') userId: number) {
+    const pdf= await this.userService.getUserDocuments(userId);
+    return pdf;
+  }
+
+  @Post(':id/pdfs')
+  async newUserDocument(@Param('id') userId: number, @Body() content: string){
+    const pdf= await this.userService.newUserDocument(userId,content);
+    return pdf;
+  }
+
+  @Put(':id/pdfs/:idPdf')
+  async updateUserPdf(@Param('id') userId:number, @Param('idPdf') pdfId: number, @Body() content: string){
+    const pdf=await this.userService.updateUserPdf(userId,pdfId,content);
+    return pdf;
+  }
+
+  @Delete(':id/pdfs/:idPdf')
+  async deletePdfUser(@Param('id') userId:number, @Param('idPdf') documentId: number){
+    await this.userService.deleteUserPdf(userId,documentId);
   }
 
 }

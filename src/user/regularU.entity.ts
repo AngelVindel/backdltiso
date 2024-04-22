@@ -29,7 +29,7 @@ export class RegularUser implements User {
   @Column({type: 'numeric',default: Math.floor(100000 + Math.random() * 900000), nullable: true})
   activation_token: NumericType;
   
-  @OneToMany(() => PDFDoc, (document) => document.userId)
+  @OneToMany(() => PDFDoc, (document) => document.userId, {cascade: ['insert','update']})
   documents: PDFDoc[];
 
   @OneToMany(() => Ticket, (ticket) => ticket.userId)

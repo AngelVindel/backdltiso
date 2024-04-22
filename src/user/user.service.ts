@@ -6,7 +6,9 @@ import { User } from './user.interface';
 import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { RegularUser } from './regularU.entity';
 import { Answer } from 'src/answers/answers.entity';
-import { Question } from 'src/questions/questions.entity';
+import { PDFDoc } from 'src/pdfDocument/document.entity';
+import { PDFDocumentService } from 'src/pdfDocument/document.service';
+import { DocumentPdfDto } from 'src/pdfDocument/dto/document-pdf.dto';
 
 @Injectable()
 export class UserService {
@@ -15,7 +17,9 @@ export class UserService {
         @InjectRepository(RegularUser)
         private regularUserRepository: Repository<RegularUser>,
         @InjectRepository(Answer)
-        private answerRepository: Repository<Answer>
+        private answerRepository: Repository<Answer>,
+        
+        private readonly pdfService: PDFDocumentService
     ) {}
 
       async signup(createUserDto: CreateUserDto): Promise<User> {
@@ -121,6 +125,85 @@ export class UserService {
   return Object.values(results);
   }
 
+
+  async getUserDocuments(userId: number): Promise<PDFDoc[]> {
+    const user = await this.regularUserRepository.findOne({
+      where: { id: userId },
+      relations: ['documents']
+    });
+
+    if (!user) {
+      throw new Error(`User with ID ${userId} not found`);
+    }
+
+    return user.documents;
+  }
+
+  async newUserDocument(userId: number, content: string): Promise<PDFDoc> {
+    const user = await this.regularUserRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const documentPdfDto: DocumentPdfDto = {
+      userId: userId,
+      content: content,
+      permissions: "usuario",
+      creationDate: new Date(), 
+      modifyDate: new Date()
+    };
+
+    const pdf = await this.pdfService.createPdf(documentPdfDto);
+    user.documents.push(pdf); 
+
+    return pdf; 
+  }
+
+  async deleteUserPdf(userId: number, pdfId: number): Promise<void> {
+    const user = await this.regularUserRepository.findOne({
+      where: { id: userId },
+      relations: ['documents']
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const pdf = user.documents.find(doc => doc.id === pdfId);
+    if (!pdf) {
+      throw new Error('PDF not found or not owned by user');
+    }
+
+    await this.pdfService.deletePdf(pdfId);
+  }
+  async updateUserPdf(userId: number, pdfId: number, content: string): Promise<PDFDoc> {
+    const user = await this.regularUserRepository.findOne({
+      where: { id: userId },
+      relations: ['documents']
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const pdf = user.documents.find(doc => doc.id === pdfId);
+    if (!pdf) {
+      throw new Error('PDF not found or not owned by user');
+    }
+
+    const documentPdfDto: DocumentPdfDto = {
+      userId: userId, 
+      content: content,
+      permissions: "usuario",
+      creationDate: pdf.creationDate, 
+      modifyDate: new Date() 
+    };
+
+    return this.pdfService.updatePdf(pdfId, documentPdfDto);
+  }
 }
+
+
+
   
 
