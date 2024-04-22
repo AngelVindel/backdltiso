@@ -8,7 +8,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Ticket } from './ticket.entity';
 import { CreateTicketDto } from './dto/create-ticket.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Injectable()
 export class TicketService {
@@ -51,11 +50,6 @@ export class TicketService {
   if (!ticket) {
     throw new NotFoundException(`Ticket with ID ${idTicket} not found`);
   }
-
-  /*const adminUser = await this.ticketRepository.findOneBy({id:adminUserId});
-  if (!adminUser) {
-    throw new NotFoundException(`Admin user with ID ${adminUserId} not found`);
-  }*/
 
   // Comprobamos si el usuario es un administrador
   if (!adminUserId) {
