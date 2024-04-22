@@ -18,6 +18,7 @@ import { AnswersModule } from './answers/answers.module';
 import { EmailModule } from './email/email.module';
 import { Question } from './questions/questions.entity';
 import { Answer } from './answers/answers.entity';
+import { PaymentModule } from './payment/payment.module';
 
 
 @Module({
@@ -30,7 +31,7 @@ import { Answer } from './answers/answers.entity';
       host:  'localhost',
       port:  3306,
       username: 'root',
-      password: '123Rambo',
+      password: '',
       database: 'prueba2',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // No usar en producción
@@ -43,7 +44,8 @@ import { Answer } from './answers/answers.entity';
     QuestionsModule,
     AnswersModule,
     TicketModule,
-    EmailModule
+    EmailModule,
+    PaymentModule
   ],
   
   controllers: [AppController],
