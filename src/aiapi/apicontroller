@@ -1,0 +1,12 @@
+import { Injectable } from '@nestjs/common';
+import { Axios } from 'axios';
+
+@Injectable()
+export class HttpClientService {
+  constructor(private readonly http: Axios) {}
+
+  get httpClient() {
+    return this.http;
+  }
+}
+
