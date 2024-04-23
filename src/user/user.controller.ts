@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 // user.controller.ts
-import { Controller, Post, Body, Get, UseGuards, Delete, Param, Patch, HttpCode, HttpStatus, Put } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Delete, Param, Patch, HttpCode, HttpStatus, Put, Res } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserService } from './user.service';
@@ -83,6 +83,18 @@ export class UserController {
   @Delete(':id/pdfs/:idPdf')
   async deletePdfUser(@Param('id') userId:number, @Param('idPdf') documentId: number){
     await this.userService.deleteUserPdf(userId,documentId);
+  }
+
+  @Get(':id/pdfs/:idPdf/download')
+  async downloadPdf(@Param('id') userId: number, @Param('idPdf') pdfId: number, @Res() res) {
+      try {
+          const pdfBuffer = await this.userService.downloadUserPdf(userId, pdfId);
+          res.setHeader('Content-Type', 'application/pdf');
+          res.setHeader('Content-Disposition', `attachment; filename="dlt_document.pdf"`);
+          res.send(pdfBuffer);
+      } catch (error) {
+          res.status(404).send({ message: error.message });
+      }
   }
 
 }

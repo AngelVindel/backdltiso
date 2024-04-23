@@ -21,7 +21,13 @@ export class PDFDocumentService {
     if (!user) {
       throw new Error('User not found');
     }
-
+    let permission:boolean;
+    if(user.premium){ 
+     permission=true
+    }
+    else {
+    permission=false
+  }
     const doc = new PDFDocument({ bufferPages: true });
     let pdfBuffer = Buffer.alloc(0);
 
@@ -46,7 +52,7 @@ export class PDFDocumentService {
           content: pdfBuffer,
           creationDate: new Date(),
           modifyDate:new Date(),
-          permissions: dto.permissions,
+          permissions: permission,
         });
 
         try {
@@ -115,10 +121,17 @@ export class PDFDocumentService {
   }
 
 
-  async getPdfById(id: number): Promise<PDFDoc | null> {
-    return await this.pdfRepository.findOneBy({ id });
-  }
-  
+  async downloadPdf(id: number): Promise<Buffer | null> {
+    const pdf = await this.pdfRepository.findOneBy({ id });
+    if (!pdf) {
+      throw new Error('PDF not found');
+    }
 
+    if (!pdf.permissions) {
+      throw new Error('Access denied: You do not have permission to download this PDF.');
+    }
+
+    return pdf.content; 
+}
 
 }

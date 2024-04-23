@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Put, Req, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Put, Req, Res, UseGuards } from "@nestjs/common";
 import { PDFDocumentService } from "./document.service";
-import { DocumentPdfDto } from "./dto/document-pdf.dto";
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import * as PDFDocument from 'pdfkit';
+import { DocumentPdfDto } from "./dto/document-pdf.dto";
 
 
 @Controller('pdf')
@@ -11,11 +12,9 @@ export class PDFDocumentCotroller{
 
     @UseGuards(JwtAuthGuard)
     @Post()
-    createPdf(@Req() req,@Body() DocumentPdfDto) {
-      const userId=req.user.userId;
-      const documentPdfDto = { ...DocumentPdfDto, userId };
-  
-      return this.pdfService.createPdf(documentPdfDto);
+    createPdf(@Body() dto: DocumentPdfDto) {
+     
+      return this.pdfService.createPdf(dto);
     }
   
     @Delete(':id')
@@ -29,12 +28,31 @@ export class PDFDocumentCotroller{
       return this.pdfService.updatePdf(id,DocumentPdfDto);
 
     }
-
-    @Get(':id')
-    async getPdfById(@Param('id') id: number){
-     const pdf= await this.pdfService.getPdfById(id);
-     return pdf;
+    @Get(':id/download')
+    async downloadPdf(@Param('id') id: number, @Res() res) {
+      try {
+        const content = await this.pdfService.downloadPdf(id);
+        if (!content) {
+          throw new NotFoundException('PDF not found.');
+        }
+    
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="dlt_document.pdf"`);
+        res.end(content); 
+      } catch (error) {
+        let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+        let message = 'Error dowloading PDF';
+    
+        if (error instanceof NotFoundException) {
+          statusCode = HttpStatus.NOT_FOUND;
+          message = error.message;
+        } else if (error instanceof ForbiddenException) {
+          statusCode = HttpStatus.FORBIDDEN;
+          message = error.message;
+        }
+    
+        res.status(statusCode).send(message);
+      }
     }
-
-
-}
+    
+  }

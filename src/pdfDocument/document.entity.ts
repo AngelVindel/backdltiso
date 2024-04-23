@@ -22,7 +22,15 @@ export class PDFDoc {
   modifyDate: Date;
 
   @Column()
-  permissions: String;
+  permissions: boolean;
 
 
 }
+/*
+
+  enum Subscription {
+    Premium = "premium",
+    Freemium = "freemium"
+  }
+
+  */

@@ -39,5 +39,8 @@ export class RegularUser implements User {
   @JoinTable()
   chosenAnswers: Answer[];
 
+  @Column()
+  premium: boolean;
+
 
 }

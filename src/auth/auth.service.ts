@@ -93,7 +93,6 @@ export class AuthService {
               500,
             );
 
-            throw new HttpException('Invalid token', 401);
 
         }
        

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -11,13 +12,18 @@ import { DocumentPdfDto } from 'src/pdfDocument/dto/document-pdf.dto';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(RegularUser)
-    private readonly regularUserRepository: Repository<RegularUser>,
-    @InjectRepository(Answer)
-    private readonly answerRepository: Repository<Answer>,
-    private readonly pdfService: PDFDocumentService,
-  ) {}
+
+ 
+    
+    constructor(
+        @InjectRepository(RegularUser)
+        private regularUserRepository: Repository<RegularUser>,
+        @InjectRepository(Answer)
+        private answerRepository: Repository<Answer>,
+        
+        private readonly pdfService: PDFDocumentService
+    ) {}
+
 
   async signup(createUserDto: CreateUserDto): Promise<User> {
     const newUser = this.regularUserRepository.create(createUserDto);
@@ -40,7 +46,6 @@ export class UserService {
     });
     return await this.regularUserRepository.save(newUser);
   }
-
   async getEmailUsers(email: string) {
     return await this.regularUserRepository.find({ where: { email } });
   }
@@ -62,81 +67,81 @@ export class UserService {
     return await this.regularUserRepository.save(user);
   }
 
+
   async addAnswerToUser(userId: number, answerId: number): Promise<User> {
     const user = await this.regularUserRepository.findOne({
       where: { id: userId },
-      relations: ['chosenAnswers', 'chosenAnswers.question'],
+      relations: ['chosenAnswers', 'chosenAnswers.question']
     });
     const answerToAdd = await this.answerRepository.findOne({
       where: { id: answerId },
-      relations: ['question'],
+      relations: ['question']
     });
-
+  
     if (!user || !answerToAdd) {
       throw new Error('User or Answer not found');
     }
-
-    const alreadySelected = user.chosenAnswers.some(
-      (answer) => answer.id === answerId,
-    );
+  
+    const alreadySelected = user.chosenAnswers.some(answer => answer.id === answerId);
     if (alreadySelected) {
       throw new Error('User has already selected this answer');
     }
-
+  
     const questionId = answerToAdd.question.id;
-    const answerFromSameQuestion = user.chosenAnswers.some(
-      (answer) => answer.question.id === questionId,
-    );
+    const answerFromSameQuestion = user.chosenAnswers.some(answer => answer.question.id === questionId);
     if (answerFromSameQuestion) {
       throw new Error('User has already selected an answer from this question');
     }
-
+  
     user.chosenAnswers.push(answerToAdd);
     await this.regularUserRepository.save(user);
     return user;
   }
 
-  async deleteAnswersToUser(userId: number) {
-    const user = await this.regularUserRepository.findOne({
-      where: { id: userId },
-      relations: ['chosenAnswers'],
-    });
-    if (!user) {
+  async deleteAnswersToUser(userId: number){
+    const user =await this.regularUserRepository.findOne({
+      where: { id: userId},
+      relations: [ 'chosenAnswers']
+    })
+    if(!user){
       throw new Error(`User with ID ${userId} not found`);
-    }
-    user.chosenAnswers = [];
-
-    await this.regularUserRepository.save(user);
   }
+  user.chosenAnswers=[];
 
-  async getAnswersToUser(userId: number): Promise<any[]> {
+  await this.regularUserRepository.save(user);
+}
+
+
+
+  async getAnswersToUser(userId: number):Promise<any[]> {
     const user = await this.regularUserRepository.findOne({
-      where: { id: userId },
-      relations: ['chosenAnswers', 'chosenAnswers.question'],
+      where: { id:userId },
+      relations: ['chosenAnswers','chosenAnswers.question']
     });
     if (!user) {
       throw new Error(`User with ID ${userId} not found`);
     }
 
     const results = user.chosenAnswers.reduce((acc, answer) => {
-      const questionId = answer.question.id;
+      const questionId = answer.question.id; 
       if (!acc[questionId]) {
-        acc[questionId] = {
-          question: answer.question.text,
-          answers: [],
-        };
+          acc[questionId] = {
+              question: answer.question.text,
+              answers: []
+          };
       }
       acc[questionId].answers.push(answer.text);
       return acc;
-    }, {});
+  }, {});
 
-    return Object.values(results);
+  return Object.values(results);
   }
+
 
   async getUserDocuments(userId: number): Promise<PDFDoc[]> {
     const user = await this.regularUserRepository.findOne({
       where: { id: userId },
-      relations: ['documents'],
+      relations: ['documents']
     });
 
     if (!user) {
@@ -147,72 +152,109 @@ export class UserService {
   }
 
   async newUserDocument(userId: number, content: string): Promise<PDFDoc> {
-    const user = await this.regularUserRepository.findOne({
-      where: { id: userId },
-    });
+    const user = await this.regularUserRepository.findOne({ where: { id: userId } });
     if (!user) {
       throw new Error('User not found');
     }
+    let permission;
+    if(user.premium){ 
+     permission=true
+    }
+    else {
+    permission=false
+  }
+
 
     const documentPdfDto: DocumentPdfDto = {
       userId: userId,
       content: content,
-      permissions: 'usuario',
-      creationDate: new Date(),
-      modifyDate: new Date(),
+      permissions: permission,
+      creationDate: new Date(), 
+      modifyDate: new Date()
     };
 
     const pdf = await this.pdfService.createPdf(documentPdfDto);
-    user.documents.push(pdf);
+    user.documents.push(pdf); 
 
-    return pdf;
+    return pdf; 
   }
 
   async deleteUserPdf(userId: number, pdfId: number): Promise<void> {
     const user = await this.regularUserRepository.findOne({
       where: { id: userId },
-      relations: ['documents'],
+      relations: ['documents']
     });
 
     if (!user) {
       throw new Error('User not found');
     }
 
-    const pdf = user.documents.find((doc) => doc.id === pdfId);
+    const pdf = user.documents.find(doc => doc.id === pdfId);
     if (!pdf) {
       throw new Error('PDF not found or not owned by user');
     }
 
     await this.pdfService.deletePdf(pdfId);
   }
-
-  async updateUserPdf(
-    userId: number,
-    pdfId: number,
-    content: string,
-  ): Promise<PDFDoc> {
+  async updateUserPdf(userId: number, pdfId: number, content: string): Promise<PDFDoc> {
     const user = await this.regularUserRepository.findOne({
       where: { id: userId },
-      relations: ['documents'],
+      relations: ['documents']
     });
 
     if (!user) {
       throw new Error('User not found');
     }
+    let permission;
+    if(user.premium){ 
+     permission=true
+    }
+    else {
+    permission=false
+  }
 
-    const pdf = user.documents.find((doc) => doc.id === pdfId);
+
+    const pdf = user.documents.find(doc => doc.id === pdfId);
     if (!pdf) {
       throw new Error('PDF not found or not owned by user');
     }
 
     const documentPdfDto: DocumentPdfDto = {
-      userId: userId,
+      userId: userId, 
       content: content,
-      permissions: 'usuario',
-      creationDate: pdf.creationDate,
-      modifyDate: new Date(),
+      permissions: permission,
+      creationDate: pdf.creationDate, 
+      modifyDate: new Date() 
     };
 
     return this.pdfService.updatePdf(pdfId, documentPdfDto);
   }
+  async downloadUserPdf(userId: number, pdfId: number): Promise<Buffer> {
+    const user = await this.regularUserRepository.findOne({
+        where: { id: userId },
+        relations: ['documents']
+    });
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    const pdf = user.documents.find(doc => doc.id === pdfId);
+    if (!pdf) {
+        throw new Error('PDF not found or not owned by user');
+    }
+
+    if (!pdf.permissions) {
+        throw new Error('Access denied: You do not have permission to download this PDF.');
+    }
+  
+
+    return this.pdfService.downloadPdf(pdfId);
+
 }
+}
+
+
+
+  
+
