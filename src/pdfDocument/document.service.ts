@@ -63,7 +63,8 @@ export class PDFDocumentService {
 
  
 
-  async deletePdf(pdfId: number): Promise<void> {
+
+   async deletePdf(pdfId: number): Promise<void> {
     const pdf = await this.pdfRepository.findOneBy({ id: pdfId });
     if (!pdf) {
       throw new Error('PDF not found');
@@ -71,6 +72,7 @@ export class PDFDocumentService {
 
     await this.pdfRepository.delete(pdfId);
   }
+
 
 
   async updatePdf(id_pdf: number, dto: DocumentPdfDto): Promise<PDFDoc> {

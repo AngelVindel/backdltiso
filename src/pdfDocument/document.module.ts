@@ -8,7 +8,8 @@ import { RegularUser } from "src/user/regularU.entity";
 @Module({
     imports: [TypeOrmModule.forFeature([PDFDoc,RegularUser])],
     controllers: [PDFDocumentCotroller],
-    providers: [PDFDocumentService]
+    providers: [PDFDocumentService],
+    exports: [PDFDocumentService]
 
 })
 export class DocumentModule{}

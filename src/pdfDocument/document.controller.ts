@@ -30,5 +30,11 @@ export class PDFDocumentCotroller{
 
     }
 
+    @Get(':id')
+    async getPdfById(@Param('id') id: number){
+     const pdf= await this.pdfService.getPdfById(id);
+     return pdf;
+    }
+
 
 }
