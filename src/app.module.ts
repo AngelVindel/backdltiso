@@ -19,6 +19,7 @@ import { EmailModule } from './email/email.module';
 import { Question } from './questions/questions.entity';
 import { Answer } from './answers/answers.entity';
 import { PaymentModule } from './payment/payment.module';
+import { OpenSearchModule } from './opensearch/OpModule';
 
 
 @Module({
@@ -28,15 +29,22 @@ import { PaymentModule } from './payment/payment.module';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host:  'localhost',
-      port:  3306,
+      host: 'localhost',
+      port: 3306,
       username: 'root',
-      password: '123Rambo',
+      password: '',
       database: 'prueba2',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // No usar en producción
     }),
-    TypeOrmModule.forFeature([RegularUser, AdminUser, PDFDoc, Ticket,Question,Answer]),
+    TypeOrmModule.forFeature([
+      RegularUser,
+      AdminUser,
+      PDFDoc,
+      Ticket,
+      Question,
+      Answer,
+    ]),
     AuthModule,
     UserModule,
     DocumentModule,
@@ -45,9 +53,10 @@ import { PaymentModule } from './payment/payment.module';
     AnswersModule,
     TicketModule,
     EmailModule,
-    PaymentModule
+    OpenSearchModule,
+    PaymentModule,
   ],
-  
+
   controllers: [AppController],
   providers: [AppService],
 })

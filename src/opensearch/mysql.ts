@@ -15,32 +15,31 @@ export class MySQLService {
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'dltcode'
+      database: 'prueba2',
     });
 
     this.connection.connect((err) => {
       if (err) {
-        console.error('Error al conectar a la base de datos MySQL:', err);
+        console.error('Error connecting to MySQL database:', err);
         return;
       }
-      console.log('Conexión exitosa a la base de datos MySQL');
+      console.log('Successfully connected to MySQL database');
       this.executeQuery();
     });
   }
 
-
   private executeQuery() {
-    // Ejemplo de consulta a una tabla llamada 'usuarios'
+    // Example query to select data from a table named 'regular_user'
     const query = 'SELECT * FROM regular_user';
 
     this.connection.query(query, (error, results, fields) => {
       if (error) {
-        console.error('Error al ejecutar la consulta:', error);
+        console.error('Error executing query:', error);
         return;
       }
 
-      // Mostrar los resultados por consola
-      console.log('Resultados de la consulta:', results);
+      // Log the results to the console
+      console.log('Query results:', results);
     });
   }
 
@@ -62,10 +61,9 @@ export class MySQLService {
   async showAllUsers(): Promise<void> {
     try {
       const users = await this.query('SELECT * FROM documento_pdf');
-      console.log('Usuarios:', users);
+      console.log('Users:', users);
     } catch (error) {
-      console.error('Error al obtener usuarios de la base de datos:', error);
+      console.error('Error fetching users from database:', error);
     }
   }
 }
-
