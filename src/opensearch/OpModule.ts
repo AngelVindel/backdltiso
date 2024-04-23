@@ -7,4 +7,4 @@ import { MySQLService } from './mysql'; // Importa el servicio de MySQL
   controllers: [SearchController],
   providers: [OpenSearchService, MySQLService], // Agrega el servicio de MySQL a los providers
 })
-export class AppModule {}
+export class OpenSearchModule {}
