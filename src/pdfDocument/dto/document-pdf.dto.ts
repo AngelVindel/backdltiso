@@ -11,7 +11,7 @@ export class DocumentPdfDto{
  
     modifyDate: Date;
   
-    permissions: String;
+    permissions: boolean;
  
  }
  

@@ -19,55 +19,49 @@ export class PDFDocumentService {
   async createPdf(dto: DocumentPdfDto): Promise<PDFDoc> {
     const user = await this.userRepository.findOneBy({ id: dto.userId });
     if (!user) {
-      throw new Error('User not found');
+        throw new Error('User not found');
     }
-    let permission:boolean;
-    if(user.premium){ 
-     permission=true
-    }
-    else {
-    permission=false
-  }
+
+    const permission = user.premium;
+
     const doc = new PDFDocument({ bufferPages: true });
-    let pdfBuffer = Buffer.alloc(0);
+    let pdfBuffer: Buffer = Buffer.alloc(0);
 
     doc.font('Helvetica').fontSize(12).text(dto.content, {
-      align: 'justify',
-      indent: 30,
-      height: 300,
-      ellipsis: true
+        align: 'justify'
     });
 
-    doc.end();
-
-    doc.on('data', (chunk) => {
-      pdfBuffer = Buffer.concat([pdfBuffer, chunk]);
+    doc.on('data', (chunk: Buffer) => {
+        pdfBuffer = Buffer.concat([pdfBuffer, chunk]);
     });
 
     return new Promise((resolve, reject) => {
-      doc.on('end', async () => {
-        const pdf = this.pdfRepository.create({
-        //  id: 0,
-          userId: user.id, 
-          content: pdfBuffer,
-          creationDate: new Date(),
-          modifyDate:new Date(),
-          permissions: permission,
+        doc.on('end', async () => {
+            const pdf = this.pdfRepository.create({
+                userId: user.id,
+                content: pdfBuffer,
+                creationDate: new Date(),
+                modifyDate: new Date(),
+                permissions: permission,
+            });
+
+            try {
+                const savedPdf = await this.pdfRepository.save(pdf);
+                resolve(savedPdf);
+            } catch (error) {
+                reject(error);
+            }
         });
 
-        try {
-          const savedPdf = await this.pdfRepository.save(pdf);
-          resolve(savedPdf[0]);
-        } catch (error) {
-          reject(error);
-        }
-      });
+        doc.on('error', (error) => {
+            reject(error);
+        });
 
-      doc.on('error', reject);
+        doc.end();
     });
-  }
+}
 
- 
+
 
 
    async deletePdf(pdfId: number): Promise<void> {
@@ -121,7 +115,7 @@ export class PDFDocumentService {
   }
 
 
-  async downloadPdf(id: number): Promise<Buffer | null> {
+  async downloadPdf(id: number): Promise<Buffer | null > {
     const pdf = await this.pdfRepository.findOneBy({ id });
     if (!pdf) {
       throw new Error('PDF not found');
@@ -131,7 +125,10 @@ export class PDFDocumentService {
       throw new Error('Access denied: You do not have permission to download this PDF.');
     }
 
+    console.log("contenido del pdf",pdf.content)
+
     return pdf.content; 
+
 }
 
 }

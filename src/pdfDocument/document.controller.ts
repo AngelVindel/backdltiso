@@ -1,16 +1,15 @@
 import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Put, Req, Res, UseGuards } from "@nestjs/common";
 import { PDFDocumentService } from "./document.service";
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import * as PDFDocument from 'pdfkit';
 import { DocumentPdfDto } from "./dto/document-pdf.dto";
+import { Response } from 'express';
 
 
 @Controller('pdf')
 export class PDFDocumentCotroller{
     
-    constructor(private readonly pdfService: PDFDocumentService) {}
+    constructor(private pdfService: PDFDocumentService) {}
 
-    @UseGuards(JwtAuthGuard)
+   // @UseGuards(JwtAuthGuard)
     @Post()
     createPdf(@Body() dto: DocumentPdfDto) {
      
@@ -29,30 +28,41 @@ export class PDFDocumentCotroller{
 
     }
     @Get(':id/download')
-    async downloadPdf(@Param('id') id: number, @Res() res) {
-      try {
-        const content = await this.pdfService.downloadPdf(id);
-        if (!content) {
-          throw new NotFoundException('PDF not found.');
-        }
-    
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename="dlt_document.pdf"`);
-        res.end(content); 
-      } catch (error) {
-        let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-        let message = 'Error dowloading PDF';
-    
-        if (error instanceof NotFoundException) {
-          statusCode = HttpStatus.NOT_FOUND;
-          message = error.message;
-        } else if (error instanceof ForbiddenException) {
-          statusCode = HttpStatus.FORBIDDEN;
-          message = error.message;
-        }
-    
-        res.status(statusCode).send(message);
-      }
+async downloadPdf(@Param('id') id: number, @Res() res:Response) {
+  try {
+    const content = await this.pdfService.downloadPdf(id);
+    if (!content) {
+      throw new NotFoundException('PDF not found.');
     }
+    
+    if (!(content instanceof Buffer)) {
+      throw new Error('Expected content to be a Buffer');
+    }
+
+    console.log("Buffer check:", content instanceof Buffer);  // Debe ser true
+    
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="dlt_document.pdf"`);
+    res.end(content);
+    
+  } catch (error) {
+    let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+    let message = 'Error downloading PDF';
+    if (error instanceof NotFoundException) {
+      statusCode = HttpStatus.NOT_FOUND;
+      message = error.message;
+    } else if (error instanceof ForbiddenException) {
+      statusCode = HttpStatus.FORBIDDEN;
+      message = error.message;
+    } else {
+      console.error("Error during PDF download:", error);
+    }
+
+    res.status(statusCode).send(message);
+  }
+
+    }
+
+
     
   }

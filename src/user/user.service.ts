@@ -21,7 +21,7 @@ export class UserService {
         @InjectRepository(Answer)
         private answerRepository: Repository<Answer>,
         
-        private readonly pdfService: PDFDocumentService
+        private  pdfService: PDFDocumentService
     ) {}
 
 
@@ -152,7 +152,10 @@ export class UserService {
   }
 
   async newUserDocument(userId: number, content: string): Promise<PDFDoc> {
+    console.log('UserID2:',userId);
+
     const user = await this.regularUserRepository.findOne({ where: { id: userId } });
+    console.log('UserID3:', user.id);
     if (!user) {
       throw new Error('User not found');
     }
@@ -173,9 +176,10 @@ export class UserService {
       modifyDate: new Date()
     };
 
+    user.documents=[];
     const pdf = await this.pdfService.createPdf(documentPdfDto);
     user.documents.push(pdf); 
-
+  this.regularUserRepository.save(user);
     return pdf; 
   }
 
