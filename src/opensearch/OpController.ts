@@ -136,23 +136,30 @@ export class SearchController {
   }
 
   @Get('/:indice')
-  @ApiOperation({ summary: 'Indexar datos de una tabla en OpenSearch' })
-  async indexar(@Param('indice') indice: string){
-
+@ApiOperation({ summary: 'Indexar datos de una tabla en OpenSearch' })
+async indexar(@Param('indice') indice: string) {
+  try {
     if (!this.mysqlService.isConnected()) {
       await this.mysqlService.connect();
     }
 
-    const tabla=indice
+    const tabla = indice;
     const data = await this.mysqlService.query(`SELECT * FROM ${tabla}`);
 
     // Indexa los datos en OpenSearch si hay datos disponibles
     if (data.length > 0) {
       await this.openSearchService.indexData(tabla, data);
       console.log(`La tabla ${tabla} se ha indexado correctamente`);
+      return { message: 'Datos indexados en OpenSearch correctamente' };
+    } else {
+      console.log(`No hay datos disponibles en la tabla ${tabla}`);
+      return { message: 'No hay datos disponibles para indexar en OpenSearch' };
     }
-    return { message: 'Datos indexados en OpenSearch correctamente' };
+  } catch (error) {
+    console.error(`Error al indexar datos de la tabla  en OpenSearch:`, error);
+    throw error;
   }
+}
   @Delete('/delete/:indice')
   @ApiOperation({ summary: 'Eliminar un índice de OpenSearch' })
   async deleteIndex(@Param('indice') indice: string) {
@@ -166,6 +173,23 @@ export class SearchController {
       throw error;
     }
   }
+
+
+  @Get('/:index/searchPhrase')
+  async searchPhrase(
+    @Param('index') index: string,
+    @Query('field') field: string,
+    @Query('query') query: string,
+    @Query('slop') slop: number
+  ) {
+    try {
+      const result = await this.openSearchService.searchPhrase(index, field, query, slop);
+      return result;
+    } catch (error) {
+      console.error('Error al buscar la frase en OpenSearch:', error);
+      throw error;
+    }
+  } 
 }
 
 

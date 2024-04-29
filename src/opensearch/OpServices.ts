@@ -100,4 +100,27 @@ export class OpenSearchService {
       throw error;
     }
   }
+
+  async searchPhrase(index: string, field: string, query: string, slop: number) {
+    try {
+      const body = {
+        query: {
+          match_phrase: {
+            [field]: {
+              query,
+              slop
+            },
+          },
+        },
+      };
+      
+      const { body: result } = await this.client.search({ index, body });
+      return result.hits.hits;
+    } catch (error) {
+      console.error('Error al buscar la frase en OpenSearch:', error);
+      throw error;
+    }
+  }
+
+  
 }
