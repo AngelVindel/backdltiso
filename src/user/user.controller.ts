@@ -14,7 +14,7 @@ export class UserController {
     return this.userService.signup(createUserDto);
   }
 
- @UseGuards(JwtAuthGuard)
+ //@UseGuards(JwtAuthGuard)
   @Get()
   getAllUsers(){
       return this.userService.getAllUsers();
@@ -68,8 +68,9 @@ export class UserController {
     return pdf;
   }
 
-  @Post(':id/pdfs')
-  async newUserDocument(@Param('id') userId: number, @Body() content: string){
+  @Post(":id/pdfs")
+  async newUserDocument(@Param("id") userId: number, @Body() content: string){
+    console.log('UserID:', userId);
     const pdf= await this.userService.newUserDocument(userId,content);
     return pdf;
   }
