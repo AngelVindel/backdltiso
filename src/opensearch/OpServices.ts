@@ -1,4 +1,3 @@
-// opensearch.service.ts
 import { Injectable } from '@nestjs/common';
 import { Client } from '@opensearch-project/opensearch';
 
@@ -26,7 +25,6 @@ export class OpenSearchService {
     return this.lastIndexedId;
   }
 
-
   async indexData(index: string, data: any[]) {
     // Verifica si hay nuevos datos en la base de datos desde el último índice
     const lastIndexedId = await this.getLastIndexedId();
@@ -51,6 +49,7 @@ export class OpenSearchService {
       body: query,
     });
   }
+
   async getIndices() {
     try {
       // Realiza una solicitud al endpoint de Cat Indices para obtener información sobre los índices
@@ -88,6 +87,40 @@ export class OpenSearchService {
     });
     return body.hits.hits;
   }
- 
 
+  async deleteIndex(indexName: string): Promise<void> {
+    try {
+      // Realiza la solicitud DELETE para eliminar el índice
+      await this.client.indices.delete({
+        index: indexName,
+      });
+      console.log(`Índice ${indexName} borrado correctamente`);
+    } catch (error) {
+      console.error(`Error al borrar el índice ${indexName}:`, error);
+      throw error;
+    }
+  }
+
+  async searchPhrase(index: string, field: string, query: string, slop: number) {
+    try {
+      const body = {
+        query: {
+          match_phrase: {
+            [field]: {
+              query,
+              slop
+            },
+          },
+        },
+      };
+      
+      const { body: result } = await this.client.search({ index, body });
+      return result.hits.hits;
+    } catch (error) {
+      console.error('Error al buscar la frase en OpenSearch:', error);
+      throw error;
+    }
+  }
+
+  
 }
