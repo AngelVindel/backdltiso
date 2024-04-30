@@ -5,13 +5,12 @@ export class DocumentPdfDto{
 
     userId: number;
  
-     content: string;
- 
+     content?: string;
+    
     creationDate: Date;
  
     modifyDate: Date;
   
-    permissions: boolean;
  
  }
  

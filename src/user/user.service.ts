@@ -152,54 +152,57 @@ export class UserService {
   }
 
   async newUserDocument(userId: number, content: string): Promise<PDFDoc> {
-    console.log('UserID2:',userId);
-
-    const user = await this.regularUserRepository.findOne({ where: { id: userId } });
-    console.log('UserID3:', user.id);
+    console.log('UserID:', userId);
+    
+    if (!userId) {
+      throw new Error('UserID cannot be null or undefined');
+    }
+  
+    const user = await this.regularUserRepository.findOne({ where: { id: userId }, relations: ['documents'] });
     if (!user) {
       throw new Error('User not found');
     }
-    let permission;
-    if(user.premium){ 
-     permission=true
-    }
-    else {
-    permission=false
-  }
-
-
+    
     const documentPdfDto: DocumentPdfDto = {
-      userId: userId,
-      content: content,
-      permissions: permission,
+      userId: user.id, 
       creationDate: new Date(), 
       modifyDate: new Date()
     };
-
-    user.documents=[];
-    const pdf = await this.pdfService.createPdf(documentPdfDto);
-    user.documents.push(pdf); 
-  this.regularUserRepository.save(user);
+  
+    const pdf = await this.pdfService.createPdf(documentPdfDto,content);
+  
+    if (pdf && pdf.content && pdf.content.length > 0) {
+      user.documents.push(pdf); 
+      await this.regularUserRepository.save(user); 
+    } else {
+      throw new Error('Failed to create PDF');
+    }
+  
     return pdf; 
   }
 
+  
   async deleteUserPdf(userId: number, pdfId: number): Promise<void> {
+
     const user = await this.regularUserRepository.findOne({
-      where: { id: userId },
-      relations: ['documents']
+        where: { id: userId },
+        relations: ['documents']
     });
 
     if (!user) {
+
       throw new Error('User not found');
     }
-
-    const pdf = user.documents.find(doc => doc.id === pdfId);
+    const pdf = user.documents.find(doc => doc.id === Number(pdfId));
+    
     if (!pdf) {
+
       throw new Error('PDF not found or not owned by user');
     }
 
     await this.pdfService.deletePdf(pdfId);
-  }
+}
+
   async updateUserPdf(userId: number, pdfId: number, content: string): Promise<PDFDoc> {
     const user = await this.regularUserRepository.findOne({
       where: { id: userId },
@@ -209,29 +212,14 @@ export class UserService {
     if (!user) {
       throw new Error('User not found');
     }
-    let permission;
-    if(user.premium){ 
-     permission=true
-    }
-    else {
-    permission=false
-  }
-
-
-    const pdf = user.documents.find(doc => doc.id === pdfId);
+  
+    const pdf = user.documents.find(doc => doc.id === Number(pdfId));
     if (!pdf) {
       throw new Error('PDF not found or not owned by user');
     }
 
-    const documentPdfDto: DocumentPdfDto = {
-      userId: userId, 
-      content: content,
-      permissions: permission,
-      creationDate: pdf.creationDate, 
-      modifyDate: new Date() 
-    };
 
-    return this.pdfService.updatePdf(pdfId, documentPdfDto);
+    return this.pdfService.updatePdf(pdfId, content);
   }
   async downloadUserPdf(userId: number, pdfId: number): Promise<Buffer> {
     const user = await this.regularUserRepository.findOne({
@@ -239,21 +227,13 @@ export class UserService {
         relations: ['documents']
     });
 
-    if (!user) {
-        throw new Error('User not found');
-    }
+   const pdf = user.documents.find(doc => doc.id === Number(pdfId));
 
-    const pdf = user.documents.find(doc => doc.id === pdfId);
-    if (!pdf) {
-        throw new Error('PDF not found or not owned by user');
-    }
+if (!pdf) {
+    throw new Error('PDF not found or not owned by user');
+}
 
-    if (!pdf.permissions) {
-        throw new Error('Access denied: You do not have permission to download this PDF.');
-    }
-  
-
-    return this.pdfService.downloadPdf(pdfId);
+    return this.pdfService.downloadPdf(Number(pdfId));
 
 }
 }

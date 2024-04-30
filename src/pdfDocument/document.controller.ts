@@ -13,7 +13,7 @@ export class PDFDocumentCotroller{
     @Post()
     createPdf(@Body() dto: DocumentPdfDto) {
      
-      return this.pdfService.createPdf(dto);
+      return this.pdfService.createPdf(dto,dto.content);
     }
   
     @Delete(':id')
@@ -23,8 +23,8 @@ export class PDFDocumentCotroller{
     }
 
     @Put(':id')
-    async editPdf(@Param('id') id: number,@Body() DocumentPdfDto){
-      return this.pdfService.updatePdf(id,DocumentPdfDto);
+    async editPdf(@Param('id') id: number,@Body('text') texto:string){
+      return this.pdfService.updatePdf(id,texto);
 
     }
     @Get(':id/download')
@@ -60,9 +60,7 @@ async downloadPdf(@Param('id') id: number, @Res() res:Response) {
 
     res.status(statusCode).send(message);
   }
+}
+}
 
-    }
-
-
-    
-  }
+   
