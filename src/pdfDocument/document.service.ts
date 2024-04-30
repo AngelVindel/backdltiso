@@ -6,7 +6,6 @@ import { PDFDoc } from './document.entity';
 import { RegularUser } from 'src/user/regularU.entity';
 import * as PDFDocument from 'pdfkit';
 import { DocumentPdfDto } from './dto/document-pdf.dto';
-
 @Injectable()
 export class PDFDocumentService {
   constructor(
@@ -16,21 +15,21 @@ export class PDFDocumentService {
     private userRepository: Repository<RegularUser>, 
   ) {}
 
-  async createPdf(dto: DocumentPdfDto): Promise<PDFDoc> {
+
+  async createPdf(dto: DocumentPdfDto,texto: string): Promise<PDFDoc> {
     const user = await this.userRepository.findOneBy({ id: dto.userId });
     if (!user) {
         throw new Error('User not found');
     }
 
-    const permission = user.premium;
 
     const doc = new PDFDocument({ bufferPages: true });
     let pdfBuffer: Buffer = Buffer.alloc(0);
-
-    doc.font('Helvetica').fontSize(12).text(dto.content, {
-        align: 'justify'
+  
+    doc.font('Helvetica').fontSize(12).text(texto, {
+      align: 'justify'
     });
-
+  
     doc.on('data', (chunk: Buffer) => {
         pdfBuffer = Buffer.concat([pdfBuffer, chunk]);
     });
@@ -42,7 +41,6 @@ export class PDFDocumentService {
                 content: pdfBuffer,
                 creationDate: new Date(),
                 modifyDate: new Date(),
-                permissions: permission,
             });
 
             try {
@@ -61,6 +59,7 @@ export class PDFDocumentService {
     });
 }
 
+  
 
 
 
@@ -75,7 +74,7 @@ export class PDFDocumentService {
 
 
 
-  async updatePdf(id_pdf: number, dto: DocumentPdfDto): Promise<PDFDoc> {
+  async updatePdf(id_pdf: number,texto: string): Promise<PDFDoc> {
     const existingPdf = await this.pdfRepository.findOneBy({ id: id_pdf });
     if (!existingPdf) {
       throw new Error('PDF not found');
@@ -84,7 +83,7 @@ export class PDFDocumentService {
     const doc = new PDFDocument({ bufferPages: true });
     let pdfBuffer = Buffer.alloc(0);
 
-    doc.font('Helvetica').fontSize(12).text(dto.content, {
+    doc.font('Helvetica').fontSize(12).text(texto, {
       align: 'justify',
       indent: 30,
       height: 300,
@@ -121,14 +120,11 @@ export class PDFDocumentService {
       throw new Error('PDF not found');
     }
 
-    if (!pdf.permissions) {
-      throw new Error('Access denied: You do not have permission to download this PDF.');
-    }
-
-    console.log("contenido del pdf",pdf.content)
-
+   
     return pdf.content; 
 
 }
 
+
 }
+

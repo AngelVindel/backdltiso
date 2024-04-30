@@ -4,6 +4,7 @@ import { Controller, Post, Body, Get, UseGuards, Delete, Param, Patch, HttpCode,
 import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserService } from './user.service';
+import { Response } from 'express';
 
 @Controller('users')
 export class UserController {
@@ -69,15 +70,15 @@ export class UserController {
   }
 
   @Post(":id/pdfs")
-  async newUserDocument(@Param("id") userId: number, @Body() content: string){
+  async newUserDocument(@Param("id") userId: number,@Body('text') text: string){
     console.log('UserID:', userId);
-    const pdf= await this.userService.newUserDocument(userId,content);
+    const pdf= await this.userService.newUserDocument(userId,text);
     return pdf;
   }
 
   @Put(':id/pdfs/:idPdf')
-  async updateUserPdf(@Param('id') userId:number, @Param('idPdf') pdfId: number, @Body() content: string){
-    const pdf=await this.userService.updateUserPdf(userId,pdfId,content);
+  async updateUserPdf(@Param('id') userId:number, @Param('idPdf') pdfId: number, @Body('text') text: string){
+    const pdf=await this.userService.updateUserPdf(userId,pdfId,text);
     return pdf;
   }
 
@@ -87,11 +88,12 @@ export class UserController {
   }
 
   @Get(':id/pdfs/:idPdf/download')
-  async downloadPdf(@Param('id') userId: number, @Param('idPdf') pdfId: number, @Res() res) {
+  async downloadPdf(@Param('id') userId: number, @Param('idPdf') pdfId: number, @Res() res:Response) {
       try {
           const pdfBuffer = await this.userService.downloadUserPdf(userId, pdfId);
           res.setHeader('Content-Type', 'application/pdf');
           res.setHeader('Content-Disposition', `attachment; filename="dlt_document.pdf"`);
+
           res.send(pdfBuffer);
       } catch (error) {
           res.status(404).send({ message: error.message });
