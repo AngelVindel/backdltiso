@@ -12,7 +12,7 @@ export class Ticket {
   userId: number;
 
   @ManyToOne(() => AdminUser, (admin) => admin.tickets)
-  admin: AdminUser;
+  admin: number;
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
@@ -26,5 +26,4 @@ export class Ticket {
   @Column()
   description: string;
   adminUserId: number;
-  adminId: number;
 }

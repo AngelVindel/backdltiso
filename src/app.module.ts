@@ -37,7 +37,7 @@ import { OpenSearchModule } from './opensearch/OpModule';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
 
       synchronize: true, // No usar en producción
-      driver: require('mysql2')
+      driver: require('mysql2'),
     }),
     TypeOrmModule.forFeature([
       RegularUser,
