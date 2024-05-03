@@ -27,10 +27,8 @@ export class PDFDocumentService {
     const doc = new PDFDocument({ margin: 50, bufferPages: true });
     let pdfBuffer: Buffer = Buffer.alloc(0);
 
-    // Añadir imagen de logo de la empresa
     doc.image('logo/dlt_logo.png', 460, 20, { width: 100 }).moveDown(2);
 
-    // Añadir fecha de creación semi-transparente
     doc.fontSize(10)
       .text(`Fecha: ${dto.creationDate.toLocaleDateString()}`, 440, 80, { align: 'right' })
       .fontSize(25)
@@ -38,7 +36,6 @@ export class PDFDocumentService {
       .text('ISO 27001', 50, 40)
       .moveDown(0.5);
       
-    // Texto introductorio y secciones de contenido
     doc.fontSize(18)
       .font('Helvetica-Bold')
       .text('Introducción', { align: 'left' })
@@ -105,7 +102,6 @@ export class PDFDocumentService {
       if (doc.y > 650) {
         doc.addPage();
     }
-    // Espacio adicional antes de los gráficos
     doc.fontSize(18)
       .font('Helvetica-Bold')
       .text('Gráficos', { align: 'left' })
@@ -114,11 +110,9 @@ export class PDFDocumentService {
         doc.addPage();
     }
 
-    // Variables para manejar las posiciones de los gráficos
     let yPosition = doc.y;
-    let rightColumnX = 300; // Espacio para la columna derecha
+    let rightColumnX = 300;
 
-    // Primer gráfico (Riesgo inherente)
     const riskChartImageUrl = await this.getRiskChartUrl();
     const response = await axios.get(riskChartImageUrl, { responseType: 'arraybuffer' });
     const imageBuffer = Buffer.from(response.data, 'binary');
@@ -127,7 +121,6 @@ export class PDFDocumentService {
     if (doc.y > 700) {
       doc.addPage();
   }
-    // Segundo gráfico (Comparación de riesgo)
     const riskCompareChartImageUrl2 = await this.getRiskComparisonChartUrl();
     const response2 = await axios.get(riskCompareChartImageUrl2, { responseType: 'arraybuffer' });
     const imageBuffer2 = Buffer.from(response2.data, 'binary');
@@ -138,15 +131,13 @@ export class PDFDocumentService {
       doc.addPage();
   }
    
-    // Actualizar yPosition para el próximo gráfico debajo de estos dos
-    yPosition += 180;  // Ajusta según el tamaño de tus gráficos
+    yPosition += 180;  
 
-    // Tercer gráfico (Tratamiento del riesgo)
     const riskTreatmentChartImageUrl3 = await this.getRiskTreatmentChartUrl();
     const response3 = await axios.get(riskTreatmentChartImageUrl3, { responseType: 'arraybuffer' });
     const imageBuffer3 = Buffer.from(response3.data, 'binary');
   
-    doc.image(imageBuffer3, 150, yPosition, { width: 250 });  // Centrado debajo de los dos primeros
+    doc.image(imageBuffer3, 150, yPosition, { width: 250 });  
 
     doc.on('data', (chunk: Buffer) => {
         pdfBuffer = Buffer.concat([pdfBuffer, chunk]);
@@ -199,7 +190,7 @@ export class PDFDocumentService {
         throw new Error('User not found');
     }
     const modifyD =new Date();
-    const	text=`Este documento proporciona un análisis exhaustivo de las respuestas obtenidas de Manolo a través del reciente cuestionario destinado a evaluar la conformidad de la empresa Bomobo  con la norma ISO 27001. La norma ISO 27001 es un marco reconocido internacionalmente para la gestión de la seguridad de la información, que ofrece un enfoque sistemático y estructurado para asegurar la confidencialidad, integridad y disponibilidad de la información corporativa.`
+    const	text=`Este documento proporciona un análisis exhaustivo de las respuestas obtenidas de ${user.username} a través del reciente cuestionario destinado a evaluar la conformidad de la empresa ${user.company}  con la norma ISO 27001. La norma ISO 27001 es un marco reconocido internacionalmente para la gestión de la seguridad de la información, que ofrece un enfoque sistemático y estructurado para asegurar la confidencialidad, integridad y disponibilidad de la información corporativa.`
     const doc = new PDFDocument({ margin: 50, bufferPages: true });
     let pdfBuffer: Buffer = Buffer.alloc(0);
 
@@ -444,13 +435,13 @@ private async getRiskTreatmentChartUrl(): Promise<string> {
               y: {
                   beginAtZero: true,
                   ticks: {
-                      stepSize: 1 // Ajusta esto según la escala que necesites
+                      stepSize: 1 
                   }
               }
           },
           plugins: {
               legend: {
-                  display: false // Oculta la leyenda si es necesario
+                  display: false 
               }
           }
       }
