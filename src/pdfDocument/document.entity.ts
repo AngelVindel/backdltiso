@@ -12,7 +12,7 @@ export class PDFDoc {
   @ManyToOne(()=>RegularUser, user=> user.documents)
   userId: number;
 
-  @Column({ type: 'blob' })
+  @Column({ type: 'mediumblob' })
   content: Buffer;
 
   @Column()

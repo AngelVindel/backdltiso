@@ -151,8 +151,7 @@ export class UserService {
     return user.documents;
   }
 
-  async newUserDocument(userId: number, content: string): Promise<PDFDoc> {
-    console.log('UserID:', userId);
+  async newUserDocument(userId: number, dto: DocumentPdfDto): Promise<PDFDoc> {
     
     if (!userId) {
       throw new Error('UserID cannot be null or undefined');
@@ -166,10 +165,14 @@ export class UserService {
     const documentPdfDto: DocumentPdfDto = {
       userId: user.id, 
       creationDate: new Date(), 
-      modifyDate: new Date()
+      modifyDate: new Date(),
+      generated_p:dto.generated_p,
+      recommended_p:dto.recommended_p,
+      risk_recomenmended:dto.risk_recomenmended
+      
     };
   
-    const pdf = await this.pdfService.createPdf(documentPdfDto,content);
+    const pdf = await this.pdfService.createPdf(documentPdfDto);
   
     if (pdf && pdf.content && pdf.content.length > 0) {
       user.documents.push(pdf); 
@@ -203,7 +206,7 @@ export class UserService {
     await this.pdfService.deletePdf(pdfId);
 }
 
-  async updateUserPdf(userId: number, pdfId: number, content: string): Promise<PDFDoc> {
+  async updateUserPdf(userId: number, pdfId: number, dto: DocumentPdfDto): Promise<PDFDoc> {
     const user = await this.regularUserRepository.findOne({
       where: { id: userId },
       relations: ['documents']
@@ -217,9 +220,19 @@ export class UserService {
     if (!pdf) {
       throw new Error('PDF not found or not owned by user');
     }
+    
+    const documentPdfDto: DocumentPdfDto = {
+      userId: user.id, 
+      creationDate: new Date(), 
+      modifyDate: new Date(),
+      generated_p:dto.generated_p,
+      recommended_p:dto.recommended_p,
+      risk_recomenmended:dto.risk_recomenmended
+      
+    };
 
 
-    return this.pdfService.updatePdf(pdfId, content);
+    return this.pdfService.updatePdf(pdfId, documentPdfDto);
   }
   async downloadUserPdf(userId: number, pdfId: number): Promise<Buffer> {
     const user = await this.regularUserRepository.findOne({

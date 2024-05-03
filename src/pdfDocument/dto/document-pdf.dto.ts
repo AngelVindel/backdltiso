@@ -3,14 +3,28 @@
 export class DocumentPdfDto{
 
 
-    userId: number;
+    userId?: number;
  
      content?: string;
     
-    creationDate: Date;
+    creationDate?: Date;
  
-    modifyDate: Date;
-  
+    modifyDate?: Date;
+
+    recommended_p: string;
+
+    generated_p: string;
+
+    risk_recomenmended:string;
+
+
+
+
+
+
+    //Risk: ImageInput;
+
+    
  
  }
  

@@ -13,7 +13,7 @@ export class PDFDocumentCotroller{
     @Post()
     createPdf(@Body() dto: DocumentPdfDto) {
      
-      return this.pdfService.createPdf(dto,dto.content);
+      return this.pdfService.createPdf(dto);
     }
   
     @Delete(':id')
@@ -23,8 +23,8 @@ export class PDFDocumentCotroller{
     }
 
     @Put(':id')
-    async editPdf(@Param('id') id: number,@Body('text') texto:string){
-      return this.pdfService.updatePdf(id,texto);
+    async editPdf(@Param('id') id: number,@Body() dto:DocumentPdfDto){
+      return this.pdfService.updatePdf(id,dto);
 
     }
     @Get(':id/download')
@@ -39,7 +39,7 @@ async downloadPdf(@Param('id') id: number, @Res() res:Response) {
       throw new Error('Expected content to be a Buffer');
     }
 
-    console.log("Buffer check:", content instanceof Buffer);  // Debe ser true
+    console.log("Buffer check:", content instanceof Buffer);  
     
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename="dlt_document.pdf"`);

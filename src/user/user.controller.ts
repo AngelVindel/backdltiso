@@ -5,6 +5,7 @@ import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserService } from './user.service';
 import { Response } from 'express';
+import { DocumentPdfDto } from 'src/pdfDocument/dto/document-pdf.dto';
 
 @Controller('users')
 export class UserController {
@@ -70,15 +71,14 @@ export class UserController {
   }
 
   @Post(":id/pdfs")
-  async newUserDocument(@Param("id") userId: number,@Body('text') text: string){
-    console.log('UserID:', userId);
-    const pdf= await this.userService.newUserDocument(userId,text);
+  async newUserDocument(@Param("id") userId: number,@Body() dto: DocumentPdfDto){
+    const pdf= await this.userService.newUserDocument(userId,dto);
     return pdf;
   }
 
   @Put(':id/pdfs/:idPdf')
-  async updateUserPdf(@Param('id') userId:number, @Param('idPdf') pdfId: number, @Body('text') text: string){
-    const pdf=await this.userService.updateUserPdf(userId,pdfId,text);
+  async updateUserPdf(@Param('id') userId:number, @Param('idPdf') pdfId: number, @Body() dto: DocumentPdfDto){
+    const pdf=await this.userService.updateUserPdf(userId,pdfId,dto);
     return pdf;
   }
 
