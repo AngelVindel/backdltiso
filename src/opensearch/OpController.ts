@@ -22,7 +22,7 @@ export class SearchController {
   
       // Obtiene los nombres de todas las tablas en la base de datos actual
       const tables = await this.mysqlService.query(
-        `SELECT table_name FROM information_schema.tables WHERE table_schema = 'dltcode'`
+        `SELECT table_name FROM information_schema.tables WHERE table_schema = 'prueba2'`
       );
   
       // Extrae los nombres de las tablas de los resultados
