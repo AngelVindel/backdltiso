@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 // user.controller.ts
-import { Controller, Post, Body, Get, UseGuards, Delete, Param, Patch, HttpCode, HttpStatus, Put, Res } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Delete, Param, Patch, Put, Res } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserService } from './user.service';
@@ -15,8 +15,8 @@ export class UserController {
   async signup(@Body() createUserDto: CreateUserDto) {
     return this.userService.signup(createUserDto);
   }
-
- //@UseGuards(JwtAuthGuard)
+ 
+  //@UseGuards(JwtAuthGuard)
   @Get()
   getAllUsers(){
       return this.userService.getAllUsers();

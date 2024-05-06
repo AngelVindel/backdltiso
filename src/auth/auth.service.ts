@@ -38,7 +38,8 @@ export class AuthService {
         const hashedPassword = await hash(password, 10);
         const userRepository = this.getUserRepository(userType);
         const user = await userRepository.findOne({ where: { email } });
-
+        console.log(user);
+        
         if (user) {
             throw new HttpException('Account already created', 401);
         }
@@ -57,7 +58,7 @@ export class AuthService {
         const { email, password, userType } = userDto;
         const userRepository = this.getUserRepository(userType);
         const user = await userRepository.findOne({ where: { email } });
-
+        
         if (!user) {
             throw new HttpException('User not found', 404);
         }
@@ -66,6 +67,11 @@ export class AuthService {
         if (!isPasswordValid) {
             throw new HttpException('Invalid credentials', 401);
         }
+        
+        if(!user.activated && user instanceof RegularUser){
+            throw new HttpException('Account not activated', 403);
+        }
+        
 
         const payload = { id: user.id, email: user.email, userType: user instanceof AdminUser ? 'Admin': 'User'};
         const token = this.jwtService.sign(payload);

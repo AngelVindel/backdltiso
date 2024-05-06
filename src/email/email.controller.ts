@@ -6,7 +6,7 @@ import { EmailService } from './email.service';
 export class EmailController {
   constructor(private readonly emailService: EmailService) {}
 
-  @Post('send')
+  @Post()
   async sendEmail(@Body() body: { email: string, activationToken: number }) {
     const { email,activationToken } = body;
     await this.emailService.sendEmail(email, activationToken);
