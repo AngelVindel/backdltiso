@@ -21,6 +21,15 @@ export class UserController {
   getAllUsers(){
       return this.userService.getAllUsers();
   }
+
+  @Get(":id")
+  async getUserById(@Param("id") id:number){
+    const user= await this.userService.getUserById(id);
+    return user;
+  }
+
+
+
   @Get(":email")
   async getEmailUsers(@Param("email") email: string){
       try {

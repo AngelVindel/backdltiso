@@ -13,7 +13,7 @@ export class QuestionsService{
 
   
     
-      async getQuestionById(id: number): Promise<Question> {
+      async getQuestionAndAnswers(id: number): Promise<Question> {
         const question = await this.questionRepository.findOne({
           where: { id: id },
           relations: ['answers'] 
@@ -21,6 +21,14 @@ export class QuestionsService{
       
               if (!question) {
           throw new Error(`Question with ${id}  not found`);
+        }
+        return question;
+      }
+
+      async getQuestionById(id: number): Promise <Question> {
+        const question = await this.questionRepository.findOneBy({ id });
+        if (!question) {
+          throw new Error(`Question with ID ${id} not found`);
         }
         return question;
       }
