@@ -13,7 +13,9 @@ export class QuestionsController{
         return this.questionsService.getAllQuestions();
     }
 
-    @Get(':id')
+  
+
+ @Get(':id')
   async getQuestionById(@Param('id') id: number) {
     const question = await this.questionsService.getQuestionById(id);
     return question;
@@ -32,6 +34,11 @@ export class QuestionsController{
     return question;
   }
 
+  @Get('/answers/:id')
+  async getQuestionAndAnswers(@Param('id') id: number) {
+    const question = await this.questionsService.getQuestionAndAnswers(id);
+    return question;
+  }
 
 
 }

@@ -137,7 +137,7 @@ export class PDFDocumentService {
     const response3 = await axios.get(riskTreatmentChartImageUrl3, { responseType: 'arraybuffer' });
     const imageBuffer3 = Buffer.from(response3.data, 'binary');
   
-    doc.image(imageBuffer3, 150, yPosition, { width: 250 });  
+    doc.image(imageBuffer3,180, yPosition, { width: 250 });  
 
     doc.on('data', (chunk: Buffer) => {
         pdfBuffer = Buffer.concat([pdfBuffer, chunk]);
@@ -303,8 +303,8 @@ export class PDFDocumentService {
     const riskTreatmentChartImageUrl3 = await this.getRiskTreatmentChartUrl();
     const response3 = await axios.get(riskTreatmentChartImageUrl3, { responseType: 'arraybuffer' });
     const imageBuffer3 = Buffer.from(response3.data, 'binary');
-  
-    doc.image(imageBuffer3, 150, yPosition, { width: 250 });  
+
+    doc.image(imageBuffer3, 180, yPosition, { width: 250 });  
     doc.on('data', (chunk) => {
       pdfBuffer = Buffer.concat([pdfBuffer, chunk]);
     });
@@ -414,7 +414,7 @@ private async getRiskTreatmentChartUrl(): Promise<string> {
           labels: ['1', '2', '3', '4'],
           datasets: [{
               label: 'Tratamiento del Riesgo',
-              data: [6, 3, 10, 1],
+              data: [6, 3, 10, 0],
               backgroundColor: [
                   'rgba(0, 123, 255, 0.6)',
                   'rgba(0, 123, 255, 0.6)',

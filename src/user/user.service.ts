@@ -66,9 +66,19 @@ export class UserService {
     this.regularUserRepository.merge(user, updateField);
     return await this.regularUserRepository.save(user);
   }
+  async getUserById(userId: number):Promise<User>{
+    const user = await this.regularUserRepository.findOne({
+      where: { id: userId },
+    });
+    if(!user){
+      throw new Error('User not found');
+
+    }
+    return user;
+  }
 
 
-  async addAnswerToUser(userId: number, answerId: number): Promise<User> {
+  async addAnswerToUser(userId: number, answerId: number) {
     const user = await this.regularUserRepository.findOne({
       where: { id: userId },
       relations: ['chosenAnswers', 'chosenAnswers.question']
@@ -95,7 +105,7 @@ export class UserService {
   
     user.chosenAnswers.push(answerToAdd);
     await this.regularUserRepository.save(user);
-    return user;
+    return answerToAdd;
   }
 
   async deleteAnswersToUser(userId: number){
