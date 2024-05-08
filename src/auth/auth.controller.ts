@@ -26,5 +26,14 @@ export class AuthController{
     activateUser(@Body() userObjectActivate: RegisterAuthDto){
         return this.authService.activateAccount(userObjectActivate)
     }
+    @Post('resetPassword')
+    resetPassword(@Body() id: any){
+        console.log(id);
+        return this.authService.comprobarKey(id.id)
+    }
+    @Post('getPasswordKey')
+    getPasswordKey(@Body() email: any){
+        return this.authService.getPasswordKey(email)
+    }
 
 }

@@ -39,7 +39,7 @@ export class RegularUser implements User {
   @JoinTable()
   chosenAnswers: Answer[];
 
-  @Column()
+  @Column({type: 'boolean', default: false})
   premium: boolean;
 
 
