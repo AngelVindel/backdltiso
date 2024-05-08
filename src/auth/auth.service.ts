@@ -75,7 +75,8 @@ export class AuthService {
 
         const payload = { id: user.id, email: user.email, userType: user instanceof AdminUser ? 'Admin': 'User'};
         const token = this.jwtService.sign(payload);
-
+        console.log({user,token});
+        
         return { user, token };
     }
 
@@ -102,5 +103,42 @@ export class AuthService {
 
         }
        
+    }
+
+    async comprobarKey(id: string): Promise<boolean> {
+        console.log(id);
+        
+        const users = await this.regularUserRepository.find(); 
+        for (const user of users) {
+            const hashedUserEmail = await hash(user.email, 10); 
+    
+            console.log(hashedUserEmail);
+            
+            
+            const isMatch = await compare(id, hashedUserEmail);
+            console.log(isMatch);
+            
+            if (isMatch) {
+                return true; 
+            }
+        }
+    
+        return false; 
+    }
+
+    async getPasswordKey(email: any): Promise<boolean> {
+        
+        const user = await this.regularUserRepository.findOne({ where:{email:email.email}  });
+        
+        if(user){
+            const passwordKey= await hash(user.email, 10);
+            const send=await this.emailService.sendPasswordKey(user.email, passwordKey);
+            if(send){
+                return true;
+            }else{
+                throw new HttpException('Error sending email', 500);
+            }
+        }
+        return false;
     }
 }
