@@ -16,7 +16,7 @@ export class UserController {
     return this.userService.signup(createUserDto);
   }
  
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   getAllUsers(){
       return this.userService.getAllUsers();
