@@ -38,7 +38,6 @@ export class AuthService {
         const hashedPassword = await hash(password, 10);
         const userRepository = this.getUserRepository(userType);
         const user = await userRepository.findOne({ where: { email } });
-        console.log(user);
         
         if (user) {
             throw new HttpException('Account already created', 401);
@@ -62,7 +61,8 @@ export class AuthService {
         if (!user) {
             throw new HttpException('User not found', 404);
         }
-
+        console.log(password);
+        
         const isPasswordValid = await compare(password, user.password);
         if (!isPasswordValid) {
             throw new HttpException('Invalid credentials', 401);
