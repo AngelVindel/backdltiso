@@ -53,7 +53,7 @@ export class EmailService {
         html: `<h1>Hola, de nuevo</h1>
         <p>Gracias por formar parte de nuestro equipo, para que puedas seguir accediendo con normalidad, cambia tu contraseña desde el siguiente enlace que te propocionaremos.
         Muchas gracias por confiar en nosotros 🙃: </p>
-        <a href='localhost:3000/resetPassword?id=${passwordKey}'<b>https://localhost:3000/resetPassword?id=${passwordKey}</b></a>`
+        <a href='http://localhost:3000/resetPassword?id=${passwordKey}'>Pulsa aqui para cambiar la contraseña</a>`
       });
       return true
     } catch (error) {

@@ -106,17 +106,10 @@ export class AuthService {
     }
 
     async comprobarKey(id: string): Promise<boolean> {
-        console.log(id);
         
         const users = await this.regularUserRepository.find(); 
         for (const user of users) {
-            const hashedUserEmail = await hash(user.email, 10); 
-    
-            console.log(hashedUserEmail);
-            
-            
-            const isMatch = await compare(id, hashedUserEmail);
-            console.log(isMatch);
+            const isMatch = await compare(user.email, id);
             
             if (isMatch) {
                 return true; 
