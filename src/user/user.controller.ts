@@ -30,20 +30,18 @@ export class UserController {
 
 
 
-  @Get(":email")
-  async getEmailUsers(@Param("email") email: string){
+  @Post()
+  async getEmailUsers(@Body() body: { mail: string }){
       try {
-          const users =await this.userService.getEmailUsers(email);
+          const { mail } = body;
+          const users =await this.userService.getEmailUsers(mail);
           return users;
       } catch (error) {
           console.error('Error fetching users by email:', error);
       }
   }
   
-  @Post()
-  createUser(@Body() newUser: CreateUserDto){
-  return this.userService.createUser(newUser.username,newUser.email,newUser.password);
-  }
+ 
 
   @Delete(":id")
   deleteUser(@Param("id") id:number){
