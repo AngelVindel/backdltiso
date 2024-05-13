@@ -14,7 +14,7 @@ export class AnswersService{
         private questionRepository: Repository<Question>
 
     ){ }
-
+/*
     async getAllAnswers():Promise<Answer[]>{
       const answers= await this.answersRepository.find();
       return answers;
@@ -62,7 +62,7 @@ export class AnswersService{
           return answer.question;
         }
 
-
+*/
         }
 
     

@@ -11,10 +11,10 @@ export class Answer {
     @Column()
     text: string;
 
-    @ManyToOne(() => Question, (question) => question.answers)
+   /* @ManyToOne(() => Question, (question) => question.answers)
     question: Question;
 
     @ManyToMany(() => RegularUser, user => user.chosenAnswers)
     users: RegularUser[];
-
+*/
 }

@@ -1,5 +1,5 @@
-import { Answer } from "../answers/answers.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { RegularUser } from "src/user/regularU.entity";
+import { Column, Entity, ManyToOne,  PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Question {
@@ -10,13 +10,15 @@ export class Question {
     @Column()
     text: string;
 
-    @Column()
-    description: string;
 
-    @OneToMany(() => Answer, (answer) => answer.question,
+    @ManyToOne(()=>RegularUser,user=>user.questions)
+    userId: number
+
+   /* @OneToOne(() => Answer, (answer) => answer.question,
     {
         cascade:['remove']
     })
-    answers: Answer[];
+    answer: Answer;
 
+    */
 }

@@ -4,6 +4,7 @@ import { User } from './user.interface';
 import { PDFDoc } from 'src/pdfDocument/document.entity';
 import { Ticket } from 'src/ticket/ticket.entity';
 import { Answer } from 'src/answers/answers.entity';
+import { Question } from 'src/questions/questions.entity';
 
 
 @Entity()
@@ -35,12 +36,17 @@ export class RegularUser implements User {
   @OneToMany(() => Ticket, (ticket) => ticket.userId)
   tickets: Ticket[];
 
-  @ManyToMany(()=> Answer)
-  @JoinTable()
-  chosenAnswers: Answer[];
+  
+  @OneToMany(()=>Question, (question)=>question.userId, {cascade: ['remove','insert']})
+  questions: Question[];
+
 
   @Column()
   premium: boolean;
 
 
 }
+/*@ManyToMany(()=> Answer)
+  @JoinTable()
+  chosenAnswers: Answer[];
+*/

@@ -28,17 +28,19 @@ export class QuestionsController{
 
   }
 
-  @Post(':id')
-  async postNewQuestion(@Param('id') id: number,@Body() questionDto: QuestionDTO){
-    const question= await this.questionsService.postNewQuestion(id,questionDto);
+  @Post()
+  async postNewQuestion(@Body() dto: QuestionDTO){
+    const question= await this.questionsService.postNewQuestion(dto.userID,dto.text);
     return question;
   }
 
+  /*
   @Get('/answers/:id')
   async getQuestionAndAnswers(@Param('id') id: number) {
     const question = await this.questionsService.getQuestionAndAnswers(id);
     return question;
   }
+  */
 
 
 }

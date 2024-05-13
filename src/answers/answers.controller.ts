@@ -9,6 +9,7 @@ export class AnswersController{
     constructor(private readonly answersService: AnswersService) {}
 
 
+    /*
 @Get()
 async getAllAnswers(){
     const answers=  await this.answersService.getAllAnswers();
@@ -43,6 +44,6 @@ async getQuestionByAnswer(@Param('id') idAnswer:number){
     const question= await this.answersService.getQuestionByAnswer(idAnswer);
     return question;
 }
-
+*/
 
 }

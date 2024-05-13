@@ -16,6 +16,9 @@ export class UserController {
     return this.userService.signup(createUserDto);
   }
 
+
+  
+
  //@UseGuards(JwtAuthGuard)
   @Get()
   getAllUsers(){
@@ -55,22 +58,23 @@ export class UserController {
       this.userService.updateUser(id,updatedFields);
   }
 
-  @Post(':id/answer/:answerId')
-  async addAnswerToUser(@Param('id') userId: number, @Param('answerId') answerId: number) {
-    const user= await this.userService.addAnswerToUser(userId, answerId);
-    return user;
+  @Post(":id/question")
+  async postNewQuestion(@Param("id") id: number,@Body("text") text: string){
+    const repl= await this.userService.postNewQuestion(id,text);
+    return repl;
   }
 
-  @Get(':id/answers')
-  async getAnswersToUser(@Param('id') userId: number){
-    const answers= await this.userService.getAnswersToUser(userId);
-    return answers;
+  @Post(":id/question/:idQ")
+  async deleteQuestion(@Param("id") id: number,@Param("idQ") ID_question: number){
+   await this.userService.deleteQuestion(id,ID_question)
+    
+  }
+  @Get(':id/questions')
+  async getQuestionsByUserId(@Param('id') id: number) {
+    const questions= await this.userService.getQuestionsByUserId(id);
+    return questions;
   }
 
-  @Delete(':id/answers')
-  async clearAnswers(@Param('id') userId: number){
-    await this.userService.deleteAnswersToUser(userId);
-  }
 
 
   @Get(':id/pdfs')
@@ -90,7 +94,7 @@ export class UserController {
     const pdf=await this.userService.updateUserPdf(userId,pdfId,dto);
     return pdf;
   }
-
+  
   @Delete(':id/pdfs/:idPdf')
   async deletePdfUser(@Param('id') userId:number, @Param('idPdf') documentId: number){
     await this.userService.deleteUserPdf(userId,documentId);
@@ -108,6 +112,28 @@ export class UserController {
           res.status(404).send({ message: error.message });
       }
   }
+
+  
+  /*
+  @Post(':id/answer/:answerId')
+  async addAnswerToUser(@Param('id') userId: number, @Param('answerId') answerId: number) {
+    const user= await this.userService.addAnswerToUser(userId, answerId);
+    return user;
+  }
+
+  @Get(':id/answers')
+  async getAnswersToUser(@Param('id') userId: number){
+    const answers= await this.userService.getAnswersToUser(userId);
+    return answers;
+  }
+
+  
+  @Delete(':id/answers')
+  async clearAnswers(@Param('id') userId: number){
+    await this.userService.deleteAnswersToUser(userId);
+  }
+
+  */
 
 }
 

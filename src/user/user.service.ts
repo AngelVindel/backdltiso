@@ -5,10 +5,15 @@ import { Repository } from 'typeorm';
 import { User } from './user.interface';
 import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { RegularUser } from './regularU.entity';
-import { Answer } from 'src/answers/answers.entity';
 import { PDFDoc } from 'src/pdfDocument/document.entity';
 import { PDFDocumentService } from 'src/pdfDocument/document.service';
 import { DocumentPdfDto } from 'src/pdfDocument/dto/document-pdf.dto';
+import { AdminUser } from './adminU.entity';
+import { hash } from 'bcrypt';
+import { Question } from 'src/questions/questions.entity';
+import { QuestionsService } from 'src/questions/questions.service';
+import { questionData } from 'src/questions/dto/opQuestion.dto';
+
 
 @Injectable()
 export class UserService {
@@ -18,10 +23,16 @@ export class UserService {
     constructor(
         @InjectRepository(RegularUser)
         private regularUserRepository: Repository<RegularUser>,
-        @InjectRepository(Answer)
-        private answerRepository: Repository<Answer>,
         
-        private  pdfService: PDFDocumentService
+        @InjectRepository(Question)
+        private questionRepository: Repository<Question>,
+
+        @InjectRepository(AdminUser)
+        private adminRepository: Repository<AdminUser>,
+
+        private  pdfService: PDFDocumentService,
+
+        private questionService: QuestionsService
     ) {}
 
 
@@ -29,6 +40,30 @@ export class UserService {
     const newUser = this.regularUserRepository.create(createUserDto);
     return await this.regularUserRepository.save(newUser);
   }
+
+  async createAdminUser(): Promise<User> {
+    const adminExist = await this.adminRepository.findOne({ where: { username: 'admin' } });
+    if (adminExist) {
+        return null;  
+    }
+
+    const hashedPassword = await hash("admin10", 10);
+    const admin = this.adminRepository.create({
+        id: 1,
+        username: 'admin',
+        activated: true,
+        email: 'admin@gmail.com',
+        password: hashedPassword
+    });
+
+    await this.adminRepository.save(admin);
+    console.log('Admin user created successfully');
+    return admin;
+}
+
+async onModuleInit() {
+  await this.createAdminUser();
+}
 
   async getAllUsers(): Promise<User[]> {
     return await this.regularUserRepository.find();
@@ -78,74 +113,56 @@ export class UserService {
   }
 
 
-  async addAnswerToUser(userId: number, answerId: number) {
+  async postNewQuestion(userId: number, text: string){
+
     const user = await this.regularUserRepository.findOne({
       where: { id: userId },
-      relations: ['chosenAnswers', 'chosenAnswers.question']
+      relations: ['questions']
     });
-    const answerToAdd = await this.answerRepository.findOne({
-      where: { id: answerId },
-      relations: ['question']
-    });
-  
-    if (!user || !answerToAdd) {
-      throw new Error('User or Answer not found');
-    }
-  
-    const alreadySelected = user.chosenAnswers.some(answer => answer.id === answerId);
-    if (alreadySelected) {
-      throw new Error('User has already selected this answer');
-    }
-  
-    const questionId = answerToAdd.question.id;
-    const answerFromSameQuestion = user.chosenAnswers.some(answer => answer.question.id === questionId);
-    if (answerFromSameQuestion) {
-      throw new Error('User has already selected an answer from this question');
-    }
-  
-    user.chosenAnswers.push(answerToAdd);
-    await this.regularUserRepository.save(user);
-    return answerToAdd;
-  }
-
-  async deleteAnswersToUser(userId: number){
-    const user =await this.regularUserRepository.findOne({
-      where: { id: userId},
-      relations: [ 'chosenAnswers']
-    })
     if(!user){
-      throw new Error(`User with ID ${userId} not found`);
+      throw new Error('User not found');
+
+    }
+   const  questionDttt : questionData= await this.questionService.postNewQuestion(userId,text);
+console.log(questionDttt.answer);
+    //user.questions.push(question);
+    // this.regularUserRepository.save(user);
+    return questionDttt.answer;
+
   }
-  user.chosenAnswers=[];
-
-  await this.regularUserRepository.save(user);
-}
-
-
-
-  async getAnswersToUser(userId: number):Promise<any[]> {
+  async deleteQuestion(userId: number, questionId: number): Promise<void> {
     const user = await this.regularUserRepository.findOne({
-      where: { id:userId },
-      relations: ['chosenAnswers','chosenAnswers.question']
+      where: { id: userId },
+      relations: ['questions'],
     });
+
     if (!user) {
-      throw new Error(`User with ID ${userId} not found`);
+      throw new NotFoundException('User not found');
     }
 
-    const results = user.chosenAnswers.reduce((acc, answer) => {
-      const questionId = answer.question.id; 
-      if (!acc[questionId]) {
-          acc[questionId] = {
-              question: answer.question.text,
-              answers: []
-          };
-      }
-      acc[questionId].answers.push(answer.text);
-      return acc;
-  }, {});
+    const question = user.questions.find(q => q.id === questionId);
+    if (!question) {
+      throw new NotFoundException('Question not found');
+    }
 
-  return Object.values(results);
+    user.questions = user.questions.filter(q => q.id !== questionId);
+    await this.regularUserRepository.save(user);
+    await this.questionRepository.delete(questionId); 
   }
+  async getQuestionsByUserId(userId: number){
+    const user = await this.regularUserRepository.findOne({
+      where: { id: userId },
+      relations: ['questions']
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user.questions; 
+  }
+
+
 
 
   async getUserDocuments(userId: number): Promise<PDFDoc[]> {
@@ -260,6 +277,78 @@ if (!pdf) {
 
 }
 }
+
+  /*
+
+  async addAnswerToUser(userId: number, answerId: number) {
+    const user = await this.regularUserRepository.findOne({
+      where: { id: userId },
+      relations: ['chosenAnswers', 'chosenAnswers.question']
+    });
+    const answerToAdd = await this.answerRepository.findOne({
+      where: { id: answerId },
+      relations: ['question']
+    });
+  
+    if (!user || !answerToAdd) {
+      throw new Error('User or Answer not found');
+    }
+  
+    const alreadySelected = user.chosenAnswers.some(answer => answer.id === answerId);
+    if (alreadySelected) {
+      throw new Error('User has already selected this answer');
+    }
+  
+    const questionId = answerToAdd.question.id;
+    const answerFromSameQuestion = user.chosenAnswers.some(answer => answer.question.id === questionId);
+    if (answerFromSameQuestion) {
+      throw new Error('User has already selected an answer from this question');
+    }
+  
+    user.chosenAnswers.push(answerToAdd);
+    await this.regularUserRepository.save(user);
+    return answerToAdd;
+  }
+
+  async deleteAnswersToUser(userId: number){
+    const user =await this.regularUserRepository.findOne({
+      where: { id: userId},
+      relations: [ 'chosenAnswers']
+    })
+    if(!user){
+      throw new Error(`User with ID ${userId} not found`);
+  }
+  user.chosenAnswers=[];
+
+  await this.regularUserRepository.save(user);
+}
+
+
+
+  async getAnswersToUser(userId: number):Promise<any[]> {
+    const user = await this.regularUserRepository.findOne({
+      where: { id:userId },
+      relations: ['chosenAnswers','chosenAnswers.question']
+    });
+    if (!user) {
+      throw new Error(`User with ID ${userId} not found`);
+    }
+
+    const results = user.chosenAnswers.reduce((acc, answer) => {
+      const questionId = answer.question.id; 
+      if (!acc[questionId]) {
+          acc[questionId] = {
+              question: answer.question.text,
+              answers: []
+          };
+      }
+      acc[questionId].answers.push(answer.text);
+      return acc;
+  }, {});
+
+  return Object.values(results);
+  }
+  */
 
 
 
