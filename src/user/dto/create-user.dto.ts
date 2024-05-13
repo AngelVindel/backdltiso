@@ -21,6 +21,7 @@ export class CreateUserDto {
 
 
      activation_token: number;
+     premium: boolean;
 
   
   }

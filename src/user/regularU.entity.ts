@@ -41,7 +41,7 @@ export class RegularUser implements User {
   questions: Question[];
 
 
-  @Column()
+  @Column({type: 'boolean', default: false})
   premium: boolean;
 
 

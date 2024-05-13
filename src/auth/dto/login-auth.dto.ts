@@ -14,4 +14,5 @@ userType: string;
 @MaxLength(12)
 password:string;
 
+
 }

@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 // user.controller.ts
-import { Controller, Post, Body, Get, UseGuards, Delete, Param, Patch, HttpCode, HttpStatus, Put, Res } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Delete, Param, Patch, Put, Res } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserService } from './user.service';
@@ -16,10 +16,8 @@ export class UserController {
     return this.userService.signup(createUserDto);
   }
 
-
-  
-
- //@UseGuards(JwtAuthGuard)
+ 
+  @UseGuards(JwtAuthGuard)
   @Get()
   getAllUsers(){
       return this.userService.getAllUsers();
@@ -33,20 +31,18 @@ export class UserController {
 
 
 
-  @Get(":email")
-  async getEmailUsers(@Param("email") email: string){
+  @Post()
+  async getEmailUsers(@Body() body: { mail: string }){
       try {
-          const users =await this.userService.getEmailUsers(email);
+          const { mail } = body;
+          const users =await this.userService.getEmailUsers(mail);
           return users;
       } catch (error) {
           console.error('Error fetching users by email:', error);
       }
   }
   
-  @Post()
-  createUser(@Body() newUser: CreateUserDto){
-  return this.userService.createUser(newUser.username,newUser.email,newUser.password);
-  }
+ 
 
   @Delete(":id")
   deleteUser(@Param("id") id:number){

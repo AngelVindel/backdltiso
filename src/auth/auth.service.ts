@@ -38,7 +38,7 @@ export class AuthService {
         const hashedPassword = await hash(password, 10);
         const userRepository = this.getUserRepository(userType);
         const user = await userRepository.findOne({ where: { email } });
-
+        
         if (user) {
             throw new HttpException('Account already created', 401);
         }
@@ -57,19 +57,26 @@ export class AuthService {
         const { email, password, userType } = userDto;
         const userRepository = this.getUserRepository(userType);
         const user = await userRepository.findOne({ where: { email } });
-
+        
         if (!user) {
             throw new HttpException('User not found', 404);
         }
-
+        console.log(password);
+        
         const isPasswordValid = await compare(password, user.password);
         if (!isPasswordValid) {
             throw new HttpException('Invalid credentials', 401);
         }
+        
+        if(!user.activated && user instanceof RegularUser){
+            throw new HttpException('Account not activated', 403);
+        }
+        
 
         const payload = { id: user.id, email: user.email, userType: user instanceof AdminUser ? 'Admin': 'User'};
         const token = this.jwtService.sign(payload);
-
+        console.log({user,token});
+        
         return { user, token };
     }
 
@@ -96,5 +103,35 @@ export class AuthService {
 
         }
        
+    }
+
+    async comprobarKey(id: string): Promise<boolean> {
+        
+        const users = await this.regularUserRepository.find(); 
+        for (const user of users) {
+            const isMatch = await compare(user.email, id);
+            
+            if (isMatch) {
+                return true; 
+            }
+        }
+    
+        return false; 
+    }
+
+    async getPasswordKey(email: any): Promise<boolean> {
+        
+        const user = await this.regularUserRepository.findOne({ where:{email:email.email}  });
+        
+        if(user){
+            const passwordKey= await hash(user.email, 10);
+            const send=await this.emailService.sendPasswordKey(user.email, passwordKey);
+            if(send){
+                return true;
+            }else{
+                throw new HttpException('Error sending email', 500);
+            }
+        }
+        return false;
     }
 }
