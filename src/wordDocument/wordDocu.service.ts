@@ -1,15 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  AlignmentType,
-  Document,
-  Footer,
-  Header,
-  Packer,
-  PageNumber,
-  Paragraph,
-  TextRun,
-  ImageRun,
-} from 'docx';
+import { AlignmentType, Document, Footer, Header, Packer, PageNumber, Paragraph, TextRun, ImageRun} from 'docx';
 import * as fs from 'fs';
 import * as libre from 'libreoffice-convert';
 import * as path from 'path';

@@ -20,6 +20,7 @@ import { Question } from './questions/questions.entity';
 import { Answer } from './answers/answers.entity';
 import { PaymentModule } from './payment/payment.module';
 import { OpenSearchModule } from './opensearch/OpModule';
+import { WordModule } from './wordDocument/wordDocu.module';
 
 
 @Module({
@@ -28,7 +29,7 @@ import { OpenSearchModule } from './opensearch/OpModule';
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
-      type: 'mysql', 
+      type: 'mysql',
       host: 'localhost',
       port: 3306,
       username: 'root',
@@ -44,7 +45,7 @@ import { OpenSearchModule } from './opensearch/OpModule';
       AdminUser,
       PDFDoc,
       Ticket,
-      Question, 
+      Question,
       Answer,
     ]),
     AuthModule,
@@ -57,6 +58,7 @@ import { OpenSearchModule } from './opensearch/OpModule';
     EmailModule,
     OpenSearchModule,
     PaymentModule,
+    WordModule,
   ],
 
   controllers: [AppController],
