@@ -1,6 +1,7 @@
+/* eslint-disable prettier/prettier */
 // mysql.ts
 import { Injectable } from '@nestjs/common';
-import * as mysql from 'mysql';
+import * as mysql from 'mysql2';
 
 @Injectable()
 export class MySQLService {
@@ -14,7 +15,7 @@ export class MySQLService {
     this.connection = mysql.createConnection({
       host: 'localhost',
       user: 'root',
-      password: '',
+      password: '123abc',
       database: 'prueba2',
     });
 

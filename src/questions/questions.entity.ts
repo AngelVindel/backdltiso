@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { RegularUser } from "src/user/regularU.entity";
 import { Column, Entity, ManyToOne,  PrimaryGeneratedColumn } from "typeorm";
 

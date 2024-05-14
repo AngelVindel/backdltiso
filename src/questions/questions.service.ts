@@ -1,10 +1,9 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from "@nestjs/common";
 import { Question } from "./questions.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
 import axios, { AxiosError } from "axios";
 import { questionData } from "./dto/opQuestion.dto";
 
@@ -85,7 +84,7 @@ export class QuestionsService{
             inputs: {},
             query: text ,
             response_mode: 'blocking',
-            user: 'AdrianDLTCode'
+            user: userId
         };
         const headers = {
             Authorization: `Bearer ${apiKey}`,

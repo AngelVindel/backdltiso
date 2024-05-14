@@ -1,8 +1,8 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Answer } from "./answers.entity";
-import { In, Repository } from "typeorm";
-import { AnswerDto } from "./dto/answers.dto";
+import { Repository } from "typeorm";
 import { Question } from '../questions/questions.entity';
 
 @Injectable()
@@ -16,12 +16,12 @@ export class AnswersService{
     ){ }
 /*
     async getAllAnswers():Promise<Answer[]>{
-      const answers= await this.answersRepository.find();
+      const answers= await this.answersRepository.find(); 
       return answers;
-    }
+    } s
     async getAnswersByQuestion(questionId: number): Promise<Answer[]> {
         const answers = await this.answersRepository.find({
-          where: { question: { id: questionId} },
+          where: { question: { id: questionId} }, 
           relations: ["question"]  
         });
     
@@ -38,7 +38,7 @@ export class AnswersService{
           text :answerDto.text,
           question: question
         })
-
+ s
       const answer= await this.answersRepository.save(newAnswer);
         
 
