@@ -28,11 +28,11 @@ import { OpenSearchModule } from './opensearch/OpModule';
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'mysql', 
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: '1234abc',
+      password: '123abc',
       database: 'prueba2',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
 
@@ -44,7 +44,7 @@ import { OpenSearchModule } from './opensearch/OpModule';
       AdminUser,
       PDFDoc,
       Ticket,
-      Question,
+      Question, 
       Answer,
     ]),
     AuthModule,

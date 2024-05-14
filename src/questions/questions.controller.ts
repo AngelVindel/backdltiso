@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post } from "@nestjs/common";
+/* eslint-disable prettier/prettier */
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from "@nestjs/common";
 import { QuestionsService } from "./questions.service";
 import { QuestionDTO } from "./dto/questions.dto";
 

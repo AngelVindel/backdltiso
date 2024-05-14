@@ -49,6 +49,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 123abc # Cambia esto por tu contraseña de root
       MYSQL_DATABASE: prueba2 # Nombre de la base de datos
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: '1234abc'
     ports:
       - "3306:3306" # Mapeo de puerto local al puerto del contenedor (opcional)
     volumes:
