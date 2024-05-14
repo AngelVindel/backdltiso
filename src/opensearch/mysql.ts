@@ -31,7 +31,7 @@ export class MySQLService {
 
   private executeQuery() {
     // Example query to select data from a table named 'regular_user'
-    const query = 'SELECT * FROM regular_user';
+    const query = 'SELECT * FROM admin_user';
 
     this.connection.query(query, (error, results, fields) => {
       if (error) {
