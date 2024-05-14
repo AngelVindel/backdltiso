@@ -2,7 +2,7 @@
 import { RegularUser } from "src/user/regularU.entity";
 import { Column, Entity, ManyToOne,  PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity() 
 export class Question {
 
     @PrimaryGeneratedColumn()
@@ -13,7 +13,7 @@ export class Question {
 
 
     @ManyToOne(()=>RegularUser,user=>user.questions)
-    userId: number
+    email: string
 
    /* @OneToOne(() => Answer, (answer) => answer.question,
     {
@@ -21,5 +21,6 @@ export class Question {
     })
     answer: Answer;
 
-    */
+    */ 
 }
+ 

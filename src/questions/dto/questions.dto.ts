@@ -1,8 +1,8 @@
-import { Answer } from "src/answers/answers.entity";
+/* eslint-disable prettier/prettier */
 
 export class  QuestionDTO{
 
-    userID: number
+    email: string
 
     text: string;
 

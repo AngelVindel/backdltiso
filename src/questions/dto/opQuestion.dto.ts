@@ -5,7 +5,7 @@
 
 export class questionData {
     questionID: number
-    userId: number
+    email: string
     question: string
     answer: string
 };

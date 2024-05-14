@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from "@nestjs/common";
+import { Body, Controller, Post } from "@nestjs/common";
 import { QuestionsService } from "./questions.service";
 import { QuestionDTO } from "./dto/questions.dto";
 
@@ -9,29 +9,10 @@ export class QuestionsController{
 
     constructor(private readonly questionsService: QuestionsService) {}
 
-    @Get()
-    getAllQuestions(){
-        return this.questionsService.getAllQuestions();
-    }
 
-  
-
- @Get(':id')
-  async getQuestionById(@Param('id') id: number) {
-    const question = await this.questionsService.getQuestionById(id);
-    return question;
-  }
-
-  @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  async deleteQuestion(@Param('id') id: number) {
-    await this.questionsService.deleteQuestion(id);
-
-  }
-
-  @Post()
+  @Post('newQuestion')
   async postNewQuestion(@Body() dto: QuestionDTO){
-    const question= await this.questionsService.postNewQuestion(dto.userID,dto.text);
+    const question= await this.questionsService.postNewQuestion(dto.email,dto.text);
     return question;
   }
 
