@@ -75,40 +75,43 @@ export class QuestionsService{
     }
     */
     
-      async postNewQuestion(userId:number, text: string) : Promise<any> {
+      async postNewQuestion(email:string, text: string) : Promise<any> {
         const apiUrl = "https://secretary-drives-baptist-vulnerability.trycloudflare.com/v1/chat-messages"; 
         const apiKey = "app-SZg44qKsRuhTZ2YWGWKBHekY"; 
-
         try{
           const data = {
             inputs: {},
             query: text ,
             response_mode: 'blocking',
-            user: userId
+            user: email
         };
         const headers = {
             Authorization: `Bearer ${apiKey}`,
             'Content-Type': 'application/json'
         };
         const response = await axios.post(`${apiUrl}`, data, { headers });
-                const generatedText = response.data.answer;
-                const question = await this.questionRepository.create({
-                  userId,
-                  text,
-              });
+        
+        const generatedText = response.data.answer;
+        const question = await this.questionRepository.create({
+          email,
+          text,
+        });
               await this.questionRepository.save(question);
                
+              
+              
 
               //------------------------Almacenar en OpenSearch-----------------------
+              //Falta guardar esto en openSearch o los datos que precise
                 const questionData:questionData = {
                   questionID: question.id,
-                  userId: userId,
+                  email: email,
                   question: text,
                   answer: generatedText
               };
   
                             
-              return  questionData;    
+              return  generatedText;    
                 } catch (error) {
           if (axios.isAxiosError(error)) {
               const axiosError = error as AxiosError;

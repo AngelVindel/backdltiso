@@ -57,6 +57,7 @@ export class AuthService {
         const { email, password, userType } = userDto;
         const userRepository = this.getUserRepository(userType);
         const user = await userRepository.findOne({ where: { email } });
+        console.log(user, email);
         
         if (!user) {
             throw new HttpException('User not found', 404);

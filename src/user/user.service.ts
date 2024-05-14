@@ -9,10 +9,8 @@ import { PDFDoc } from 'src/pdfDocument/document.entity';
 import { PDFDocumentService } from 'src/pdfDocument/document.service';
 import { DocumentPdfDto } from 'src/pdfDocument/dto/document-pdf.dto';
 import { AdminUser } from './adminU.entity';
-import { hash } from 'bcrypt';
 import { Question } from 'src/questions/questions.entity';
 import { QuestionsService } from 'src/questions/questions.service';
-import { questionData } from 'src/questions/dto/opQuestion.dto';
 
 
 @Injectable()
@@ -31,39 +29,15 @@ export class UserService {
         private adminRepository: Repository<AdminUser>,
 
         private  pdfService: PDFDocumentService,
-
+ 
         private questionService: QuestionsService
-    ) {}
+    ) {} 
 
 
   async signup(createUserDto: CreateUserDto): Promise<User> {
     const newUser = this.regularUserRepository.create(createUserDto);
     return await this.regularUserRepository.save(newUser);
   }
-
-  async createAdminUser(): Promise<User> {
-    const adminExist = await this.adminRepository.findOne({ where: { username: 'admin' } });
-    if (adminExist) {
-        return null;  
-    }
-
-    const hashedPassword = await hash("admin10", 10);
-    const admin = this.adminRepository.create({
-        id: 1,
-        username: 'admin',
-        activated: true,
-        email: 'admin@gmail.com',
-        password: hashedPassword
-    });
-
-    await this.adminRepository.save(admin);
-    console.log('Admin user created successfully');
-    return admin;
-}
-
-async onModuleInit() {
-  await this.createAdminUser();
-}
 
   async getAllUsers(): Promise<User[]> {
     return await this.regularUserRepository.find();
@@ -112,7 +86,7 @@ async onModuleInit() {
     return user;
   }
 
-
+/*
   async postNewQuestion(userId: number, text: string){
 
     const user = await this.regularUserRepository.findOne({
@@ -129,7 +103,7 @@ console.log(questionDttt.answer);
     // this.regularUserRepository.save(user);
     return questionDttt.answer;
 
-  }
+  }*/
   async deleteQuestion(userId: number, questionId: number): Promise<void> {
     const user = await this.regularUserRepository.findOne({
       where: { id: userId },

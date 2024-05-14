@@ -1,9 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity,NumericType, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity,NumericType, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.interface';
 import { PDFDoc } from 'src/pdfDocument/document.entity';
 import { Ticket } from 'src/ticket/ticket.entity';
-import { Answer } from 'src/answers/answers.entity';
 import { Question } from 'src/questions/questions.entity';
 
 
@@ -37,7 +36,7 @@ export class RegularUser implements User {
   tickets: Ticket[];
 
   
-  @OneToMany(()=>Question, (question)=>question.userId, {cascade: ['remove','insert']})
+  @OneToMany(()=>Question, (question)=>question.email, {cascade: ['remove','insert']})
   questions: Question[];
 
 

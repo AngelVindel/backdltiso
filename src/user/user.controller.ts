@@ -53,12 +53,12 @@ export class UserController {
   updateUser(@Param("id")id: number, @Body() updatedFields: UpdateUserDto){
       this.userService.updateUser(id,updatedFields);
   }
-
+/*
   @Post(":id/question")
   async postNewQuestion(@Param("id") id: number,@Body("text") text: string){
     const repl= await this.userService.postNewQuestion(id,text);
     return repl;
-  }
+  }*/
 
   @Post(":id/question/:idQ")
   async deleteQuestion(@Param("id") id: number,@Param("idQ") ID_question: number){
