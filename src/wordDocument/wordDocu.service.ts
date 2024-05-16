@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AlignmentType, Document, Footer, Header, Packer, PageNumber, Paragraph, TextRun, ImageRun, Table, TableCell, TableRow, WidthType,BorderStyle } from 'docx';
+import { AlignmentType, Document, Footer, Header, Packer, PageNumber, Paragraph, TextRun, ImageRun, Table, TableCell, TableRow, WidthType,BorderStyle,IParagraphOptions } from 'docx';
 import * as fs from 'fs';
 import * as libre from 'libreoffice-convert';
 import * as path from 'path';
@@ -48,8 +48,14 @@ export class WordService {
               alignment: AlignmentType.CENTER,
             }),
            
+       
            
             this.createChangeLogTable(jsonData),
+
+            new Paragraph({
+              children: [new TextRun('')],
+              pageBreakBefore: true,
+            }),
 
             new Paragraph({
               text: 'Lista de distribución',
@@ -57,7 +63,75 @@ export class WordService {
               alignment: AlignmentType.CENTER,
             }),
             this.createDistributionListTable(jsonData),
-          ],
+            new Paragraph({
+              text: 'Registro de cambios del documento',
+              spacing: { before: 400, after: 200 },
+              alignment: AlignmentType.CENTER,
+            }),
+            
+            this.createChangesDocument(jsonData),
+            new Paragraph({
+              children: [new TextRun('')],
+              pageBreakBefore: true,
+            }),
+            ...this.createSection('1. Introducción', [
+              'La Política de Seguridad de la Información (en adelante, Política) persigue la adopción de un conjunto de medidas destinadas a preservar la confidencialidad, integridad y disponibilidad de la información, que constituyen los tres componentes básicos de la seguridad de la información, y tiene como objetivo establecer los requisitos para proteger la información, los equipos y servicios tecnológicos que sirven de soporte para la mayoría de los procesos de negocio de NOMBRE_EMPRESA.',
+              'Esta Política de Seguridad de la Información es la pieza angular por la que se rige la normativa de seguridad de NOMBRE_EMPRESA, esta normativa la conforman los requerimientos, directrices y procedimientos que debe seguir NOMBRE_EMPRESA en materia de seguridad.',
+              'En la actualidad, las tecnologías de la información se enfrentan a un creciente número de amenazas, lo cual requiere de un esfuerzo constante por adaptarse y gestionar los riesgos introducidos por estas.',
+            ], jsonData.nombreEmpresa),
+            ...this.createSection('2. Objetivo', [
+              'El objetivo principal de la presente Política de alto nivel es definir los principios y las reglas básicas para la gestión de la seguridad de la información. El fin último es lograr que NOMBRE_EMPRESA garantice la seguridad de la información y minimicen los riesgos de naturaleza no financiera derivados de un impacto provocado por una gestión ineficaz de la misma.',
+            ], jsonData.nombreEmpresa),
+            ...this.createSection('3. Alcance de la política', [
+              'Esta política de seguridad de la información es aplicable a todos los empleados, contratistas, y terceros que tengan acceso, manejen, procesen o almacenen activos de información pertenecientes a NOMBRE_EMPRESA. Se extiende específicamente a cualquier entidad externa que trabaje en nombre de NOMBRE_EMPRESA, incluyendo proveedores de servicios, socios comerciales y consultores que puedan tener acceso a sistemas de información, datos sensibles o infraestructura crítica de la organización.', 
+              'Es imperativo que todos los terceros comprometidos con NOMBRE_EMPRESA cumplan con esta política y sus procedimientos asociados, asegurando así la integridad, confidencialidad y disponibilidad de nuestra información corporativa y personal de clientes, conforme a los estándares establecidos por la norma ISO/IEC 27001 y otros requisitos regulatorios y legales pertinentes.', 
+              'Su vigencia se inicia en el día de su firma y aprobación.'
+            ], jsonData.nombreEmpresa),
+
+            new Paragraph({
+              children: [new TextRun('')],
+              pageBreakBefore: true,
+            }),
+            ...this.createSection('4. Roles y responsabilidades', [
+              `La Dirección de NOMBRE_EMPRESA, consciente de la importancia de la seguridad de la información para llevar a cabo con éxito sus objetivos de negocio, se compromete a:`,
+              {
+                text: 'Promover en la organización las funciones y responsabilidades en el ámbito de seguridad de la información.',
+                bullet: {
+                  level: 0,
+                },
+              },
+              {
+                text: 'Facilitar los recursos adecuados para alcanzar los objetivos de seguridad de la información.',
+                bullet: {
+                  level: 0,
+                },
+              },
+              {
+                text: 'Impulsar la divulgación y la concienciación de la Política de Seguridad de la Información entre los empleados de NOMBRE_EMPRESA.',
+                bullet: {
+                  level: 0,
+                },
+              },
+              {
+                text: 'Exigir el cumplimiento de la Política, de la legislación vigente y de los requisitos de los reguladores en el ámbito de la seguridad de la información.',
+                bullet: {
+                  level: 0,
+                },
+              },
+              {
+                text: 'Considerar los riesgos de seguridad de la información en la toma de decisiones.',
+                bullet: {
+                  level: 0,
+                },
+              },
+              `NOMBRE_EMPRESA se compromete a velar por la Seguridad de todos los activos bajo su responsabilidad mediante las medidas que sean necesarias, siempre garantizando el cumplimiento de las distintas normativas y leyes aplicables.`,
+              `NOMBRE_EMPRESA deberá nombrar una figura responsable de definir, implementar y monitorizar las medidas de ciberseguridad y seguridad de la información. Esta figura deberá establecerse desde un entorno de gobierno y gestión, será independiente de cualquier área organizativa reportando al órgano de gobierno o en su defecto a su comisión de auditoría y tendrá entre sus funciones y responsabilidades el aplicar principios de segregación de funciones y el contacto con las autoridades y grupos de interés especiales en materia de seguridad de la información.`,
+              `La figura asumirá las funciones que, con carácter general, sean atribuidas por la presente Política de Seguridad de la Información a dicha figura.`,
+              `Será su responsabilidad desarrollar y mantener la Política, asegurándose que ésta sea adecuada y oportuna según evolucione tanto la empresa.`,
+            ], jsonData.nombreEmpresa),
+        
+            ],
+
         },
         {
           headers: {
@@ -364,6 +438,159 @@ export class WordService {
     });
   }
   
+  createChangesDocument(data: DocuDto): Table {
+    return new Table({
+      rows: [
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: 'Versión', bold: true })],
+                  alignment: AlignmentType.CENTER,
+                }),
+              ],
+              shading: {
+                fill: 'D9E2F3', 
+              },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: 'Fecha', bold: true })],
+                  alignment: AlignmentType.CENTER,
+                }),
+              ],
+              shading: {
+                fill: 'D9E2F3', 
+              },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: 'Autor', bold: true })],
+                  alignment: AlignmentType.CENTER,
+                }),
+              ],
+              shading: {
+                fill: 'D9E2F3',
+              },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: 'Aprobado', bold: true })],
+                  alignment: AlignmentType.CENTER,
+                }),
+              ],
+              shading: {
+                fill: 'D9E2F3', 
+              },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: 'Descripción', bold: true })],
+                  alignment: AlignmentType.CENTER,
+                }),
+              ],
+              shading: {
+                fill: 'D9E2F3', 
+              },
+            }),
+          ],
+        }),
+
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph('1.0')],
+            }),
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: '99/99/9999', highlight: 'yellow' })],
+                  alignment: AlignmentType.CENTER,
+                }),
+              ],
+            }),
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: data.nombreEmpresa, highlight: 'yellow' })],
+                  alignment: AlignmentType.CENTER,
+                }),
+              ],
+            }),
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: 'Comité Seguridad', highlight: 'yellow' })],
+                  alignment: AlignmentType.CENTER,
+                }),
+              ],
+            }),
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: 'Documento original' })],
+                }),
+              ],
+            }),
+          ],
+        }),
+      ],
+      width: {
+        size: 100,
+        type: WidthType.PERCENTAGE,
+      },
+    
+    });
+  }
+  createSection(title: string, content: (string | IParagraphOptions)[], nombreEmpresa: string): Paragraph[] {
+    const sectionTitle = new Paragraph({
+      children: [
+        new TextRun({
+          text: title,
+          bold: true,
+          size: 28, // 14pt
+          color: '808080', // Color grisáceo
+        }),
+      ],
+      spacing: {
+        after: 200,
+      },
+      alignment: AlignmentType.LEFT,
+      border: {
+        bottom: {
+          color: '808080', // Color grisáceo
+          space: 1,
+          style: BorderStyle.SINGLE,
+          size: 6, // 0.5pt
+        },
+      },
+    });
   
+    const sectionContent = content.map(item => {
+      if (typeof item === 'string') {
+        return new Paragraph({
+          text: item.replace(/NOMBRE_EMPRESA/g, nombreEmpresa), // Reemplazar NOMBRE_EMPRESA con el nombre de la empresa
+          spacing: {
+            after: 200,
+          },
+          alignment: AlignmentType.JUSTIFIED,
+        });
+      } else {
+        const updatedItem = { ...item };
+        if (updatedItem.text) {
+          updatedItem.text = updatedItem.text.replace(/NOMBRE_EMPRESA/g, nombreEmpresa);
+        }
+        return new Paragraph(updatedItem);
+      }
+    });
+  
+    return [sectionTitle, ...sectionContent];
+  }
 }
+
   
