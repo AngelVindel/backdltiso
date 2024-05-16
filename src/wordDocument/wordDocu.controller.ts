@@ -2,29 +2,31 @@ import { Controller, Post, Body, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { WordService } from './wordDocu.service';
 import * as fs from 'fs';
+import { DocGeneratorService } from './wordDocu2.service';
+import { DocuDto } from './dto/wordDocu.dto';
 
 @Controller('word')
 export class WordController {
   private createdWordFileName: string = '';
 
-  constructor(private readonly wordService: WordService) {}
+  constructor(private readonly wordService: WordService  ) {}
 
   @Post('create')
   async createWordDocument(
-    @Body() createData: any,
+    @Body() createData: DocuDto,
     @Res() res: Response,
   ): Promise<void> {
     try {
       const { wordBuffer, fileName } =
         await this.wordService.generateWordDocumentFromJSON(createData);
-      const filePath = `src/Documentos/${fileName}.docx`; // Corrección: Agregar comillas invertidas para interpolación de cadenas
+      const filePath = `src/Documentos/${fileName}.docx`; 
       fs.writeFileSync(filePath, wordBuffer);
 
       this.createdWordFileName = fileName;
 
       res.send('Word document created successfully.');
     } catch (error) {
-      res.status(500).send(`Error creating Word document: ${error.message}`); // Corrección: Agregar comillas invertidas para interpolación de cadenas
+      res.status(500).send(`Error creating Word document: ${error.message}`);
     }
   }
 

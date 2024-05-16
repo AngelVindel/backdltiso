@@ -41,6 +41,8 @@
     "chart.js": "^4.4.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "docx": "^8.5.0",
+    "libreoffice-convert": "^1.5.1",
     "mysql2": "^3.9.7",
     "nest-resend": "^2.0.0",
     "nestjs-opensearch": "^0.3.2",

@@ -1,25 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { AlignmentType, Document, Footer, Header, Packer, PageNumber, Paragraph, TextRun, ImageRun} from 'docx';
+import { AlignmentType, Document, Footer, Header, Packer, PageNumber, Paragraph, TextRun, ImageRun, Table, TableCell, TableRow, WidthType,BorderStyle } from 'docx';
 import * as fs from 'fs';
 import * as libre from 'libreoffice-convert';
 import * as path from 'path';
+import { DocuDto } from './dto/wordDocu.dto';
 
 @Injectable()
 export class WordService {
-  async generateWordDocumentFromJSON(
-    jsonData: any,
-  ): Promise<{ wordBuffer: Buffer; fileName: string }> {
-    if (
-      !jsonData ||
-      !jsonData.titulo_principal ||
-      !jsonData.preguntas_respuestas
-    ) {
-      throw new Error(
-        'The provided JSON does not have the expected structure.',
-      );
+  async generateWordDocumentFromJSON(jsonData: DocuDto): Promise<{ wordBuffer: Buffer; fileName: string }> {
+    if (!jsonData) {
+      throw new Error('The provided JSON does not have the expected structure.');
     }
-
-    const { titulo_principal, preguntas_respuestas } = jsonData;
 
     const doc = new Document({
       sections: [
@@ -34,9 +25,9 @@ export class WordService {
             new Paragraph({
               children: [
                 new TextRun({
-                  text: titulo_principal,
+                  text: jsonData.nombreEmpresa,
                   bold: true,
-                  size: `20pt`,
+                  size: '20pt',
                 }),
               ],
               spacing: {
@@ -56,6 +47,16 @@ export class WordService {
               ],
               alignment: AlignmentType.CENTER,
             }),
+           
+           
+            this.createChangeLogTable(jsonData),
+
+            new Paragraph({
+              text: 'Lista de distribución',
+              spacing: { before: 400, after: 200 },
+              alignment: AlignmentType.CENTER,
+            }),
+            this.createDistributionListTable(jsonData),
           ],
         },
         {
@@ -66,36 +67,14 @@ export class WordService {
             default: this.createFooter(),
           },
           children: [
-            ...preguntas_respuestas.flatMap(({ pregunta, respuesta }) => [
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `Question: ${pregunta}`,
-                    bold: true,
-                    size: `12pt`,
-                  }),
-                ],
-                spacing: {
-                  before: 250,
-                  after: 50,
-                },
-              }),
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `Answer: ${respuesta}`,
-                    size: `11pt`,
-                  }),
-                ],
-              }),
-            ]),
           ],
         },
       ],
     });
+
     const buffer = await Packer.toBuffer(doc);
 
-    const fileName = titulo_principal.replace(/[^a-zA-Z0-9]/g, '_');
+    const fileName = jsonData.nombreEmpresa.replace(/[^a-zA-Z0-9]/g, '_');
 
     return { wordBuffer: buffer, fileName };
   }
@@ -108,7 +87,7 @@ export class WordService {
           children: [
             new TextRun({
               text: 'USO INTERNO',
-              size: `11pt`,
+              size: '11pt',
             }),
           ],
         }),
@@ -142,7 +121,7 @@ export class WordService {
           children: [
             new TextRun({
               text: 'NUM-REFERENCIA',
-              size: `8pt`,
+              size: '8pt',
             }),
           ],
           alignment: AlignmentType.RIGHT,
@@ -158,7 +137,7 @@ export class WordService {
             }),
             new TextRun({
               text: '\t\t\t\t\t            Política del Sistema de Gestión de la Seguridad de la Información',
-              size: `8pt`,
+              size: '8pt',
             }),
           ],
           alignment: AlignmentType.LEFT,
@@ -167,7 +146,7 @@ export class WordService {
           children: [
             new TextRun({
               text: 'Uso Interno',
-              size: `8pt`,
+              size: '8pt',
             }),
           ],
           alignment: AlignmentType.RIGHT,
@@ -206,4 +185,185 @@ export class WordService {
       });
     });
   }
+
+  createChangeLogTable(data: DocuDto): Table {
+    return new Table({
+      rows: [
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph('Nombre del documento')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+            new TableCell({
+              children: [new Paragraph(data.nombreEmpresa || '')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph('Referencia')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+            new TableCell({
+              children: [new Paragraph('XXXXXXXXXX')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph('Versión')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+            new TableCell({
+              children: [new Paragraph('1.0')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph('Realizado por')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+            new TableCell({
+              children: [new Paragraph(data.realizadoPor || '')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph('Revisado por')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+            new TableCell({
+              children: [new Paragraph(data.revisadoPor || '')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph('Aprobado por')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+            new TableCell({
+              children: [new Paragraph(data.aprobadoPor || '')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph('Fecha')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+            new TableCell({
+              children: [new Paragraph('99/99/9999')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph('Estado')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+            new TableCell({
+              children: [new Paragraph(data.estado || '')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph('Clasificación')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+            new TableCell({
+              children: [new Paragraph('Uso interno')],
+              width: { size: 50, type: WidthType.AUTO },
+            }),
+          ],
+        }),
+      ],
+
+      width: {
+        size: 100,
+        type: WidthType.PERCENTAGE,
+      },
+
+     
+    });
+  }
+  createDistributionListTable(data: DocuDto): Table {
+    return new Table({
+      rows: [
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: 'Áreas / Departamentos',
+                      bold: true,
+                    }),
+                  ],
+                  alignment: AlignmentType.CENTER,
+                }),
+              ],
+              width: { size: 100, type: WidthType.PERCENTAGE },
+              shading: {
+                fill: 'D9E2F3', // Fondo azul claro
+              },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: data.nombreEmpresa,
+                    }),
+                  ],
+                  alignment: AlignmentType.CENTER,
+                }),
+              ],
+              width: { size: 100, type: WidthType.PERCENTAGE },
+            }),
+          ],
+        }),
+      ],
+      width: {
+        size: 100,
+        type: WidthType.PERCENTAGE,
+      },
+      borders: {
+        top: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
+        bottom: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
+        left: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
+        right: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
+        insideHorizontal: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
+        insideVertical: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
+      },
+    });
+  }
+  
+  
 }
+  
