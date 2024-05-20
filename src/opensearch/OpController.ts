@@ -190,6 +190,20 @@ async indexar(@Param('indice') indice: string) {
       throw error;
     }
   } 
+
+  @Get('/questions')
+  @ApiOperation({ summary: 'Buscar preguntas por email en OpenSearch' })
+  async searchQuestionsByEmail(@Query('email') email: string) {
+    try {
+      // Asegúrate de usar el índice correcto donde se almacenan las preguntas
+      const index = 'questionai';
+      const result = await this.openSearchService.searchQuestionsByEmail(index, email);
+      return result;
+    } catch (error) {
+      console.error(`Error al buscar preguntas por email en OpenSearch:`, error);
+      throw error;
+    }
+  }
 }
 
 
