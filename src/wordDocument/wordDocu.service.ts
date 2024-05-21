@@ -509,23 +509,23 @@ export class WordService {
   `NOMBRE_EMPRESA deberá gestionar adecuadamente el ciclo de vida de la información, de manera que se puedan evitar usos incorrectos durante cualquiera de las fases.`,
   `El ciclo de vida de un activo de información consta de las siguientes fases:`,
   {
-    text: '1. Creación o recolección: esta fase se ocupa de los registros en su punto de origen. Esto podría incluir su creación por un miembro de NOMBRE_EMPRESA o la recepción de información desde una fuente externa. Incluye correspondencia, formularios, informes, dibujos, entrada/salida del ordenador u otras fuentes.',
+    text: '   1. Creación o recolección: esta fase se ocupa de los registros en su punto de origen. Esto podría incluir su creación por un miembro de NOMBRE_EMPRESA o la recepción de información desde una fuente externa. Incluye correspondencia, formularios, informes, dibujos, entrada/salida del ordenador u otras fuentes.',
     alignment: AlignmentType.JUSTIFIED,
   },
   {
-    text: '2. Distribución: es el proceso de gestión de la información una vez que se ha creado o recibido. Esto incluye tanto la distribución interna como externa, ya que la información que sale de NOMBRE_EMPRESA se convierte en un registro de una transacción con terceros.',
+    text: '   2. Distribución: es el proceso de gestión de la información una vez que se ha creado o recibido. Esto incluye tanto la distribución interna como externa, ya que la información que sale de NOMBRE_EMPRESA se convierte en un registro de una transacción con terceros.',
     alignment: AlignmentType.JUSTIFIED,
   },
   {
-    text: '3. Uso o acceso: se lleva a cabo después de que la información se distribuya internamente, y puede generar decisiones de negocio, generar nueva información, o servir para otros fines. Detalla el conjunto de usuarios autorizados por NOMBRE_EMPRESA a acceder a la información.',
+    text: '   3. Uso o acceso: se lleva a cabo después de que la información se distribuya internamente, y puede generar decisiones de negocio, generar nueva información, o servir para otros fines. Detalla el conjunto de usuarios autorizados por NOMBRE_EMPRESA a acceder a la información.',
     alignment: AlignmentType.JUSTIFIED,
   },
   {
-    text: '4. Almacenamiento: es el proceso de organizar la información en una secuencia predeterminada y la creación de un sistema de gestión para garantizar su utilidad dentro de NOMBRE_EMPRESA. Si no se establece un método de almacenamiento para la presentación de información, su recuperación y uso resultará casi imposible.',
+    text: '   4. Almacenamiento: es el proceso de organizar la información en una secuencia predeterminada y la creación de un sistema de gestión para garantizar su utilidad dentro de NOMBRE_EMPRESA. Si no se establece un método de almacenamiento para la presentación de información, su recuperación y uso resultará casi imposible.',
     alignment: AlignmentType.JUSTIFIED,
   },
   {
-    text: '5. Destrucción: establece las prácticas para la eliminación de la información que ha cumplido los períodos de retención definidos y la información que ha dejado de ser útil para NOMBRE_EMPRESA. Los períodos de conservación de la información deberán estar basados en los requisitos normativos, legales y jurídicos que afectan a NOMBRE_EMPRESA. También deberán tenerse en cuenta las necesidades de negocio. Si ninguno de estos requisitos exige que la información sea conservada, deberá ser desechada mediante medios que garanticen su confidencialidad durante el proceso de destrucción.',
+    text: '   5. Destrucción: establece las prácticas para la eliminación de la información que ha cumplido los períodos de retención definidos y la información que ha dejado de ser útil para NOMBRE_EMPRESA. Los períodos de conservación de la información deberán estar basados en los requisitos normativos, legales y jurídicos que afectan a NOMBRE_EMPRESA. También deberán tenerse en cuenta las necesidades de negocio. Si ninguno de estos requisitos exige que la información sea conservada, deberá ser desechada mediante medios que garanticen su confidencialidad durante el proceso de destrucción.',
     alignment: AlignmentType.JUSTIFIED,
   },
   `NOMBRE_EMPRESA deberá identificar medidas de seguridad de acuerdo con la presente Política para asegurar la correcta gestión del ciclo de vida de los activos.`,
@@ -550,11 +550,11 @@ export class WordService {
 ...this.createSection('9.1. Tipos de información', [
   `NOMBRE_EMPRESA deberá clasificar la información en función del soporte en el que está siendo utilizado:`,
   {
-    text: 'a) Soportes lógicos: información que esté siendo utilizada mediante medios ofimáticos, correo electrónico o sistemas de información desarrollados a medida o adquiridos a un tercero.',
+    text: '   a)  Soportes lógicos: información que esté siendo utilizada mediante medios ofimáticos, correo electrónico o sistemas de información desarrollados a medida o adquiridos a un tercero.',
     alignment: AlignmentType.JUSTIFIED,
   },
   {
-    text: 'b) Soportes físicos: información que esté en papel, soportes magnéticos como USBs, DVDs, etcétera.',
+    text: '   b)  Soportes físicos: información que esté en papel, soportes magnéticos como USBs, DVDs, etcétera.',
     alignment: AlignmentType.JUSTIFIED,
   },
 ], jsonData.nombreEmpresa),
@@ -773,19 +773,19 @@ export class WordService {
   `Los servicios de conexión al trabajo en remoto estarán destinados exclusivamente a personal de NOMBRE_EMPRESA. Su uso por parte de cualquier otro tipo de colaborador requerirá autorización del responsable de seguridad.`,
   `El equipo utilizado para la conexión en la modalidad de trabajo en remoto podrá ser propiedad del empleado o proporcionado por la empresa. En cualquier caso, es obligatorio que el equipo cumpla con los siguientes requerimientos de seguridad:`,
   {
-    text: 'a) Capacidad de realizar una conexión a través de una VPN.',
+    text: '   a)  Capacidad de realizar una conexión a través de una VPN.',
     alignment: AlignmentType.JUSTIFIED,
   },
   {
-    text: 'b) Disponer de un sistema operativo actualizado con los últimos parches y actualizaciones de seguridad.',
+    text: '   b)  Disponer de un sistema operativo actualizado con los últimos parches y actualizaciones de seguridad.',
     alignment: AlignmentType.JUSTIFIED,
   },
   {
-    text: 'c) Software antivirus instalado.',
+    text: '   c)  Software antivirus instalado.',
     alignment: AlignmentType.JUSTIFIED,
   },
   {
-    text: 'd) Software de firewall/cortafuegos personal instalado.',
+    text: '   d)  Software de firewall/cortafuegos personal instalado.',
     alignment: AlignmentType.JUSTIFIED,
   },
   `El trabajo remoto / teletrabajo desde un equipo propio del trabajador requerirá de todas las medidas de seguridad oportunas, con el objetivo de que el trabajo en remoto no suponga una amenaza para la seguridad de la información de NOMBRE_EMPRESA. Además, se podrán establecer medidas de seguridad adicionales a las existentes para asegurar de una manera más fiable la conexión segura en remoto.`,
@@ -797,15 +797,15 @@ export class WordService {
   `NOMBRE_EMPRESA deberá definir e implementar un adecuado sistema de gestión del ciclo de vida de la identidad. La identidad es el conjunto de características que identifican de forma unívoca a toda persona con acceso físico o lógico a los sistemas de información de NOMBRE_EMPRESA. El ciclo de vida de la identidad es el proceso que sigue la identidad de un usuario desde su creación hasta su eliminación.`,
   `El ciclo de vida de la identidad se compone de las siguientes actividades:`,
   {
-    text: 'a) Creación y asignación de la identidad',
+    text: '   a)  Creación y asignación de la identidad',
     alignment: AlignmentType.JUSTIFIED,
   },
   {
-    text: 'b) Revisión periódica',
+    text: '   b)  Revisión periódica',
     alignment: AlignmentType.JUSTIFIED,
   },
   {
-    text: 'c) Modificación o eliminación',
+    text: '   c)  Modificación o eliminación',
     alignment: AlignmentType.JUSTIFIED,
   },
   `La gestión de este ciclo requiere definir los requisitos de seguridad y responsabilidades de cada una de las etapas, con el objetivo de centralizar y facilitar los procesos de gestión asociados a las mismas.`,
@@ -916,37 +916,91 @@ export class WordService {
   `Este Plan de Continuidad deberá ser actualizado y probado periódicamente. Además, se deberá definir y mantener actualizado un Plan de Recuperación ante Desastres alineado con la continuidad de negocio, este plan abarcará la continuidad del funcionamiento de las tecnologías de información y comunicación.`,
   `NOMBRE_EMPRESA deberá encargarse de la formación y capacitación para todos sus empleados en materia de Continuidad del Negocio. La formación en materia de Continuidad del Negocio deberá ser revisada periódicamente con el objetivo de estar totalmente alineada con el Plan existente.`,
 ], jsonData.nombreEmpresa),
-...this.createSection('21. Gestión de claves criptográficas', [
-  `La gestión de claves criptográficas de NOMBRE_EMPRESA establece los estándares para asegurar la creación, uso, almacenamiento y destrucción seguros de claves criptográficas que protegen nuestra información confidencial. Esta política abarca todos los aspectos del ciclo de vida de las claves, desde su generación en entornos seguros hasta su distribución controlada, almacenamiento protegido, y eliminación segura. La responsabilidad de la gestión de claves recae en el CISO y los Administradores de Claves, quienes deben asegurar que las claves sean accesibles únicamente para usuarios y sistemas autorizados.`,
-  `Esta política incluye los procedimientos de gestión de las claves, como son la generación, distribución y almacenamiento de claves, así como su uso, renovación, revocación y destrucción.`,
-], jsonData.nombreEmpresa),
 
-...this.createSection('22. Cumplimiento regulatorio de sistemas', [
+...this.createSection('21. Cumplimiento regulatorio de sistemas', [
   `NOMBRE_EMPRESA deberá comprometerse a adoptar las acciones necesarias para dar cumplimiento a toda la legislación y regulación aplicable a su actividad en materia de seguridad de la información, sistemas de información y protección de datos. Esto incluye establecer procedimientos adecuados para asegurar el cumplimiento de toda legislación, normativa y estándares aplicables.`,
 ], jsonData.nombreEmpresa),
-...this.createSection('23. Auditorías de seguridad y gestión de vulnerabilidades', [
+...this.createSection('22. Auditorías de seguridad y gestión de vulnerabilidades', [
   `Se deberá realizar una identificación periódica de vulnerabilidades técnicas de los sistemas de información y aplicaciones empleadas en la organización, de acuerdo a su exposición a dichas vulnerabilidades y adoptando las medidas adecuadas para mitigar el riesgo asociado.`,
   `Una vez identificadas las vulnerabilidades, la organización deberá aplicar las medidas correctoras necesarias tan pronto como sea posible. La identificación, gestión y corrección de las vulnerabilidades debe hacerse conforme a un enfoque basado en riesgos, teniendo en cuenta la criticidad y la exposición de los activos.`,
 ], jsonData.nombreEmpresa),
 
-...this.createSection('24. Gestión de excepciones', [
+...this.createSection('23. Gestión de excepciones', [
   `Cualquier excepción a la presente Política de Seguridad de la Información deberá ser registrada e informada al responsable de la Seguridad de la Información de NOMBRE_EMPRESA. Las excepciones serán analizadas para evaluar el riesgo que podrían introducir a la sociedad y, en base a la categorización de estos riesgos, estos deberán ser asumidos por el peticionario de la excepción junto con los responsables del negocio.`,
 ], jsonData.nombreEmpresa),
 
-...this.createSection('25. Sanciones disciplinarias', [
+...this.createSection('24. Sanciones disciplinarias', [
   `Cualquier violación de la presente Política de Seguridad de la Información puede resultar en la toma de las acciones disciplinarias correspondientes de acuerdo con el proceso interno de NOMBRE_EMPRESA. Es responsabilidad de todos los empleados de NOMBRE_EMPRESA notificar al responsable de Seguridad de la Información cualquier evento que indiquen que pueda suponer el incumplimiento de alguna de las directrices definidas por la presente Política.`,
 ], jsonData.nombreEmpresa),
 
-...this.createSection('26. Revisión de la política', [
+...this.createSection('25. Revisión de la política', [
   `La aprobación de esta Política implica que su implantación contará con el apoyo de la Dirección para lograr todos los objetivos establecidos en la misma, como también para cumplir con todos sus preceptos.`,
   `La presente Política de Seguridad de la Información, será revisada y aprobada por el Comité de Dirección. No obstante, si la situación en la sociedad lo permite, se podrá efectuar una revisión cuando se presenten cambios relevantes en la sociedad o se identifiquen nuevas amenazas en el entorno de manera imprevista y que justifiquen la necesidad de ser revisada, corregida o actualizada, para garantizar que la Política permanezca adaptada en todo momento a la realidad de NOMBRE_EMPRESA.`,
 ], jsonData.nombreEmpresa),
 
+new Paragraph({
+  children: [new TextRun('')],
+  pageBreakBefore: true,
+}),
 
 
+new Paragraph({
+  children: [
+    new TextRun({
+      text: 'ANEXO I. Niveles de clasificación',
+      bold: true,
+      size: 28,
+      color: '808080', 
+    }),
+  ],
+  border: {
+    bottom: {
+      color: '808080', 
+      space: 1,
+      style: BorderStyle.SINGLE,
+      size: 6,
+    },
+  },
+  spacing: {
+    after: 200, 
+  },
+}),
+new Paragraph({
+  text: 'Se adjunto los requisitos obligatorios que tienen que cumplir un Sistema de Gestión de la Seguridad de la Información según la ISO/IEC 27001:',
+  spacing: {
+    after: 200, 
+  },
+}),
+this.createClassificationLevelsTable(),
+
+new Paragraph({
+  children: [new TextRun('')],
+  pageBreakBefore: true,
+}),
 
 
-
+new Paragraph({
+  children: [
+    new TextRun({
+      text: 'Guía de acrónimos',
+      bold: true,
+      size: 28,
+      color: '808080',
+    }),
+  ],
+  border: {
+    bottom: {
+      color: '808080', 
+      space: 1,
+      style: BorderStyle.SINGLE,
+      size: 6,
+    },
+  },
+  spacing: {
+    after: 200, 
+  },
+}),
+this.createAcronymsGuideTable(),
 
 
 
@@ -1473,6 +1527,7 @@ export class WordService {
 
     return [sectionTitle, ...sectionContent,spacingParagraph];
   }
+  
 
   async convertWordToPdf(wordFilePath: string): Promise<Buffer> {
     return new Promise((resolve, reject) => {
@@ -1494,4 +1549,303 @@ export class WordService {
       });
     });
   }
+
+
+
+
+  createClassificationLevelsTable(): Table {
+    return new Table({
+      width: {
+        size: 100,
+        type: WidthType.PERCENTAGE,
+      },
+      rows: [
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph({ children: [new TextRun({ text: "Nivel", bold: true })],
+              alignment: AlignmentType.CENTER
+            })],
+              width: { size: 20, type: WidthType.PERCENTAGE },
+              shading: {
+                fill: "D9E2F3", 
+              },
+            }),
+            new TableCell({
+              children: [new Paragraph({ children: [new TextRun({ text: "Detalle", bold: true })],
+              alignment: AlignmentType.CENTER
+            })],
+              width: { size: 40, type: WidthType.PERCENTAGE },
+              shading: {
+                fill: "D9E2F3", 
+              },
+            }),
+            new TableCell({
+              children: [new Paragraph({ children: [new TextRun({ text: "Ejemplos", bold: true })],
+              alignment: AlignmentType.CENTER
+            })],
+              width: { size: 40, type: WidthType.PERCENTAGE },
+              shading: {
+                fill: "D9E2F3", 
+              },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph("Uso público")],
+              width: { size: 20, type: WidthType.PERCENTAGE },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph(
+                  "Se trata de la información que puede ser conocida por cualquier tipo de persona y su utilización fraudulenta no supone un riesgo para los intereses de la empresa."
+                ),
+              ],
+              width: { size: 40, type: WidthType.PERCENTAGE },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph(
+                  "Son ejemplos de este tipo de información los catálogos de productos y la información disponible en la página Web."
+                ),
+              ],
+              width: { size: 40, type: WidthType.PERCENTAGE },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph("Uso interno")],
+              width: { size: 20, type: WidthType.PERCENTAGE },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph(
+                  "Es la información utilizada por las áreas de NOMBRE_EMPRESA y cuya utilización fraudulenta supone un riesgo poco significativo."
+                ),
+              ],
+              width: { size: 40, type: WidthType.PERCENTAGE },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph(
+                  "Son ejemplo de este tipo de información los correos electrónicos y los documentos de trabajo de las áreas de la empresa."
+                ),
+              ],
+              width: { size: 40, type: WidthType.PERCENTAGE },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph("Información Confidencial")],
+              width: { size: 20, type: WidthType.PERCENTAGE },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph(
+                  "Es aquella información que solo puede ser conocida por un número reducido de personas y para la que un uso fraudulento puede suponer un impacto significativo para los intereses de la empresa."
+                ),
+              ],
+              width: { size: 40, type: WidthType.PERCENTAGE },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph(
+                  "Son ejemplos de este tipo de información los informes de auditoría y de estrategia de la empresa."
+                ),
+              ],
+              width: { size: 40, type: WidthType.PERCENTAGE },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph("Información Reservada")],
+              width: { size: 20, type: WidthType.PERCENTAGE },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph(
+                  "Es la información que únicamente debe conocer el propietario de la misma y cuya divulgación puede suponer graves perjuicios para los intereses de la empresa."
+                ),
+              ],
+              width: { size: 40, type: WidthType.PERCENTAGE },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph(
+                  "Son ejemplos comunicaciones entre los altos directivos o accionistas con decisiones relevantes para la operativa de negocio."
+                ),
+              ],
+              width: { size: 40, type: WidthType.PERCENTAGE },
+            }),
+          ],
+        }),
+        new TableRow({
+          children: [
+            new TableCell({
+              children: [new Paragraph("Información Secreta")],
+              width: { size: 20, type: WidthType.PERCENTAGE },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph(
+                  "Es aquella cuya revelación no autorizada puede causar un perjuicio excepcionalmente grave a los intereses esenciales de la empresa."
+                ),
+              ],
+              width: { size: 40, type: WidthType.PERCENTAGE },
+            }),
+            new TableCell({
+              children: [
+                new Paragraph(
+                  "Son ejemplos las claves criptográficas, información sobre fusiones o adquisiciones o cualquier otra información que pueda poner en riesgo el valor de la acción."
+                ),
+              ],
+              width: { size: 40, type: WidthType.PERCENTAGE },
+            }),
+          ],
+        }),
+      ],
+    });
+  }
+  
+
+createAcronymsGuideTable(): Table {
+  return new Table({
+    width: {
+      size: 100,
+      type: WidthType.PERCENTAGE,
+    },
+    rows: [
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph({ children: [new TextRun({ text: "Acrónimo", bold: true })],
+            alignment: AlignmentType.CENTER
+          }), ],
+          
+            width: { size: 20, type: WidthType.PERCENTAGE 
+            },
+            
+            shading: {
+              fill: "D9E2F3", 
+            },
+          }),
+          new TableCell({
+            children: [new Paragraph({ children: [new TextRun({ text: "Descripción", bold: true })],
+            alignment: AlignmentType.CENTER
+          })],
+            width: { size: 80, type: WidthType.PERCENTAGE },
+            shading: {
+              fill: "D9E2F3", 
+            },
+          }),
+        ],
+      }),
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph("AC")],
+            width: { size: 20, type: WidthType.PERCENTAGE },
+          }),
+          new TableCell({
+            children: [new Paragraph("Active Directory")],
+            width: { size: 80, type: WidthType.PERCENTAGE },
+          }),
+        ],
+      }),
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph("ERP")],
+            width: { size: 20, type: WidthType.PERCENTAGE },
+          }),
+          new TableCell({
+            children: [new Paragraph("Software de planificación de recursos empresariales")],
+            width: { size: 80, type: WidthType.PERCENTAGE },
+          }),
+        ],
+      }),
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph("HW")],
+            width: { size: 20, type: WidthType.PERCENTAGE },
+          }),
+          new TableCell({
+            children: [new Paragraph("Hardware")],
+            width: { size: 80, type: WidthType.PERCENTAGE },
+          }),
+        ],
+      }),
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph("KPI")],
+            width: { size: 20, type: WidthType.PERCENTAGE },
+          }),
+          new TableCell({
+            children: [new Paragraph("Key performance indicator. En español: indicador clave de rendimiento")],
+            width: { size: 80, type: WidthType.PERCENTAGE },
+          }),
+        ],
+      }),
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph("ODOO")],
+            width: { size: 20, type: WidthType.PERCENTAGE },
+          }),
+          new TableCell({
+            children: [new Paragraph("ERP")],
+            width: { size: 80, type: WidthType.PERCENTAGE },
+          }),
+        ],
+      }),
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph("RRHH")],
+            width: { size: 20, type: WidthType.PERCENTAGE },
+          }),
+          new TableCell({
+            children: [new Paragraph("Recursos Humanos")],
+            width: { size: 80, type: WidthType.PERCENTAGE },
+          }),
+        ],
+      }),
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph("SGSI")],
+            width: { size: 20, type: WidthType.PERCENTAGE },
+          }),
+          new TableCell({
+            children: [new Paragraph("Sistema de gestión de la seguridad de la información")],
+            width: { size: 80, type: WidthType.PERCENTAGE },
+          }),
+        ],
+      }),
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph("SW")],
+            width: { size: 20, type: WidthType.PERCENTAGE },
+          }),
+          new TableCell({
+            children: [new Paragraph("Software")],
+            width: { size: 80, type: WidthType.PERCENTAGE },
+          }),
+        ],
+      }),
+    ],
+  });
+}
+
 }
