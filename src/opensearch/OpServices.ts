@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Client } from '@opensearch-project/opensearch';
+import { ApiResponse, Client } from '@opensearch-project/opensearch';
 
 @Injectable()
 export class OpenSearchService {
@@ -122,5 +122,36 @@ export class OpenSearchService {
     }
   }
 
-  
+
+
+  async indexDocument(index: string, document: object) {
+    try {
+      const response = await this.client.index({
+        index,
+        body: document,
+      });
+      console.log('Documento indexado correctamente en OpenSearch:', response);
+      return response;
+    } catch (error) {
+      console.error('Error al indexar el documento en OpenSearch:', error);
+      throw error;
+    }
+  }
+
+  async searchQuestionsByEmail(index: string, email: string) {
+    try {
+      const { body } = await this.client.search({
+        index,
+        body: {
+          query: {
+            match: { email }, // Busca preguntas por el campo 'email'
+          },
+        },
+      });
+      return body.hits.hits;
+    } catch (error) {
+      console.error('Error al buscar preguntas por email en OpenSearch:', error);
+      throw error;
+    }
+  }
 }
