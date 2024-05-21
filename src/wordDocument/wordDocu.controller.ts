@@ -3,21 +3,42 @@ import { Response } from 'express';
 import { WordService } from './wordDocu.service';
 import * as fs from 'fs';
 import { DocuDto } from './dto/wordDocu.dto';
+import { WordService2 } from './wordDocu2.service';
 
 @Controller('word')
 export class WordController {
   private createdWordFileName: string = '';
 
-  constructor(private readonly wordService: WordService  ) {}
+  constructor(private readonly wordServicePSI: WordService,
+    private readonly wordServiceSGSI: WordService2
+    ) {}
 
-  @Post('create')
-  async createWordDocument(
+  @Post('create/psi')
+  async createWordDocumentPSI(
     @Body() createData: DocuDto,
     @Res() res: Response,
   ): Promise<void> {
     try {
       const { wordBuffer, fileName } =
-        await this.wordService.generateWordDocumentFromJSON(createData);
+        await this.wordServicePSI.generateWordDocumentPSI(createData);
+      const filePath = ` ../../../../../../Downloads/${fileName}.docx`; 
+      fs.writeFileSync(filePath, wordBuffer);
+
+      this.createdWordFileName = fileName;
+
+      res.send('Word document created successfully.');
+    } catch (error) {
+      res.status(500).send(`Error creating Word document: ${error.message}`);
+    }
+  }
+  @Post('create/sgsi')
+  async createWordDocumentSGSI(
+    @Body() createData: DocuDto,
+    @Res() res: Response,
+  ): Promise<void> {
+    try {
+      const { wordBuffer, fileName } =
+        await this.wordServiceSGSI.generateWordDocumentSGSI(createData);
       const filePath = ` ../../../../../../Downloads/${fileName}.docx`; 
       fs.writeFileSync(filePath, wordBuffer);
 
@@ -38,7 +59,7 @@ export class WordController {
 
       const wordFilePath = ` ../../../../Downloads/${this.createdWordFileName}.docx`; 
 
-      const pdfBuffer = await this.wordService.convertWordToPdf(wordFilePath);
+      const pdfBuffer = await this.wordServicePSI.convertWordToPdf(wordFilePath);
 
       const pdfFilePath = ` ../../../../Downloads/${this.createdWordFileName}.pdf`; 
       fs.writeFileSync(pdfFilePath, pdfBuffer);
