@@ -6,6 +6,7 @@ import { Repository } from "typeorm";
 import { HttpService } from '@nestjs/axios';
 import axios, { AxiosError } from "axios";
 import { questionData } from "./dto/opQuestion.dto";
+import { OpenSearchService } from "src/opensearch/OpServices";
 
 
 @Injectable()
@@ -14,7 +15,7 @@ export class QuestionsService{
         @InjectRepository(Question)
         private questionRepository: Repository<Question>,
         private httpService: HttpService,
-
+        private openSearchService: OpenSearchService,
      ) {}
 
   
@@ -75,51 +76,50 @@ export class QuestionsService{
     }
     */
     
-      async postNewQuestion(email:string, text: string) : Promise<any> {
-        const apiUrl = "https://secretary-drives-baptist-vulnerability.trycloudflare.com/v1/chat-messages"; 
-        const apiKey = "app-SZg44qKsRuhTZ2YWGWKBHekY"; 
-        try{
-          const data = {
-            inputs: {},
-            query: text ,
-            response_mode: 'blocking',
-            user: email
+      
+    async postNewQuestion(email: string, text: string): Promise<any> {
+      const apiUrl = "https://secretary-drives-baptist-vulnerability.trycloudflare.com/v1/chat-messages";
+      const apiKey = "app-SZg44qKsRuhTZ2YWGWKBHekY";
+      try {
+        const data = {
+          inputs: {},
+          query: text,
+          response_mode: 'blocking',
+          user: email
         };
         const headers = {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json'
         };
         const response = await axios.post(`${apiUrl}`, data, { headers });
-        
+  
         const generatedText = response.data.answer;
-        const question = await this.questionRepository.create({
+        const question = this.questionRepository.create({
           email,
           text,
         });
-              await this.questionRepository.save(question);
-               
-              
-              
-
-              //------------------------Almacenar en OpenSearch-----------------------
-              //Falta guardar esto en openSearch o los datos que precise
-                const questionData:questionData = {
-                  questionID: question.id,
-                  email: email,
-                  question: text,
-                  answer: generatedText
-              };
+        await this.questionRepository.save(question);
   
-                            
-              return  generatedText;    
-                } catch (error) {
-          if (axios.isAxiosError(error)) {
-              const axiosError = error as AxiosError;
-              return axiosError.message
-          }
+        // Crear el objeto questionData para OpenSearch
+        const questionData: questionData = {
+          questionID: question.id,
+          email: email,
+          question: text,
+          answer: generatedText
+        };
+  
+        // Almacenar en OpenSearch
+        const indexResponse = await this.openSearchService.indexDocument('questionai', questionData); // Asegúrate de usar el nombre del índice correcto
+        console.log('Pregunta indexada en OpenSearch:', indexResponse);
+  
+        return generatedText;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const axiosError = error as AxiosError;
+          return axiosError.message;
+        }
       }
-  }
-
+    }
 
    
      
