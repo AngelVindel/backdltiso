@@ -26,7 +26,7 @@ import { DocuDto } from './dto/wordDocu.dto';
 
 @Injectable()
 export class WordService {
-  async generateWordDocumentFromJSON(
+  async generateWordDocumentPSI(
     jsonData: DocuDto,
   ): Promise<{ wordBuffer: Buffer; fileName: string }> {
     if (!jsonData) {
