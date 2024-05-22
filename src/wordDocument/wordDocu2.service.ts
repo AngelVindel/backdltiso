@@ -709,7 +709,42 @@ export class WordService2 {
     },
   }),
 
-  this.createAcronymsGuideTable()
+  this.createAcronymsGuideTable(),
+
+  new Paragraph({
+    children: [new TextRun('')],
+    pageBreakBefore: true,
+  }),
+  new Paragraph({
+    children: [
+      new TextRun({
+        text: 'Respuesta del Wizard',
+        bold: true,
+        size: 28,
+        color: '808080', 
+      }),
+    ],
+    border: {
+      bottom: {
+        color: '808080', 
+        space: 1,
+        style: BorderStyle.SINGLE,
+        size: 6,
+      },
+    },
+    spacing: {
+      after: 200, 
+    },
+  }),
+
+  new Paragraph({
+    children: [
+      new TextRun({
+        text:jsonData.textIA
+      })
+    ]
+
+  })
 
   
           ],
