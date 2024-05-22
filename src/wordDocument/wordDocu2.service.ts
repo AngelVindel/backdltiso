@@ -18,7 +18,9 @@ import {
   HeadingLevel,
   UnderlineType,
   TableOfContents,
+  ShadingType
 } from 'docx';
+
 import * as fs from 'fs';
 import * as libre from 'libreoffice-convert';
 import * as path from 'path';
@@ -461,36 +463,36 @@ export class WordService2 {
           'La alta dirección debe demostrar el liderazgo y compromiso en relación con el SGSI, aprobando este documento, aportando los recursos necesarios y difundiendo este documento entre todos los interesados: empleados, proveedores y terceros.',
           'Para ello debe:',
           {
-            text: 'a) Asegurar que la política de seguridad de la información y los objetivos de seguridad de la información establecidos y sean compatibles con la dirección estratégica de la organización;',
-            bullet: { level: 0 },
+            text: '   a)  Asegurar que la política de seguridad de la información y los objetivos de seguridad de la información establecidos y sean compatibles con la dirección estratégica de la organización;',
+            alignment: AlignmentType.JUSTIFIED,
           },
           {
-            text: 'b) Garantizar la integración de los requisitos del sistema de gestión de la seguridad de la información en los procesos de la organización;',
-            bullet: { level: 0 },
+            text: '   b)  Garantizar la integración de los requisitos del sistema de gestión de la seguridad de la información en los procesos de la organización;',
+            alignment: AlignmentType.JUSTIFIED,
           },
           {
-            text: 'c) Garantizar que se disponen de los recursos necesarios para el sistema de gestión de la seguridad de la información;',
-            bullet: { level: 0 },
+            text: '   c)  Garantizar que se disponen de los recursos necesarios para el sistema de gestión de la seguridad de la información;',
+            alignment: AlignmentType.JUSTIFIED,
           },
           {
-            text: 'd) Comunicar la importancia de una gestión eficaz de la seguridad de la información y de ajustarse a los requisitos del sistema de gestión de la seguridad de la información;',
-            bullet: { level: 0 },
+            text: '   d)  Comunicar la importancia de una gestión eficaz de la seguridad de la información y de ajustarse a los requisitos del sistema de gestión de la seguridad de la información;',
+            alignment: AlignmentType.JUSTIFIED,
           },
           {
-            text: 'e) Garantizar que el sistema de gestión de la seguridad de la información logre los resultados previstos;',
-            bullet: { level: 0 },
+            text: '   e)  Garantizar que el sistema de gestión de la seguridad de la información logre los resultados previstos;',
+            alignment: AlignmentType.JUSTIFIED,
           },
           {
-            text: 'f) Dirigir y apoyar a las personas para que contribuyan a la eficacia del sistema de gestión de la seguridad de la información sistema de gestión de la seguridad de la información;',
-            bullet: { level: 0 },
+            text: '   f)  Dirigir y apoyar a las personas para que contribuyan a la eficacia del sistema de gestión de la seguridad de la información sistema de gestión de la seguridad de la información;',
+            alignment: AlignmentType.JUSTIFIED,
           },
           {
-            text: 'g) Promoviendo la mejora continua;',
-            bullet: { level: 0 },
+            text: '   g)  Promoviendo la mejora continua;',
+            alignment: AlignmentType.JUSTIFIED,
           },
           {
-            text: 'h) Apoyar a otras funciones de gestión pertinentes para que demuestren su liderazgo en lo que se refiere a sus áreas de responsabilidad.',
-            bullet: { level: 0 },
+            text: '   h)  Apoyar a otras funciones de gestión pertinentes para que demuestren su liderazgo en lo que se refiere a sus áreas de responsabilidad.',
+            alignment: AlignmentType.JUSTIFIED,
           },
           '',
           '-Política.-',
@@ -511,24 +513,24 @@ export class WordService2 {
             'Para ello la organización planifica las acciones en los procesos para abordar estos riesgos y oportunidades y evaluar su eficacia.',
             'La “Metodología de Análisis de Riesgos” de la compañía define un proceso de evaluación de riesgos de seguridad de la información que:',
             {
-              text: 'a) Establece y mantiene los criterios de riesgo para la seguridad de la información que incluyen los criterios de aceptación del riesgo; y los criterios para realizar evaluaciones de los riesgos de seguridad de la información;',
-              bullet: { level: 0 },
+              text: '   a)  Establece y mantiene los criterios de riesgo para la seguridad de la información que incluyen los criterios de aceptación del riesgo; y los criterios para realizar evaluaciones de los riesgos de seguridad de la información;',
+              alignment: AlignmentType.JUSTIFIED,
             },
             {
-              text: 'b) Garantice que las evaluaciones repetidas de los riesgos para la seguridad de la información producen resultados coherentes, válidos y resultados comparables;',
-              bullet: { level: 0 },
+              text: '   b)  Garantice que las evaluaciones repetidas de los riesgos para la seguridad de la información producen resultados coherentes, válidos y resultados comparables;',
+              alignment: AlignmentType.JUSTIFIED,
             },
             {
-              text: 'c) Identifique los riesgos para la seguridad de la información mediante un proceso de evaluación de riesgos para la seguridad de la información para identificar los riesgos asociados a la pérdida de confidencialidad, integridad y disponibilidad de la información dentro del ámbito del sistema de gestión de seguridad de la información; e identifique a los responsables de los riesgos;',
-              bullet: { level: 0 },
+              text: '   c)  Identifique los riesgos para la seguridad de la información mediante un proceso de evaluación de riesgos para la seguridad de la información para identificar los riesgos asociados a la pérdida de confidencialidad, integridad y disponibilidad de la información dentro del ámbito del sistema de gestión de seguridad de la información; e identifique a los responsables de los riesgos;',
+              alignment: AlignmentType.JUSTIFIED,
             },
             {
-              text: 'd) Analice los riesgos para la seguridad de la información y evalúe las consecuencias potenciales que se derivarán si los riesgos identificados se materializarán; además de evaluar la probabilidad realista de que se produzcan los riesgos identificados y determinar los niveles de riesgo;',
-              bullet: { level: 0 },
+              text: '   d)  Analice los riesgos para la seguridad de la información y evalúe las consecuencias potenciales que se derivarán si los riesgos identificados se materializarán; además de evaluar la probabilidad realista de que se produzcan los riesgos identificados y determinar los niveles de riesgo;',
+              alignment: AlignmentType.JUSTIFIED,
             },
             {
-              text: 'e) Evalúe los riesgos para la seguridad de la información y priorice los riesgos analizados para su tratamiento según los criterios de riesgo establecidos.',
-              bullet: { level: 0 },
+              text: '   e)  Evalúe los riesgos para la seguridad de la información y priorice los riesgos analizados para su tratamiento según los criterios de riesgo establecidos.',
+              alignment: AlignmentType.JUSTIFIED,
             },
             '',
             '-Objetivos y planes de seguridad de la información.-',
@@ -536,24 +538,24 @@ export class WordService2 {
             'Los objetivos de seguridad de la información son coherentes con la política de seguridad de la información; medibles si es factible; y es objeto de seguimiento.',
             'Para ello, la organización ha determinado:',
             {
-              text: 'i) qué se hará;',
-              bullet: { level: 0 },
+              text: '   i)  qué se hará;',
+              alignment: AlignmentType.JUSTIFIED,
             },
             {
-              text: 'j) qué recursos serán necesarios;',
-              bullet: { level: 0 },
+              text: '   j)  qué recursos serán necesarios;',
+              alignment: AlignmentType.JUSTIFIED,
             },
             {
-              text: 'k) quién será el responsable;',
-              bullet: { level: 0 },
+              text: '   k)  quién será el responsable;',
+              alignment: AlignmentType.JUSTIFIED,
             },
             {
-              text: 'l) cuándo se completará;',
-              bullet: { level: 0 },
+              text: '   l)  cuándo se completará;',
+              alignment: AlignmentType.JUSTIFIED,
             },
             {
-              text: 'm) cómo se evaluarán los resultados.',
-              bullet: { level: 0 },
+              text: '   m)  cómo se evaluarán los resultados.',
+              alignment: AlignmentType.JUSTIFIED,
             },
             'La organización conserva la información documentada sobre los objetivos de seguridad de la información.',
             '',
@@ -572,15 +574,15 @@ export class WordService2 {
       '-Concientización-',
       'Hay establecido un programa de concientización en seguridad en la que se da a conocer:',
       {
-        text: '- SGSI',
+        text: 'SGSI',
         bullet: { level: 0 },
       },
       {
-        text: '- La política de seguridad',
+        text: 'La política de seguridad',
         bullet: { level: 0 },
       },
       {
-        text: '- Concientización en ciberseguridad, en general',
+        text: 'Concientización en ciberseguridad, en general',
         bullet: { level: 0 },
       },
       'Todo ello, para contribuir a la eficacia del SGSI, y las implicaciones de no ajustarse a este sistema.',
@@ -651,12 +653,60 @@ export class WordService2 {
     children: [new TextRun('')],
     pageBreakBefore: true,
   }),
-
+  new Paragraph({
+    children: [
+      new TextRun({
+        text: 'ANEXO I. Requisitos obligatorios del SGSI, según ISO/IEC 27001',
+        bold: true,
+        size: 28,
+        color: '808080', 
+      }),
+    ],
+    border: {
+      bottom: {
+        color: '808080', 
+        space: 1,
+        style: BorderStyle.SINGLE,
+        size: 6,
+      },
+    },
+    spacing: {
+      after: 200, 
+    },
+  }),
+  new Paragraph({
+    text: 'Se adjunto los requisitos obligatorios que tienen que cumplir un Sistema de Gestión de la Seguridad de la Información según la ISO/IEC 27001:',
+    spacing: {
+      after: 200, 
+    },
+  }),
   this.createAnexoTabla(),
 
   new Paragraph({
     children: [new TextRun('')],
     pageBreakBefore: true,
+  }),
+
+  new Paragraph({
+    children: [
+      new TextRun({
+        text: 'Guía de acrónimos.',
+        bold: true,
+        size: 28,
+        color: '808080', 
+      }),
+    ],
+    border: {
+      bottom: {
+        color: '808080', 
+        space: 1,
+        style: BorderStyle.SINGLE,
+        size: 6,
+      },
+    },
+    spacing: {
+      after: 200, 
+    },
   }),
 
   this.createAcronymsGuideTable()
@@ -1210,169 +1260,447 @@ export class WordService2 {
 
 
 
-  createClassificationLevelsTable(): Table {
-    return new Table({
-      width: {
-        size: 100,
-        type: WidthType.PERCENTAGE,
-      },
-      rows: [
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph({ children: [new TextRun({ text: "Nivel", bold: true })],
-              alignment: AlignmentType.CENTER
-            })],
-              width: { size: 20, type: WidthType.PERCENTAGE },
-              shading: {
-                fill: "D9E2F3", 
-              },
-            }),
-            new TableCell({
-              children: [new Paragraph({ children: [new TextRun({ text: "Detalle", bold: true })],
-              alignment: AlignmentType.CENTER
-            })],
-              width: { size: 40, type: WidthType.PERCENTAGE },
-              shading: {
-                fill: "D9E2F3", 
-              },
-            }),
-            new TableCell({
-              children: [new Paragraph({ children: [new TextRun({ text: "Ejemplos", bold: true })],
-              alignment: AlignmentType.CENTER
-            })],
-              width: { size: 40, type: WidthType.PERCENTAGE },
-              shading: {
-                fill: "D9E2F3", 
-              },
-            }),
-          ],
-        }),
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph("Uso público")],
-              width: { size: 20, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [
-                new Paragraph(
-                  "Se trata de la información que puede ser conocida por cualquier tipo de persona y su utilización fraudulenta no supone un riesgo para los intereses de la empresa."
-                ),
-              ],
-              width: { size: 40, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [
-                new Paragraph(
-                  "Son ejemplos de este tipo de información los catálogos de productos y la información disponible en la página Web."
-                ),
-              ],
-              width: { size: 40, type: WidthType.PERCENTAGE },
-            }),
-          ],
-        }),
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph("Uso interno")],
-              width: { size: 20, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [
-                new Paragraph(
-                  "Es la información utilizada por las áreas de NOMBRE_EMPRESA y cuya utilización fraudulenta supone un riesgo poco significativo."
-                ),
-              ],
-              width: { size: 40, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [
-                new Paragraph(
-                  "Son ejemplo de este tipo de información los correos electrónicos y los documentos de trabajo de las áreas de la empresa."
-                ),
-              ],
-              width: { size: 40, type: WidthType.PERCENTAGE },
-            }),
-          ],
-        }),
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph("Información Confidencial")],
-              width: { size: 20, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [
-                new Paragraph(
-                  "Es aquella información que solo puede ser conocida por un número reducido de personas y para la que un uso fraudulento puede suponer un impacto significativo para los intereses de la empresa."
-                ),
-              ],
-              width: { size: 40, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [
-                new Paragraph(
-                  "Son ejemplos de este tipo de información los informes de auditoría y de estrategia de la empresa."
-                ),
-              ],
-              width: { size: 40, type: WidthType.PERCENTAGE },
-            }),
-          ],
-        }),
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph("Información Reservada")],
-              width: { size: 20, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [
-                new Paragraph(
-                  "Es la información que únicamente debe conocer el propietario de la misma y cuya divulgación puede suponer graves perjuicios para los intereses de la empresa."
-                ),
-              ],
-              width: { size: 40, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [
-                new Paragraph(
-                  "Son ejemplos comunicaciones entre los altos directivos o accionistas con decisiones relevantes para la operativa de negocio."
-                ),
-              ],
-              width: { size: 40, type: WidthType.PERCENTAGE },
-            }),
-          ],
-        }),
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph("Información Secreta")],
-              width: { size: 20, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [
-                new Paragraph(
-                  "Es aquella cuya revelación no autorizada puede causar un perjuicio excepcionalmente grave a los intereses esenciales de la empresa."
-                ),
-              ],
-              width: { size: 40, type: WidthType.PERCENTAGE },
-            }),
-            new TableCell({
-              children: [
-                new Paragraph(
-                  "Son ejemplos las claves criptográficas, información sobre fusiones o adquisiciones o cualquier otra información que pueda poner en riesgo el valor de la acción."
-                ),
-              ],
-              width: { size: 40, type: WidthType.PERCENTAGE },
-            }),
-          ],
-        }),
-      ],
-    });
-  }
-  
 
+  createAnexoTabla(): Table {
+      return new Table({
+          rows: [
+              new TableRow({
+                  children: [
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.CENTER,
+                            children: [new TextRun({ text: 'Sección', bold: true })]
+                          })],
+                          width: { size: 10, type: WidthType.PERCENTAGE },
+                          shading: { fill: 'D9E2F3', type: ShadingType.CLEAR }
+                      }),
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.CENTER,
+                            children: [new TextRun({ text: 'Requisito ISO/IEC 27001', bold: true })]
+                          })],
+                          width: { size: 90, type: WidthType.PERCENTAGE },
+                          shading: { fill: 'D9E2F3', type: ShadingType.CLEAR }
+                      }),
+                  ],
+              }),
+
+              new TableRow({
+                  children: [
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.CENTER,
+                            children: [new TextRun({ text: '4', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.LEFT,
+                            children: [new TextRun({ text: 'Contexto de la organización', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                  ]
+              }),
+              ...[
+                  { sub: '4.1', desc: 'Contexto organizacional', text: 'Determinar los objetivos del SGSI de la organización y cualquier cuestión que pueda comprometer su efectividad' },
+                  { sub: '4.2', desc: 'Partes interesadas', text: 'Identificar las partes interesadas incluyendo leyes aplicables, regulaciones, contratos, etc.' },
+                  { sub: '4.3', desc: 'Alcance del SGSI', text: 'Determinar y documentar el alcance del SGSI' },
+                  { sub: '4.4', desc: 'SGSI', text: 'Establecer, implementar, mantener y mejorar continuamente un SGSI de conformidad con la norma' }
+              ].map(sub => [
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.sub, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({ 
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.desc, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  }),
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph('')],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.text })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  })
+              ]).flat(),
+              new TableRow({
+                  children: [
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.CENTER,
+                            children: [new TextRun({ text: '5', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.LEFT,
+                            children: [new TextRun({ text: 'Liderazgo', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                  ]
+              }),
+              ...[
+                  { sub: '5.1', desc: 'Liderazgo y compromiso', text: 'La alta dirección debe demostrar liderazgo y compromiso en relación con el SGSI' },
+                  { sub: '5.2', desc: 'Política', text: 'Establecer la política de seguridad de la información' },
+                  { sub: '5.3', desc: 'Roles, responsabilidades y autoridades en la organización', text: 'Asegurar que los roles y responsabilidades de seguridad de la información son definidos y comunicados' }
+              ].map(sub => [
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.sub, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({ 
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.desc, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  }),
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph('')],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.text })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  })
+              ]).flat(),
+              new TableRow({
+                  children: [
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.CENTER,
+                            children: [new TextRun({ text: '6', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.LEFT,
+                            children: [new TextRun({ text: 'Planificación', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                  ]
+              }),
+              ...[
+                  { sub: '6.1', desc: 'Acciones para abordar los riesgos y oportunidades', text: 'Acciones para abordar los riesgos y oportunidades.' },
+                  { sub: '6.2', desc: 'Objetivos de seguridad de la información y planificación para lograrlos', text: 'Establecer y documentar los objetivos y planes de seguridad de la información.' },
+                  { sub: '6.3', desc: 'Planificación de cambios', text: 'Todos los cambios al SGSI son llevados a cabo de manera planificada...' }
+              ].map(sub => [
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.sub, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({ 
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.desc, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  }),
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph('')],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.text })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  })
+              ]).flat(),
+              new TableRow({
+                  children: [
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.CENTER,
+                            children: [new TextRun({ text: '7', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.LEFT,
+                            children: [new TextRun({ text: 'Soporte', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                  ]
+              }),
+              ...[
+                  { sub: '7.1', desc: 'Recursos', text: 'Determinar y proporcionar los recursos necesarios para el SGSI.' },
+                  { sub: '7.2', desc: 'Competencias', text: 'Determinar, documentar y poner a disposición las competencias necesarias.' },
+                  { sub: '7.3', desc: 'Concientización', text: 'Establecer un programa de concientización en seguridad.' },
+                  { sub: '7.4', desc: 'Comunicación', text: 'Determinar la necesidad para las comunicaciones internas y externas relevantes al SGSI.' },
+                  { sub: '7.5', desc: 'Información documentada', text: 'Proveer la documentación requerida por la norma así como lo requerido por la organización.' }
+              ].map(sub => [
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.sub, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({ 
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.desc, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  }),
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph('')],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.text })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  })
+              ]).flat(),
+              new TableRow({
+                  children: [
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.CENTER,
+                            children: [new TextRun({ text: '8', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.LEFT,
+                            children: [new TextRun({ text: 'Operación', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                  ]
+              }),
+              ...[
+                  { sub: '8.1', desc: 'Planificación y control operacional', text: 'Planificar, implementar, controlar y documentar el proceso del SGSI para gestionar los riesgos.' },
+                  { sub: '8.2', desc: 'Apreciación del riesgo de seguridad de la información', text: 'Realizar y documentar los riesgos de seguridad de la información en forma regular y ante cambios significativos.' },
+                  { sub: '8.3', desc: 'Tratamiento del riesgo de seguridad de la información', text: 'Implementar el plan de tratamiento de riesgos y documentar los resultados.' }
+              ].map(sub => [
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.sub, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({ 
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.desc, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  }),
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph('')],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.text })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  })
+              ]).flat(),
+              new TableRow({
+                  children: [
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.CENTER,
+                            children: [new TextRun({ text: '9', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.LEFT,
+                            children: [new TextRun({ text: 'Evaluación del desempeño', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                  ]
+              }),
+              ...[
+                  { sub: '9.1', desc: 'Seguimiento, medición, análisis y evaluación', text: 'Hacer seguimiento, medir, analizar y evaluar el SGSI y los controles.' },
+                  { sub: '9.2', desc: 'Auditoría interna', text: 'Planificar y llevar a cabo auditorías internas del SGSI.' },
+                  { sub: '9.3', desc: 'Revisión por la dirección', text: 'Realizar revisiones por la dirección del SGSI regularmente.' }
+              ].map(sub => [
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.sub, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({ 
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.desc, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  }),
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph('')],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.text })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  })
+              ]).flat(),
+              new TableRow({
+                  children: [
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.CENTER,
+                            children: [new TextRun({ text: '10', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                      new TableCell({
+                          children: [new Paragraph({ 
+                            alignment: AlignmentType.LEFT,
+                            children: [new TextRun({ text: 'Mejora', bold: true })]
+                          })],
+                          shading: { fill: 'B7DEE8', type: ShadingType.CLEAR }
+                      }),
+                  ]
+              }),
+              ...[
+                  { sub: '10.1', desc: 'Mejora continua', text: 'Mejorar continuamente el SGSI.' },
+                  { sub: '10.2', desc: 'No conformidad y acciones correctivas', text: 'Identificar, corregir y llevar a cabo acciones para prevenir la recurrencia de no conformidades, documentar las acciones.' }
+              ].map(sub => [
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.sub, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({ 
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.desc, bold: true })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  }),
+                  new TableRow({
+                      children: [
+                          new TableCell({
+                              children: [new Paragraph('')],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          }),
+                          new TableCell({
+                              children: [new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [new TextRun({ text: sub.text })]
+                              })],
+                              shading: { fill: 'FFFFFF', type: ShadingType.CLEAR }
+                          })
+                      ]
+                  })
+              ]).flat(),
+          ],
+          width: {
+              size: 100,
+              type: WidthType.PERCENTAGE,
+          },
+          borders: {
+              top: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
+              bottom: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
+              left: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
+              right: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
+              insideHorizontal: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
+              insideVertical: { style: BorderStyle.SINGLE,  size: 1, color: '000000' }
+        },
+    });
+}
 createAcronymsGuideTable(): Table {
   return new Table({
     width: {
@@ -1505,208 +1833,6 @@ createAcronymsGuideTable(): Table {
   });
 }
 
-
-
-
-createAnexoTabla(): Table {
-    return new Table({
-        rows: [
-            new TableRow({
-                children: [
-                    new TableCell({
-                        children: [new Paragraph({ 
-                          alignment: AlignmentType.CENTER,
-                          children: [new TextRun({ text: 'Sección', bold: true })]
-                        })],
-                        width: { size: 10, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'D9EAD3', type:"clear" }
-                    }),
-                    new TableCell({
-                        children: [new Paragraph({ 
-                          alignment: AlignmentType.CENTER,
-                          children: [new TextRun({ text: 'Requisito ISO/IEC 27001', bold: true })]
-                        })],
-                        width: { size: 90, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'D9EAD3', type: "clear" }
-                    }),
-                ],
-            }),
-            new TableRow({
-                children: [
-                    new TableCell({
-                        children: [new Paragraph({ 
-                          alignment: AlignmentType.CENTER,
-                          children: [new TextRun({ text: '4', bold: true })]
-                        })],
-                        rowSpan: 5,
-                        shading: { fill: 'B7DEE8', type: "clear" }
-                    }),
-                    new TableCell({
-                        children: [new Paragraph({ 
-                          alignment: AlignmentType.LEFT,
-                          children: [new TextRun({ text: 'Contexto de la organización', bold: true })]
-                        })],
-                        shading: { fill: 'B7DEE8', type: "clear" },
-                        columnSpan: 2
-                    }),
-                    new TableCell({
-                        children: [new Paragraph('')],
-                        shading: { fill: 'B7DEE8', type: "clear" }
-                    }),
-                ]
-            }),
-            ...[
-                { sub: '4.1', desc: 'Contexto organizacional', text: 'Determinar los objetivos del SGSI de la organización y cualquier cuestión que pueda comprometer su efectividad' },
-                { sub: '4.2', desc: 'Partes interesadas', text: 'Identificar las partes interesadas incluyendo leyes aplicables, regulaciones, contratos, etc.' },
-                { sub: '4.3', desc: 'Alcance del SGSI', text: 'Determinar y documentar el alcance del SGSI' },
-                { sub: '4.4', desc: 'SGSI', text: 'Establecer, implementar, mantener y mejorar continuamente un SGSI de conformidad con la norma' }
-            ].map(sub => new TableRow({
-                children: [
-                    new TableCell({
-                        children: [new Paragraph({
-                          alignment: AlignmentType.LEFT,
-                          children: [new TextRun({ text: sub.sub, bold: true })]
-                        })],
-                        shading: { fill: 'FFFFFF', type: "clear" }
-                    }),
-                    new TableCell({
-                        children: [new Paragraph({ 
-                          alignment: AlignmentType.LEFT,
-                          children: [new TextRun({ text: sub.desc, bold: true })]
-                        })],
-                        shading: { fill: 'FFFFFF', type: "clear" }
-                    }),
-                    new TableCell({
-                        children: [new Paragraph({
-                          alignment: AlignmentType.LEFT,
-                          children: [new TextRun({ text: sub.text })]
-                        })],
-                        shading: { fill: 'FFFFFF', type: "clear" }
-                    }),
-                ]
-            })),
-            new TableRow({
-                children: [
-                    new TableCell({
-                        children: [new Paragraph({ 
-                          alignment: AlignmentType.CENTER,
-                          children: [new TextRun({ text: '5', bold: true })]
-                        })],
-                        rowSpan: 3,
-                        shading: { fill: 'B7DEE8', type: "clear" }
-                    }),
-                    new TableCell({
-                        children: [new Paragraph({ 
-                          alignment: AlignmentType.LEFT,
-                          children: [new TextRun({ text: 'Liderazgo', bold: true })]
-                        })],
-                        shading: { fill: 'B7DEE8', type: "clear" },
-                        columnSpan: 2
-                    }),
-                    new TableCell({
-                        children: [new Paragraph('')],
-                        shading: { fill: 'B7DEE8', type: "clear" }
-                    }),
-                ]
-            }),
-            ...[
-                { sub: '5.1', desc: 'Liderazgo y compromiso', text: 'La alta dirección debe demostrar liderazgo y compromiso en relación con el SGSI' },
-                { sub: '5.2', desc: 'Política', text: 'Establecer la política de seguridad de la información' },
-                { sub: '5.3', desc: 'Roles, responsabilidades y autoridades en la organización', text: 'Asegurar que los roles y responsabilidades de seguridad de la información son definidos y comunicados' }
-            ].map(sub => new TableRow({
-                children: [
-                    new TableCell({
-                        children: [new Paragraph({
-                          alignment: AlignmentType.LEFT,
-                          children: [new TextRun({ text: sub.sub, bold: true })]
-                        })],
-                        shading: { fill: 'FFFFFF', type: "clear" }
-                    }),
-                    new TableCell({
-                        children: [new Paragraph({ 
-                          alignment: AlignmentType.LEFT,
-                          children: [new TextRun({ text: sub.desc, bold: true })]
-                        })],
-                        shading: { fill: 'FFFFFF', type: "clear" }
-                    }),
-                    new TableCell({
-                        children: [new Paragraph({
-                          alignment: AlignmentType.LEFT,
-                          children: [new TextRun({ text: sub.text })]
-                        })],
-                        shading: { fill: 'FFFFFF', type: "clear" }
-                    }),
-                ]
-            })),
-            // Fila de planificación
-            new TableRow({
-                children: [
-                    new TableCell({
-                        children: [new Paragraph({ 
-                          alignment: AlignmentType.CENTER,
-                          children: [new TextRun({ text: '6', bold: true })]
-                        })],
-                        rowSpan: 3,
-                        shading: { fill: 'B7DEE8', type: "clear" }
-                    }),
-                    new TableCell({
-                        children: [new Paragraph({ 
-                          alignment: AlignmentType.LEFT,
-                          children: [new TextRun({ text: 'Planificación', bold: true })]
-                        })],
-                        shading: { fill: 'B7DEE8', type: "clear" },
-                        columnSpan: 2
-                    }),
-                    new TableCell({
-                        children: [new Paragraph('')],
-                        shading: { fill: 'B7DEE8', type: "clear" }
-                    }),
-                ]
-            }),
-            ...[
-                { sub: '6.1', desc: 'Acciones para abordar los riesgos y oportunidades', text: 'Acciones para abordar los riesgos y oportunidades.' },
-                { sub: '6.2', desc: 'Objetivos de seguridad de la información y planificación para lograrlos', text: 'Establecer y documentar los objetivos y planes de seguridad de la información.' },
-                { sub: '6.3', desc: 'Planificación de cambios', text: 'Todos los cambios al SGSI son llevados a cabo de manera planificada...' }
-            ].map(sub => new TableRow({
-                children: [
-                    new TableCell({
-                        children: [new Paragraph({
-                          alignment: AlignmentType.LEFT,
-                          children: [new TextRun({ text: sub.sub, bold: true })]
-                        })],
-                        shading: { fill: 'FFFFFF', type: "clear" }
-                    }),
-                    new TableCell({
-                        children: [new Paragraph({ 
-                          alignment: AlignmentType.LEFT,
-                          children: [new TextRun({ text: sub.desc, bold: true })]
-                        })],
-                        shading: { fill: 'FFFFFF', type: "clear" }
-                    }),
-                    new TableCell({
-                        children: [new Paragraph({
-                          alignment: AlignmentType.LEFT,
-                          children: [new TextRun({ text: sub.text })]
-                        })],
-                        shading: { fill: 'FFFFFF', type: "clear" }
-                    }),
-                ]
-            })),
-        ],
-        width: {
-            size: 100,
-            type: WidthType.PERCENTAGE,
-        },
-        borders: {
-            top: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
-            bottom: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
-            left: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
-            right: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
-            insideHorizontal: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
-            insideVertical: { style: BorderStyle.SINGLE, size: 1, color: '000000' }
-        },
-    });
-}
 
 
 }
