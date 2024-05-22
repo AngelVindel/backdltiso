@@ -4,6 +4,7 @@ import { User } from './user.interface';
 import { PDFDoc } from 'src/pdfDocument/document.entity';
 import { Ticket } from 'src/ticket/ticket.entity';
 import { Question } from 'src/questions/questions.entity';
+import { WordDoc } from 'src/wordDocument/wordDocu.entity';
 
 
 @Entity()
@@ -32,6 +33,9 @@ export class RegularUser implements User {
   @OneToMany(() => PDFDoc, (document) => document.userId, {cascade: ['insert','update']})
   documents: PDFDoc[];
 
+  @OneToMany(() => WordDoc, (document) => document.userId, {cascade: ['insert','update']})
+  wordDocuments: WordDoc[];
+  
   @OneToMany(() => Ticket, (ticket) => ticket.userId)
   tickets: Ticket[];
 

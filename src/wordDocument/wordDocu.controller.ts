@@ -1,4 +1,3 @@
-
 import { Controller, Post, Body, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { WordService } from './wordDocu.service';
@@ -21,7 +20,7 @@ export class WordController {
   ): Promise<void> {
     try {
       const { wordBuffer, fileName } =
-        await this.wordServicePSI.generateWordDocumentPSI(createData);
+        await this.wordServicePSI.generateWordDocumentPSI(createData,1);
       const filePath = ` ../../../../../../Downloads/${fileName}.docx`; 
       fs.writeFileSync(filePath, wordBuffer);
 
@@ -58,11 +57,11 @@ export class WordController {
         throw new Error('No Word document has been created.');
       }
 
-      const wordFilePath = ` ../../../../../../Downloads/${this.createdWordFileName}.docx`; 
+      const wordFilePath = ` ../../../../Downloads/${this.createdWordFileName}.docx`; 
 
       const pdfBuffer = await this.wordServicePSI.convertWordToPdf(wordFilePath);
 
-      const pdfFilePath = ` ../../../../../../Downloads/${this.createdWordFileName}.pdf`; 
+      const pdfFilePath = ` ../../../../Downloads/${this.createdWordFileName}.pdf`; 
       fs.writeFileSync(pdfFilePath, pdfBuffer);
 
       res.setHeader('Content-Type', 'application/pdf');
