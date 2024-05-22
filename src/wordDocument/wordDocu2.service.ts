@@ -403,6 +403,369 @@ export class WordService2 {
               ],
               jsonData.nombreEmpresa,
             ),
+                '6. Requisitos del SGSI',
+               [
+      'Para NOMBRE_EMPRESA, como organización que provee servicios de seguridad física a sus clientes, es crucial proteger tanto la información propia como la de sus clientes, reflejando la necesidad de asegurar la confidencialidad, integridad y disponibilidad de la información.',
+      'En este apartado se van a tratar todos los requisitos obligatorios que debe de cumplir el SGSI de la compañía.',
+    ],
+    jsonData.nombreEmpresa),
+
+     ...this.createSection('6.1. Sección 4. Contexto de la organización',
+        [
+          '-Contexto organizacional.-',
+          'Los objetivos del SGSI se establecerán en las funciones y niveles pertinentes, enfocados a la mejora y utilizando como marco de referencia:',
+          {
+            text: 'Cambios en las necesidades de las partes interesadas que lleven a una mejora del alcance del sistema.',
+            bullet: { level: 0 },
+          },
+          {
+            text: 'Requisitos de seguridad de la información aplicables y los resultados de la apreciación y el tratamiento de los riesgos para garantizar la confidencialidad, integridad, disponibilidad, trazabilidad y autenticidad de la información, así como la protección de los datos personales.',
+            bullet: { level: 0 },
+          },
+          {
+            text: 'Factores internos como la aplicación de técnicas organizativas que mejoren el seguimiento de la tramitación y resolución de incidentes de seguridad.',
+            bullet: { level: 0 },
+          },
+          {
+            text: 'Factores externos como los avances tecnológicos, cuya aplicación mejore la eficacia del tratamiento de los riesgos.',
+            bullet: { level: 0 },
+          },
+          {
+            text: 'La mejora y la eficacia de la formación y concienciación del personal que trabajan en el ámbito de la seguridad de la información.',
+            bullet: { level: 0 },
+          },
+          '',
+          '-Partes interesadas.-',
+          'Internas: Personal interno, ya sea personal gerencial u operativo de todos los departamentos. Le afectan las leyes relativas a toda la normativa y buenas prácticas de la empresa. Siempre las cumplirán y las harán cumplir.',
+          'Proveedores de servicios y suministros: todo servicio, suministro, equipo, además de leyes nacionales. Entidades externas que impongan las normas de la compañía, incluso las relativas a la seguridad.',
+          'Otros terceros: Clientes reclamando que los servicios recibidos por la empresa sean de calidad y cumplan con los requisitos de la norma.',
+          'Otros terceros: Empresas colaboradoras, propietarios de la empresa, exigirán el cumplimiento legal y normativo de todos los empleados.',
+          'Identificar las partes interesadas incluyendo leyes aplicables, regulaciones, contratos, etc. y Determinar sus requisitos relevantes al respecto de la seguridad de la información y sus obligaciones.',
+          '',
+          '-Alcance del SGSI.-',
+          'Se detallarán las áreas y activos de la información que están incluidos dentro del sistema de gestión de seguridad de la información teniendo en cuenta los puntos anteriores, el contexto organizacional y las partes interesadas, así como los proveedores y aquellos terceros que realizan procesos del SGSI. (Pendiente de realizar)',
+          '',
+          'De forma estructurada el alcance es:',
+          {
+            text: 'Procesos de Negocio Involucrados. A detallar',
+            bullet: { level: 0 },
+          },
+          {
+            text: 'Activos de Información Críticas. A detallar.',
+            bullet: { level: 0 },
+          },
+          {
+            text: 'Infraestructura Tecnológica: Sistemas de TI, redes y plataformas de comunicación.',
+            bullet: { level: 0 },
+          },
+          {
+            text: 'Personal interno y externo con acceso a los activos.',
+            bullet: { level: 0 },
+          },
+          {
+            text: 'Ubicaciones Físicas: Oficinas y entornos remotos de almacenamiento de datos.',
+            bullet: { level: 0 },
+          },
+          {
+            text: 'Proveedores y Terceros: Servicios de terceros que tienen acceso a los servicios entregados.',
+            bullet: { level: 0 },
+          },
+          '',
+          '-Sistema de Gestión de Seguridad de la Información (SGSI).-',
+          'Mediante este documento se establece, implementa, mantiene y se establece un proceso de mejora continua el SGSI implantando en la empresa de conformidad con la norma.'
+        ],
+        jsonData.nombreEmpresa,
+      ),
+      ...this.createSection(
+        '6.2. Sección 5. Liderazgo',
+        [
+          '-Liderazgo y compromiso.-',
+          'La alta dirección debe demostrar el liderazgo y compromiso en relación con el SGSI, aprobando este documento, aportando los recursos necesarios y difundiendo este documento entre todos los interesados: empleados, proveedores y terceros.',
+          'Para ello debe:',
+          {
+            text: '   a)  Asegurar que la política de seguridad de la información y los objetivos de seguridad de la información establecidos y sean compatibles con la dirección estratégica de la organización;',
+            alignment: AlignmentType.JUSTIFIED,
+          },
+          {
+            text: '   b)  Garantizar la integración de los requisitos del sistema de gestión de la seguridad de la información en los procesos de la organización;',
+            alignment: AlignmentType.JUSTIFIED,
+          },
+          {
+            text: '   c)  Garantizar que se disponen de los recursos necesarios para el sistema de gestión de la seguridad de la información;',
+            alignment: AlignmentType.JUSTIFIED,
+          },
+          {
+            text: '   d)  Comunicar la importancia de una gestión eficaz de la seguridad de la información y de ajustarse a los requisitos del sistema de gestión de la seguridad de la información;',
+            alignment: AlignmentType.JUSTIFIED,
+          },
+          {
+            text: '   e)  Garantizar que el sistema de gestión de la seguridad de la información logre los resultados previstos;',
+            alignment: AlignmentType.JUSTIFIED,
+          },
+          {
+            text: '   f)  Dirigir y apoyar a las personas para que contribuyan a la eficacia del sistema de gestión de la seguridad de la información sistema de gestión de la seguridad de la información;',
+            alignment: AlignmentType.JUSTIFIED,
+          },
+          {
+            text: '   g)  Promoviendo la mejora continua;',
+            alignment: AlignmentType.JUSTIFIED,
+          },
+          {
+            text: '   h)  Apoyar a otras funciones de gestión pertinentes para que demuestren su liderazgo en lo que se refiere a sus áreas de responsabilidad.',
+            alignment: AlignmentType.JUSTIFIED,
+          },
+          '',
+          '-Política.-',
+          'Se desarrolla e implanta la “Política de Seguridad de la Información” aprobada, en su primera versión, el 99/99/9999.',
+          'Con esta política se proporciona el marco para establecer objetivos de seguridad de la información y su compromiso para satisfacer los requisitos aplicables relacionados con la seguridad de la información y la mejora continua del sistema de gestión de la seguridad de la información.',
+          'Dicha política está disponible a todos los empleados y partes interesadas mediante los canales establecidos.',
+          '',
+          '-Roles, responsabilidades y autoridades en la organización.-',
+          'En el apartado 4 de este documento se identifican las áreas y sus responsabilidades para cumplir y mejorar el SGSI según el alcance definido, teniendo todas ellas la autoridad necesaria para llevarlas a cabo.',    ],
+        jsonData.nombreEmpresa ),
+
+        ...this.createSection(
+          '6.3. Sección 6. Planificación',
+          [
+            '-Acciones para abordar los riesgos y oportunidades.-',
+            'Con este documento se desea que el SGSI para satisfacer los requisitos, tratando con los riesgos y oportunidades identificados en el análisis de riesgos, basado en la “Metodología de Análisis de Riesgos” de la compañía.',
+            'El análisis de riesgos garantiza que el sistema de gestión de la seguridad de la información pueda lograr los resultados previstos, prevenir o reducir los efectos no deseados y lograr una mejora continua.',
+            'Para ello la organización planifica las acciones en los procesos para abordar estos riesgos y oportunidades y evaluar su eficacia.',
+            'La “Metodología de Análisis de Riesgos” de la compañía define un proceso de evaluación de riesgos de seguridad de la información que:',
+            {
+              text: '   a)  Establece y mantiene los criterios de riesgo para la seguridad de la información que incluyen los criterios de aceptación del riesgo; y los criterios para realizar evaluaciones de los riesgos de seguridad de la información;',
+              alignment: AlignmentType.JUSTIFIED,
+            },
+            {
+              text: '   b)  Garantice que las evaluaciones repetidas de los riesgos para la seguridad de la información producen resultados coherentes, válidos y resultados comparables;',
+              alignment: AlignmentType.JUSTIFIED,
+            },
+            {
+              text: '   c)  Identifique los riesgos para la seguridad de la información mediante un proceso de evaluación de riesgos para la seguridad de la información para identificar los riesgos asociados a la pérdida de confidencialidad, integridad y disponibilidad de la información dentro del ámbito del sistema de gestión de seguridad de la información; e identifique a los responsables de los riesgos;',
+              alignment: AlignmentType.JUSTIFIED,
+            },
+            {
+              text: '   d)  Analice los riesgos para la seguridad de la información y evalúe las consecuencias potenciales que se derivarán si los riesgos identificados se materializarán; además de evaluar la probabilidad realista de que se produzcan los riesgos identificados y determinar los niveles de riesgo;',
+              alignment: AlignmentType.JUSTIFIED,
+            },
+            {
+              text: '   e)  Evalúe los riesgos para la seguridad de la información y priorice los riesgos analizados para su tratamiento según los criterios de riesgo establecidos.',
+              alignment: AlignmentType.JUSTIFIED,
+            },
+            '',
+            '-Objetivos y planes de seguridad de la información.-',
+            'Establezca y documenta los objetivos y planes de seguridad de la información.',
+            'Los objetivos de seguridad de la información son coherentes con la política de seguridad de la información; medibles si es factible; y es objeto de seguimiento.',
+            'Para ello, la organización ha determinado:',
+            {
+              text: '   i)  qué se hará;',
+              alignment: AlignmentType.JUSTIFIED,
+            },
+            {
+              text: '   j)  qué recursos serán necesarios;',
+              alignment: AlignmentType.JUSTIFIED,
+            },
+            {
+              text: '   k)  quién será el responsable;',
+              alignment: AlignmentType.JUSTIFIED,
+            },
+            {
+              text: '   l)  cuándo se completará;',
+              alignment: AlignmentType.JUSTIFIED,
+            },
+            {
+              text: '   m)  cómo se evaluarán los resultados.',
+              alignment: AlignmentType.JUSTIFIED,
+            },
+            'La organización conserva la información documentada sobre los objetivos de seguridad de la información.',
+            '',
+            '-Planificación de cambios.-',
+            'Los cambios sustanciales al SGSI son llevados a cabo de manera planificada previa autorización y con la participación de la alta Dirección, quedando estos registrados en el propio documento de cambios.',
+          ],
+          jsonData.nombreEmpresa),
+          
+          ...this.createSection(
+            '6.4. Sección 7. Soporte',
+    [
+      '-Recursos-',
+      'Por parte de la Dirección se han determinado los recursos necesarios para el SGSI, tanto los recursos humanos (RRHH) como la infraestructura necesaria.',
+      '-Competencias-',
+      'Se han determinado y documentado todas las competencias necesarias para el funcionamiento del SGSI.',
+      '-Concientización-',
+      'Hay establecido un programa de concientización en seguridad en la que se da a conocer:',
+      {
+        text: 'SGSI',
+        bullet: { level: 0 },
+      },
+      {
+        text: 'La política de seguridad',
+        bullet: { level: 0 },
+      },
+      {
+        text: 'Concientización en ciberseguridad, en general',
+        bullet: { level: 0 },
+      },
+      'Todo ello, para contribuir a la eficacia del SGSI, y las implicaciones de no ajustarse a este sistema.',
+      '-Comunicación-',
+      'Existencia de un plan de comunicación interna y externa que transmita los temas relevantes del SGSI que recoge el qué, el cuándo, el cómo y a quién.',
+      '-Gestión de la documentación-',
+      '',
+      'Hay establecido un procedimiento de gestión de documentación para esta y otras normas liderada por el área de Calidad que está a disposición de todos los empleados. Además, aquellas normas aplicables a terceros estarán disponibles para ellos. (¿Existe?)',
+      'La documentación en la empresa tiene un formato definido, y regularmente es revisada y si hubiese cambios se aprueba por el área responsable y posteriormente se difunde.',
+    ],
+    jsonData.nombreEmpresa
+  ),
+    ...this.createSection(
+      '6.5. Sección 8. Operación',
+      [
+        '-Planificación y control operacional-',
+        'Existe un documento denominado “Plan de Tratamiento de Riesgos” (Pendiente de realizar) basado en lo recogido en la Sección 6 de Planificación y que es actualizado cuando hay un cambio en la planificación.',
+        '-Apreciación del riesgo de seguridad de la información-',
+        'La organización realiza, y documenta, evaluaciones de riesgos de seguridad de la información a intervalos planificados (anuales) o cuando se propongan o se produzcan cambios significativos teniendo en cuenta los criterios establecidos en cuanto a la gestión del riesgo.',
+        '-Tratamiento del riesgo de seguridad de la información-',
+        'El tratamiento del riesgo se recoge en el “Plan de Tratamiento de Riesgos” determinado a partir del análisis de riesgos y son documentados los resultados en dicho documento.',
+      ],
+      jsonData.nombreEmpresa),
+  ...this.createSection(
+    '6.6. Sección 9. Evaluación del desempeño',
+    [
+      '-Seguimiento, medición, análisis y evaluación-',
+      'La organización evalúa el rendimiento de la seguridad de la información y la eficacia del sistema de gestión de la seguridad de la información.',
+      'Para ello, realiza el seguimiento, análisis y evaluación del SGSI y los controles, para los procesos y controles mediante un método de seguimiento que indica el cómo, cuándo y quién. Posteriormente se realiza un análisis y evaluación de resultados.',
+      'Se dispone de información documentada como prueba de los resultados.',
+      '-Auditoría interna-',
+      'Se planifican y llevan a cabo auditorías internas del SGSI anualmente.',
+      'Las auditorías se ajustan al sistema de gestión de la seguridad de la información y a los requisitos de este documento.',
+      'El alcance y los criterios de la auditoría son determinados por el área responsable de este trabajo, siendo el trabajo realizado por personal independiente.',
+      '-Revisión por la dirección-',
+      'Se realizan revisiones por la dirección del SGSI cada 2 meses, estando estas recogidas en las correspondientes actas.',
+      'En las revisiones se tratan, entre otros temas:',
+      {
+        text: 'Revisión y estado del plan de tratamiento de riesgos',
+        bullet: { level: 0 },
+      },
+      {
+        text: 'Cambios en el SGSI',
+        bullet: { level: 0 },
+      },
+      {
+        text: 'Seguimiento del rendimiento del SGSI: No conformidades, KPI, evaluación de riesgos, …',
+        bullet: { level: 0 },
+      },
+      'Los resultados de la revisión realizada por la dirección incluirán decisiones relacionadas con la mejora continua, oportunidades y cualquier necesidad de cambios en el sistema de gestión de la seguridad de la información.',
+    ],
+    jsonData.nombreEmpresa
+  ),
+
+  ...this.createSection(
+    '6.7. Sección 10. Mejora',
+    [
+      '-Mejora continua-',
+      'La organización tiene la obligación de mejorar continuamente la adecuación y eficacia del sistema de gestión de la seguridad de la información mediante las revisiones realizadas por la Dirección, así como las auditorías independientes.',
+      '-No conformidad y acciones correctivas-',
+      'La organización, ya sea por la gestión de riesgos o las auditorías realizadas, corrige y lleva a cabo acciones para prevenir la ocurrencia de no conformidades identificadas.',
+      'Estas acciones se documentarán en el Plan de resolución de no conformidades y estas irán encaminadas a tomar medidas para controlarlas y corregirlas, y hacer frente a las consecuencias. Y si es necesario, se introducen cambios en el sistema de gestión de la seguridad de la información, si fuera necesario.',
+    ],
+    jsonData.nombreEmpresa
+  ),
+
+  new Paragraph({
+    children: [new TextRun('')],
+    pageBreakBefore: true,
+  }),
+  new Paragraph({
+    children: [
+      new TextRun({
+        text: 'ANEXO I. Requisitos obligatorios del SGSI, según ISO/IEC 27001',
+        bold: true,
+        size: 28,
+        color: '808080', 
+      }),
+    ],
+    border: {
+      bottom: {
+        color: '808080', 
+        space: 1,
+        style: BorderStyle.SINGLE,
+        size: 6,
+      },
+    },
+    spacing: {
+      after: 200, 
+    },
+  }),
+  new Paragraph({
+    text: 'Se adjunto los requisitos obligatorios que tienen que cumplir un Sistema de Gestión de la Seguridad de la Información según la ISO/IEC 27001:',
+    spacing: {
+      after: 200, 
+    },
+  }),
+  this.createAnexoTabla(),
+
+  new Paragraph({
+    children: [new TextRun('')],
+    pageBreakBefore: true,
+  }),
+
+  new Paragraph({
+    children: [
+      new TextRun({
+        text: 'Guía de acrónimos.',
+        bold: true,
+        size: 28,
+        color: '808080', 
+      }),
+    ],
+    border: {
+      bottom: {
+        color: '808080', 
+        space: 1,
+        style: BorderStyle.SINGLE,
+        size: 6,
+      },
+    },
+    spacing: {
+      after: 200, 
+    },
+  }),
+
+  this.createAcronymsGuideTable(),
+
+  new Paragraph({
+    children: [new TextRun('')],
+    pageBreakBefore: true,
+  }),
+  new Paragraph({
+    children: [
+      new TextRun({
+        text: 'Respuesta del Wizard',
+        bold: true,
+        size: 28,
+        color: '808080', 
+      }),
+    ],
+    border: {
+      bottom: {
+        color: '808080', 
+        space: 1,
+        style: BorderStyle.SINGLE,
+        size: 6,
+      },
+    },
+    spacing: {
+      after: 200, 
+    },
+  }),
+
+  new Paragraph({
+    children: [
+      new TextRun({
+        text:jsonData.textIA
+      })
+    ]
+
+  })
+
 
             ...this.createSection(
               '6.1. Sección 4. Contexto de la organización',
