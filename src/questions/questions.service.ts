@@ -79,7 +79,10 @@ export class QuestionsService{
       
     async postNewQuestion(email: string, text: string): Promise<any> {
       const apiUrl = "https://secretary-drives-baptist-vulnerability.trycloudflare.com/v1/chat-messages";
-      const apiKey = "app-SZg44qKsRuhTZ2YWGWKBHekY";
+      const apiKey = "app-Hj0ua51GZsNgm7ZxoMne3zw3";
+
+      console.log(email, text);
+      
       try {
         const data = {
           inputs: {},
@@ -91,28 +94,24 @@ export class QuestionsService{
           Authorization: `Bearer ${apiKey}`,
           'Content-Type': 'application/json'
         };
-        const response = await axios.post(`${apiUrl}`, data, { headers });
+        const res = await axios.post(`${apiUrl}`, data, { headers });
+        console.log(res)
   
-        const generatedText = response.data.answer;
-        const question = this.questionRepository.create({
-          email,
-          text,
-        });
-        await this.questionRepository.save(question);
+        const generatedText = res.data.answer;
+        
   
         // Crear el objeto questionData para OpenSearch
         const questionData: questionData = {
-          questionID: question.id,
           email: email,
           question: text,
           answer: generatedText
         };
-  
         // Almacenar en OpenSearch
         const indexResponse = await this.openSearchService.indexDocument('questionai', questionData); // Asegúrate de usar el nombre del índice correcto
         console.log('Pregunta indexada en OpenSearch:', indexResponse);
   
-        return generatedText;
+        console.log(generatedText)
+        return {generatedText}; 
       } catch (error) {
         if (axios.isAxiosError(error)) {
           const axiosError = error as AxiosError;

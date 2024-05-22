@@ -26,4 +26,7 @@ export class AdminUser implements User {
 
   @Column()
   email: string;
+
+  @Column({type: 'boolean', default: false})
+  premium: boolean;
 }
