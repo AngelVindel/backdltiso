@@ -29,6 +29,7 @@ export class UserInitService {
         activation_token: null,
         activated: true,
         tickets: null,
+        premium: true,
       };
   
       await this.adminUserRepository.save(newAdmin); 

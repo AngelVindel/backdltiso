@@ -26,7 +26,7 @@ export class AuthService {
 
     private getUserRepository(userType: string): Repository<User> {
         if (userType === 'Admin') {
-            return this.adminUserRepository;
+            return this.adminUserRepository; 
         } else {
             return this.regularUserRepository;
         }
