@@ -1,6 +1,8 @@
 
 export class DocuDto{
 
+
+    userId:number;
     nombreEmpresa: string;
     realizadoPor: string;
     revisadoPor: string;

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res } from '@nestjs/common';
+import { Controller, Post, Body, Res, Param, Delete } from '@nestjs/common';
 import { Response } from 'express';
 import { WordService } from './wordDocu.service';
 import * as fs from 'fs';
@@ -13,24 +13,38 @@ export class WordController {
     private readonly wordServiceSGSI: WordService2
     ) {}
 
-  @Post('create/psi')
-  async createWordDocumentPSI(
-    @Body() createData: DocuDto,
-    @Res() res: Response,
+
+    @Post('create/psi')
+    async createWordDocumentPSI(
+      @Body() createData: DocuDto,
+    ): Promise<any> {
+
+      const word= await this.wordServicePSI.generateWordDocumentPSI(createData);
+     return word;
+    }
+  
+  @Post('download/psi/:id')
+  async downloadWordDocumentPSI(
+    @Param("id") id:number,
+        @Res() res: Response,
   ): Promise<void> {
     try {
       const { wordBuffer, fileName } =
-        await this.wordServicePSI.generateWordDocumentPSI(createData,1);
+        await this.wordServicePSI.downloadWord(id);
       const filePath = ` ../../../../../../Downloads/${fileName}.docx`; 
       fs.writeFileSync(filePath, wordBuffer);
-
       this.createdWordFileName = fileName;
-
       res.send('Word document created successfully.');
     } catch (error) {
       res.status(500).send(`Error creating Word document: ${error.message}`);
     }
   }
+
+  @Delete('psi/:id')
+  async deleteWord(@Param('id') id:number){
+    await this.wordServicePSI.deleteWord(id)
+  }
+
   @Post('create/sgsi')
   async createWordDocumentSGSI(
     @Body() createData: DocuDto,

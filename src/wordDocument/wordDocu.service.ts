@@ -41,9 +41,7 @@ export class WordService {
 
 
   async generateWordDocumentPSI(
-    jsonData: DocuDto,
-    userID: number
-  ): Promise<{ wordBuffer: Buffer; fileName: string }> {
+    jsonData: DocuDto):Promise<WordDoc> {
     if (!jsonData) {
       throw new Error(
         'The provided JSON does not have the expected structure.',
@@ -1075,20 +1073,41 @@ export class WordService {
 
     const fileName = jsonData.nombreEmpresa.replace(/[^a-zA-Z0-9]/g, '_');
 
-    //----------------Almacenar PDF-------------------
     const word = this.wordRepository.create({
-      userId: userID,
+      userId: jsonData.userId,
       content: buffer,
+      fileName:fileName,
       creationDate: new Date(),
       modifyDate: new Date()
     })
     try {
-      const savedWord = await this.wordRepository.save(word);
-      //  resolve(savedWord);
+     const wordC= await this.wordRepository.save(word);
+      return wordC
     } catch (error) {
-      //reject(error);
+
+      throw new Error(`Failed to save the word document: ${error.message}`);
+
     }
-    return { wordBuffer: buffer, fileName };
+  }
+
+
+  async downloadWord(documentID: number): Promise<{ wordBuffer: Buffer; fileName: string }>{
+    const document = await this.wordRepository.findOne({
+      where: {
+        id: documentID
+      },
+    });
+
+    if (!document) {
+      throw new Error('Document not found or does not belong to the user.');
+    }
+  
+    return {
+      wordBuffer: document.content,
+      fileName: document.fileName, 
+    };
+
+
   }
 
   createFooterUso(): Footer {
@@ -1897,6 +1916,16 @@ export class WordService {
       ],
     });
   }
+
+  async deleteWord(id: number): Promise<void> {
+    const pdf = await this.wordRepository.findOneBy({ id  });
+    if (!pdf) {
+      throw new Error('PDF not found');
+    }
+
+    await this.wordRepository.delete(id);
+  }
+
 
   async convertWordToPdf(wordFilePath: string): Promise<Buffer> {
     return new Promise((resolve, reject) => {

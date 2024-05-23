@@ -20,6 +20,9 @@ content: Buffer;
 creationDate: Date;
 
 @Column()
+fileName: string;
+
+@Column()
 modifyDate: Date;
 
 
