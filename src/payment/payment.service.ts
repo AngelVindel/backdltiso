@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { EventEmitter } from 'events'; // Importa EventEmitter de 'events' de Node.js
 import Stripe from 'stripe';
@@ -28,14 +29,7 @@ export class PaymentService {
             cancel_url: `${YOUR_DOMAIN}/payment/canceled?canceled=true&session_id={CHECKOUT_SESSION_ID}`,
         });
 
-        const intentPayment = {
-            user: createPaymentDto.email,
-            price: createPaymentDto.priceId,
-            session: session.id,
-            status: session.status,
-        };
-
-        return session.url;
+        return {session: session.url};
     }
 
     async successPayment(sessionId: string) {
@@ -57,7 +51,7 @@ export class PaymentService {
             customer: session.customer.toString(),
             return_url: 'ruta',
         });
-
+        
         return portalSession.url;
     }
 }

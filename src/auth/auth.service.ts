@@ -135,4 +135,17 @@ export class AuthService {
         }
         return false;
     }
+
+    async changePremium(email: string): Promise<any> {
+        console.log(email);
+        const user = await this.regularUserRepository.findOne({ where: { email:email['email'] } });
+        console.log(user)
+        if(user){
+            const repo=await this.regularUserRepository.update(user.id, {premium: !user.premium});
+            console.log(repo);
+            
+            return repo;
+        }
+        return false;
+    }
 }

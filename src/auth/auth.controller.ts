@@ -35,5 +35,9 @@ export class AuthController{
     getPasswordKey(@Body() email: any){
         return this.authService.getPasswordKey(email)
     }
+    @Post('changePremium')
+    changePremium(@Body() email: string){
+        return this.authService.changePremium(email)
+    }
 
 }
