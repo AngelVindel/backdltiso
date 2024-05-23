@@ -57,11 +57,11 @@ export class WordController {
         throw new Error('No Word document has been created.');
       }
 
-      const wordFilePath = ` ../../../../Downloads/${this.createdWordFileName}.docx`; 
+      const wordFilePath = ` ../../../../../../Downloads/${this.createdWordFileName}.docx`; 
 
       const pdfBuffer = await this.wordServicePSI.convertWordToPdf(wordFilePath);
 
-      const pdfFilePath = ` ../../../../Downloads/${this.createdWordFileName}.pdf`; 
+      const pdfFilePath = ` ../../../../../../Downloads/${this.createdWordFileName}.pdf`; 
       fs.writeFileSync(pdfFilePath, pdfBuffer);
 
       res.setHeader('Content-Type', 'application/pdf');
