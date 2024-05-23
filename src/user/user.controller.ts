@@ -6,9 +6,14 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserService } from './user.service';
 import { Response } from 'express';
 import { DocumentPdfDto } from 'src/pdfDocument/dto/document-pdf.dto';
+import { WordDoc } from 'src/wordDocument/wordDocu.entity';
+import { DocuDto } from 'src/wordDocument/dto/wordDocu.dto';
+import * as fs from 'fs';
 
 @Controller('users')
 export class UserController {
+  private createdWordFileName: string = '';
+
   constructor(private readonly userService: UserService) {}
 
   @Post('signup')
@@ -17,7 +22,7 @@ export class UserController {
   }
 
  
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get()
   getAllUsers(){
       return this.userService.getAllUsers();
@@ -74,15 +79,26 @@ export class UserController {
 
 
   @Get(':id/pdfs')
-  async getUserDocuments(@Param('id') userId: number) {
-    const pdf= await this.userService.getUserDocuments(userId);
+  async getUserPdfs(@Param('id') userId: number) {
+    const pdf= await this.userService.getUserPdfs(userId);
     return pdf;
   }
+  @Get(':id/words')
+  async getUserDocuments(@Param('id') userId: number) {
+    const word= await this.userService.getUserDocuments(userId);
+    return word;
+  }
+
 
   @Post(":id/pdfs")
-  async newUserDocument(@Param("id") userId: number,@Body() dto: DocumentPdfDto){
-    const pdf= await this.userService.newUserDocument(userId,dto);
+  async newUserPdf(@Param("id") userId: number,@Body() dto: DocumentPdfDto){
+    const pdf= await this.userService.newUserPdf(userId,dto);
     return pdf;
+  }
+  @Post(":id/word")
+  async newUserDocument(@Param("id") userId: number,@Body() dto: DocuDto){
+    const word= await this.userService.newUserDocument(userId,dto);
+    return word;
   }
 
   @Put(':id/pdfs/:idPdf')
@@ -96,6 +112,11 @@ export class UserController {
     await this.userService.deleteUserPdf(userId,documentId);
   }
 
+  @Delete(':id/words/:idWord')
+  async deleteWordUser(@Param('id') userId:number, @Param('idWord') wordId: number){
+    await this.userService.deleteUserWord(userId,wordId);
+  }
+
   @Get(':id/pdfs/:idPdf/download')
   async downloadPdf(@Param('id') userId: number, @Param('idPdf') pdfId: number, @Res() res:Response) {
       try {
@@ -107,6 +128,22 @@ export class UserController {
       } catch (error) {
           res.status(404).send({ message: error.message });
       }
+  }
+  @Post(':id/words/:idWord/download')
+  async downloadWord(
+    @Param("id") id:number,@Param("idWord") wordId:number,@Res() res: Response) {
+    try {
+      const { wordBuffer, fileName } =
+        await this.userService.downloadUserWord(id,wordId);
+      const filePath = ` ../../../../../../Downloads/${fileName}.docx`; 
+      fs.writeFileSync(filePath, wordBuffer);
+      this.createdWordFileName = fileName;
+      res.send('Word document created successfully.');
+    } catch (error) {
+      res.status(500).send(`Error creating Word document: ${error.message}`);
+    }
+
+
   }
 
   

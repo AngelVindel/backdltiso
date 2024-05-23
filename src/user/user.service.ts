@@ -11,6 +11,9 @@ import { DocumentPdfDto } from 'src/pdfDocument/dto/document-pdf.dto';
 import { AdminUser } from './adminU.entity';
 import { Question } from 'src/questions/questions.entity';
 import { QuestionsService } from 'src/questions/questions.service';
+import { WordDoc } from 'src/wordDocument/wordDocu.entity';
+import { DocuDto } from 'src/wordDocument/dto/wordDocu.dto';
+import { WordService } from 'src/wordDocument/wordDocu.service';
 
 
 @Injectable()
@@ -29,7 +32,10 @@ export class UserService {
         private adminRepository: Repository<AdminUser>,
 
         private  pdfService: PDFDocumentService,
- 
+
+        private  wordService: WordService,
+
+
         private questionService: QuestionsService
     ) {} 
 
@@ -139,7 +145,7 @@ console.log(questionDttt.answer);
 
 
 
-  async getUserDocuments(userId: number): Promise<PDFDoc[]> {
+  async getUserPdfs(userId: number): Promise<PDFDoc[]> {
     const user = await this.regularUserRepository.findOne({
       where: { id: userId },
       relations: ['documents']
@@ -151,8 +157,20 @@ console.log(questionDttt.answer);
 
     return user.documents;
   }
+  async getUserDocuments(userId: number): Promise<WordDoc[]> {
+    const user = await this.regularUserRepository.findOne({
+      where: { id: userId },
+      relations: ['wordDocuments']
+    });
 
-  async newUserDocument(userId: number, dto: DocumentPdfDto): Promise<PDFDoc> {
+    if (!user) {
+      throw new Error(`User with ID ${userId} not found`);
+    }
+
+    return user.wordDocuments;
+  }
+
+  async newUserPdf(userId: number, dto: DocumentPdfDto): Promise<PDFDoc> {
     
     if (!userId) {
       throw new Error('UserID cannot be null or undefined');
@@ -185,6 +203,41 @@ console.log(questionDttt.answer);
     return pdf; 
   }
 
+  async newUserDocument(userId: number, dto: DocuDto): Promise<WordDoc> {
+    
+    if (!userId) {
+      throw new Error('UserID cannot be null or undefined');
+    }
+  
+    const user = await this.regularUserRepository.findOne({ where: { id: userId }, relations: ['wordDocuments'] });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    
+    const documentDto: DocuDto = {
+      userId: user.id, 
+      nombreEmpresa: dto.nombreEmpresa,
+      realizadoPor: dto.realizadoPor,
+      revisadoPor: dto.revisadoPor,
+      aprobadoPor: dto.aprobadoPor,
+      textIA: dto.textIA,
+      estado: dto.estado
+     
+
+      
+    };
+  
+    const word = await this.wordService.generateWordDocumentPSI(documentDto)
+  
+    if (word && word.content && word.content.length > 0) {
+      user.wordDocuments.push(word); 
+      await this.regularUserRepository.save(user); 
+    } else {
+      throw new Error('Failed to create PDF');
+    }
+  
+    return word; 
+  }
   
   async deleteUserPdf(userId: number, pdfId: number): Promise<void> {
 
@@ -205,6 +258,28 @@ console.log(questionDttt.answer);
     }
 
     await this.pdfService.deletePdf(pdfId);
+}
+
+
+async deleteUserWord(userId: number, wordId: number): Promise<void> {
+
+  const user = await this.regularUserRepository.findOne({
+      where: { id: userId },
+      relations: ['wordDocuments']
+  });
+
+  if (!user) {
+
+    throw new Error('User not found');
+  }
+  const pdf = user.wordDocuments.find(doc => doc.id === Number(wordId));
+  
+  if (!pdf) {
+
+    throw new Error('PDF not found or not owned by user');
+  }
+
+  await this.wordService.deleteWord(wordId)
 }
 
   async updateUserPdf(userId: number, pdfId: number, dto: DocumentPdfDto): Promise<PDFDoc> {
@@ -248,6 +323,22 @@ if (!pdf) {
 }
 
     return this.pdfService.downloadPdf(Number(pdfId));
+
+}
+
+async downloadUserWord(userId: number, wordId: number): Promise<any> {
+  const user = await this.regularUserRepository.findOne({
+      where: { id: userId },
+      relations: ['wordDocuments']
+  });
+
+ const word = user.wordDocuments.find(doc => doc.id === Number(wordId));
+
+if (!word) {
+  throw new Error('Word not found or not owned by user');
+}
+
+  return this.wordService.downloadWord(Number(wordId));
 
 }
 }
