@@ -1074,6 +1074,10 @@ export class WordService {
 
     const fileName = jsonData.nombreEmpresa.replace(/[^a-zA-Z0-9]/g, '_');
 
+    if(!jsonData.userId){
+      throw new Error('Cannot create a document without an assigned user')
+    }
+
     const word = this.wordRepository.create({
       userId: jsonData.userId,
       content: buffer,
