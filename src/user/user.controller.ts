@@ -85,8 +85,8 @@ export class UserController {
   }
   @Get(':id/words')
   async getUserDocuments(@Param('id') userId: number) {
-    const word= await this.userService.getUserDocuments(userId);
-    return word;
+  
+  return  await this.userService.getUserDocuments(userId);
   }
 
 
@@ -95,9 +95,9 @@ export class UserController {
     const pdf= await this.userService.newUserPdf(userId,dto);
     return pdf;
   }
-  @Post(":id/word")
-  async newUserDocument(@Param("id") userId: number,@Body() dto: DocuDto){
-    const word= await this.userService.newUserDocument(userId,dto);
+  @Post(":id/word/type/:type")
+  async newUserDocument(@Param("id") userId: number,@Param("type") type: string,@Body() dto: DocuDto){
+    const word= await this.userService.newUserDocument(userId,dto,parseInt(type));
     return word;
   }
 

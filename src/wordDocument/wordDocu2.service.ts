@@ -25,12 +25,26 @@ import * as fs from 'fs';
 import * as libre from 'libreoffice-convert';
 import * as path from 'path';
 import { DocuDto } from './dto/wordDocu.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { WordDoc } from './wordDocu.entity';
+import { RegularUser } from 'src/user/regularU.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class WordService2 {
+
+  constructor(
+    @InjectRepository(WordDoc)
+    private wordRepository: Repository<WordDoc>,
+    @InjectRepository(RegularUser)
+    private userRepository: Repository<RegularUser>,
+  ) { }
+
+
+
   async generateWordDocumentSGSI(
     jsonData: DocuDto,
-  ): Promise<{ wordBuffer: Buffer; fileName: string }> {
+  ): Promise<WordDoc>{
     if (!jsonData) {
       throw new Error(
         'The provided JSON does not have the expected structure.',
@@ -767,9 +781,42 @@ export class WordService2 {
     const buffer = await Packer.toBuffer(doc);
 
     const fileName = jsonData.nombreEmpresa.replace(/[^a-zA-Z0-9]/g, '_');
+    
+    const word = this.wordRepository.create({
+      userId: jsonData.userId,
+      content: buffer,
+      fileName:fileName,
+      creationDate: new Date(),
+      modifyDate: new Date(),
+      type: 2
+    })
+    try {
+      const wordC= await this.wordRepository.save(word);
+       return wordC
+     } catch (error) {
+ 
+       throw new Error(`Failed to save the word document: ${error.message}`);
+ 
+     }  }
 
-    return { wordBuffer: buffer, fileName };
-  }
+     async downloadWord(documentID: number): Promise<{ wordBuffer: Buffer; fileName: string }>{
+      const document = await this.wordRepository.findOne({
+        where: {
+          id: documentID
+        },
+      });
+  
+      if (!document) {
+        throw new Error('Document not found or does not belong to the user.');
+      }
+    
+      return {
+        wordBuffer: document.content,
+        fileName: document.fileName, 
+      };
+  
+  
+    }
 
   createFooterUso(): Footer {
     const footer = new Footer({
@@ -1302,10 +1349,6 @@ export class WordService2 {
       });
     });
   }
-
-
-
-
 
   createAnexoTabla(): Table {
     return new Table({
@@ -1914,4 +1957,14 @@ export class WordService2 {
       ],
     });
   }
+
+  async deleteWord(id: number): Promise<void> {
+    const pdf = await this.wordRepository.findOneBy({ id  });
+    if (!pdf) {
+      throw new Error('PDF not found');
+    }
+
+    await this.wordRepository.delete(id);
+  }
+
 }

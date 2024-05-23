@@ -1078,7 +1078,8 @@ export class WordService {
       content: buffer,
       fileName:fileName,
       creationDate: new Date(),
-      modifyDate: new Date()
+      modifyDate: new Date(),
+      type: 1
     })
     try {
      const wordC= await this.wordRepository.save(word);
@@ -1612,10 +1613,6 @@ export class WordService {
     return [sectionTitle, ...sectionContent, spacingParagraph];
   }
 
-
-
-
-
   createClassificationLevelsTable(): Table {
     return new Table({
       width: {
@@ -1780,7 +1777,6 @@ export class WordService {
       ],
     });
   }
-
 
   createAcronymsGuideTable(): Table {
     return new Table({

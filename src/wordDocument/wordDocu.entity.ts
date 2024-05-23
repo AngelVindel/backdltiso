@@ -25,5 +25,8 @@ fileName: string;
 @Column()
 modifyDate: Date;
 
+@Column()
+type: number;
+
 
 }

@@ -14,6 +14,7 @@ import { QuestionsService } from 'src/questions/questions.service';
 import { WordDoc } from 'src/wordDocument/wordDocu.entity';
 import { DocuDto } from 'src/wordDocument/dto/wordDocu.dto';
 import { WordService } from 'src/wordDocument/wordDocu.service';
+import { WordService2 } from 'src/wordDocument/wordDocu2.service';
 
 
 @Injectable()
@@ -35,6 +36,7 @@ export class UserService {
 
         private  wordService: WordService,
 
+        private  wordService2: WordService2,
 
         private questionService: QuestionsService
     ) {} 
@@ -157,18 +159,22 @@ console.log(questionDttt.answer);
 
     return user.documents;
   }
-  async getUserDocuments(userId: number): Promise<WordDoc[]> {
+  async getUserDocuments(userId: number): Promise<{ id: number, type: number }[]> {
     const user = await this.regularUserRepository.findOne({
       where: { id: userId },
       relations: ['wordDocuments']
     });
-
+  
     if (!user) {
       throw new Error(`User with ID ${userId} not found`);
     }
-
-    return user.wordDocuments;
+  
+    return user.wordDocuments.map(doc => ({
+      id: doc.id,
+      type: doc.type
+    }));
   }
+  
 
   async newUserPdf(userId: number, dto: DocumentPdfDto): Promise<PDFDoc> {
     
@@ -203,7 +209,7 @@ console.log(questionDttt.answer);
     return pdf; 
   }
 
-  async newUserDocument(userId: number, dto: DocuDto): Promise<WordDoc> {
+  async newUserDocument(userId: number, dto: DocuDto,type:number): Promise<WordDoc> {
     
     if (!userId) {
       throw new Error('UserID cannot be null or undefined');
@@ -221,14 +227,23 @@ console.log(questionDttt.answer);
       revisadoPor: dto.revisadoPor,
       aprobadoPor: dto.aprobadoPor,
       textIA: dto.textIA,
-      estado: dto.estado
-     
-
-      
+      estado: dto.estado,
+    
     };
-  
-    const word = await this.wordService.generateWordDocumentPSI(documentDto)
-  
+
+    var word:WordDoc;
+switch(type){
+case 1:
+     word = await this.wordService.generateWordDocumentPSI(documentDto)
+  break;
+case 2:
+   word = await this.wordService2.generateWordDocumentSGSI(documentDto)
+  break;
+default:
+  throw new Error('Invalid route')
+
+}
+    
     if (word && word.content && word.content.length > 0) {
       user.wordDocuments.push(word); 
       await this.regularUserRepository.save(user); 
@@ -272,14 +287,25 @@ async deleteUserWord(userId: number, wordId: number): Promise<void> {
 
     throw new Error('User not found');
   }
-  const pdf = user.wordDocuments.find(doc => doc.id === Number(wordId));
+  const word = user.wordDocuments.find(doc => doc.id === Number(wordId));
   
-  if (!pdf) {
+  if (!word) {
 
-    throw new Error('PDF not found or not owned by user');
+    throw new Error('Word not found or not owned by user');
   }
 
-  await this.wordService.deleteWord(wordId)
+  switch(word.type){
+    case 1:
+       await this.wordService.deleteWord(wordId)
+      break;
+    case 2:
+        await this.wordService2.deleteWord(wordId)
+      break;
+    default:
+      throw new Error('Word not found')
+    
+    }
+
 }
 
   async updateUserPdf(userId: number, pdfId: number, dto: DocumentPdfDto): Promise<PDFDoc> {
@@ -337,8 +363,21 @@ async downloadUserWord(userId: number, wordId: number): Promise<any> {
 if (!word) {
   throw new Error('Word not found or not owned by user');
 }
+var download
+switch(word.type){
+  case 1:
+    return await this.wordService.downloadWord(wordId)
+    break;
+  case 2:
+   return await this.wordService2.downloadWord(wordId)
+    break;
+  default:
+    throw new Error('Word not found')
+  
+  }
 
-  return this.wordService.downloadWord(Number(wordId));
+
+  return download;
 
 }
 }

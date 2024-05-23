@@ -10,7 +10,7 @@ import { WordDoc } from './wordDocu.entity';
   imports: [TypeOrmModule.forFeature([WordDoc,RegularUser])],
   controllers: [WordController],
   providers: [WordService,WordService2],
-  exports: [WordService]
+  exports: [WordService,WordService2]
 
 })
 export class WordModule {}

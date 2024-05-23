@@ -16,7 +16,7 @@ export class WordController {
 
     @Post('create/psi')
     async createWordDocumentPSI(
-      @Body() createData: DocuDto,
+      @Body() createData: DocuDto
     ): Promise<any> {
 
       const word= await this.wordServicePSI.generateWordDocumentPSI(createData);
@@ -41,18 +41,27 @@ export class WordController {
   }
 
   @Delete('psi/:id')
-  async deleteWord(@Param('id') id:number){
+  async deleteWordPSI(@Param('id') id:number){
     await this.wordServicePSI.deleteWord(id)
   }
 
   @Post('create/sgsi')
   async createWordDocumentSGSI(
-    @Body() createData: DocuDto,
+    @Body() createData: DocuDto
+  ): Promise<any> {
+
+    const word= await this.wordServiceSGSI.generateWordDocumentSGSI(createData);
+   return word;
+  }
+
+  @Post('download/sgsi/:id')
+  async downloadDocumentSGSI(
+    @Param("id") id:number,
     @Res() res: Response,
   ): Promise<void> {
     try {
       const { wordBuffer, fileName } =
-        await this.wordServiceSGSI.generateWordDocumentSGSI(createData);
+        await this.wordServiceSGSI.downloadWord(id);
       const filePath = ` ../../../../../../Downloads/${fileName}.docx`; 
       fs.writeFileSync(filePath, wordBuffer);
 
@@ -62,6 +71,10 @@ export class WordController {
     } catch (error) {
       res.status(500).send(`Error creating Word document: ${error.message}`);
     }
+  }
+  @Delete('sgsi/:id')
+  async deleteWordSGSI(@Param('id') id:number){
+    await this.wordServiceSGSI.deleteWord(id)
   }
 
   @Post('toPDF')
