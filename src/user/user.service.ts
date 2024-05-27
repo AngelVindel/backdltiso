@@ -1,18 +1,16 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Double, Repository } from 'typeorm';
 import { User } from './user.interface';
 import { CreateUserDto, UpdateUserDto } from './dto/create-user.dto';
 import { RegularUser } from './regularU.entity';
 import { PDFDoc } from 'src/pdfDocument/document.entity';
 import { PDFDocumentService } from 'src/pdfDocument/document.service';
 import { DocumentPdfDto } from 'src/pdfDocument/dto/document-pdf.dto';
-import { AdminUser } from './adminU.entity';
 import { Question } from 'src/questions/questions.entity';
-import { QuestionsService } from 'src/questions/questions.service';
 import { WordDoc } from 'src/wordDocument/wordDocu.entity';
-import { DocuDto } from 'src/wordDocument/dto/wordDocu.dto';
+import { DocuDto,UpdateDocuDto } from 'src/wordDocument/dto/wordDocu.dto';
 import { WordService } from 'src/wordDocument/wordDocu.service';
 import { WordService2 } from 'src/wordDocument/wordDocu2.service';
 
@@ -29,8 +27,8 @@ export class UserService {
         @InjectRepository(Question)
         private questionRepository: Repository<Question>,
 
-        @InjectRepository(AdminUser)
-        private adminRepository: Repository<AdminUser>,
+        @InjectRepository(WordDoc)
+        private wordRepository: Repository<WordDoc>,
 
         private  pdfService: PDFDocumentService,
 
@@ -38,7 +36,6 @@ export class UserService {
 
         private  wordService2: WordService2,
 
-        private questionService: QuestionsService
     ) {} 
 
 
@@ -336,6 +333,36 @@ async deleteUserWord(userId: number, wordId: number): Promise<void> {
 
     return this.pdfService.updatePdf(pdfId, documentPdfDto);
   }
+
+  async updateUserDocument(userId: number, documentId: number, dto: UpdateDocuDto): Promise<WordDoc> {
+    const user = await this.regularUserRepository.findOne({
+      where: { id: userId },
+      relations: ['wordDocuments']
+    });
+  
+    if (!user) {
+      throw new Error(`User with ID ${userId} not found`);
+    }
+  
+    const document = user.wordDocuments.find(doc => doc.id === documentId);
+    if (!document) {
+      throw new Error(`Document with ID ${documentId} not found`);
+    }
+
+    switch(document.type){
+      case 1:
+        return await this.wordService.updateUserDocument(userId,documentId,dto)
+      case 2:
+        return await this.wordService2.updateUserDocument(userId,documentId,dto)
+        default:
+     throw new Error('Word not found')
+                
+    }
+
+  }
+  
+
+
   async downloadUserPdf(userId: number, pdfId: number): Promise<Buffer> {
     const user = await this.regularUserRepository.findOne({
         where: { id: userId },

@@ -7,7 +7,7 @@ import { UserService } from './user.service';
 import { Response } from 'express';
 import { DocumentPdfDto } from 'src/pdfDocument/dto/document-pdf.dto';
 import { WordDoc } from 'src/wordDocument/wordDocu.entity';
-import { DocuDto } from 'src/wordDocument/dto/wordDocu.dto';
+import { DocuDto, UpdateDocuDto } from 'src/wordDocument/dto/wordDocu.dto';
 import * as fs from 'fs';
 
 @Controller('users')
@@ -105,6 +105,11 @@ export class UserController {
   async updateUserPdf(@Param('id') userId:number, @Param('idPdf') pdfId: number, @Body() dto: DocumentPdfDto){
     const pdf=await this.userService.updateUserPdf(userId,pdfId,dto);
     return pdf;
+  }
+  @Put(':id/words/:idDoc')
+  async updateUserWord(@Param('id') userId:number, @Param('idDoc') documentId: string, @Body() dto: UpdateDocuDto ){
+    const word=await this.userService.updateUserDocument(userId,parseInt(documentId),dto);
+    return word;
   }
   
   @Delete(':id/pdfs/:idPdf')

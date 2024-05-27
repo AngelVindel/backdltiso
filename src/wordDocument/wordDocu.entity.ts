@@ -28,5 +28,20 @@ modifyDate: Date;
 @Column()
 type: number;
 
+@Column()
+nombreEmpresa: string;
+
+@Column()
+realizadoPor: string;
+
+@Column()
+revisadoPor: string;
+
+@Column()
+aprobadoPor: string;
+
+@Column()
+estado: string;
+
 
 }

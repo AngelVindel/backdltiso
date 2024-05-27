@@ -11,9 +11,10 @@ import { Question } from 'src/questions/questions.entity';
 import { QuestionsModule } from 'src/questions/questions.module';
 import { UserInitService } from './userInit.service';
 import { WordModule } from 'src/wordDocument/wordDocu.module';
+import { WordDoc } from 'src/wordDocument/wordDocu.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([RegularUser,AdminUser, Question]),
+  imports: [TypeOrmModule.forFeature([RegularUser,AdminUser, Question,WordDoc]),
   DocumentModule,QuestionsModule,WordModule],
 
 
