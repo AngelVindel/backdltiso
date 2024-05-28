@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, Sse } from "@nestjs/common";
 import { QuestionsService } from "./questions.service";
 import { QuestionDTO } from "./dto/questions.dto";
+import { Observable, map } from "rxjs";
 
 
 @Controller('questions')
@@ -9,12 +10,23 @@ export class QuestionsController{
 
     constructor(private readonly questionsService: QuestionsService) {}
 
-
-  @Post('newQuestion')
-  async postNewQuestion(@Body() dto: QuestionDTO){
-    const question= await this.questionsService.postNewQuestion(dto.email,dto.text);
-    return question;
-  }
+    @Sse('sse')
+    async sse(@Body() dto: QuestionDTO): Promise<Observable<MessageEvent<any>>> {
+      return await  (await this.questionsService.postNewQuestion(dto.email, dto.text)).pipe(
+        map(data => new MessageEvent('message', { data }))
+      );
+    }
+    /*
+      @Post('newQuestion')
+      async postNewQuestion(@Body() dto: QuestionDTO,@Res() res: Response){
+        const question= await this.questionsService.postNewQuestion(dto.email,dto.text,res);
+        return question;
+      }*/
+      @Post('allQuestions')
+      async getAllQuestions(){
+        const questions= await this.questionsService.getAllQuestions();
+        return questions;
+      }
 
   /*
   @Get('/answers/:id')
