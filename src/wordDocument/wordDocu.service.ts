@@ -23,7 +23,7 @@ import {
 import * as fs from 'fs';
 import * as libre from 'libreoffice-convert';
 import * as path from 'path';
-import { DocuDto } from './dto/wordDocu.dto';
+import { DocuDto, UpdateDocuDto } from './dto/wordDocu.dto';
 import { WordDoc } from './wordDocu.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -35,8 +35,9 @@ export class WordService {
   constructor(
     @InjectRepository(WordDoc)
     private wordRepository: Repository<WordDoc>,
+   
     @InjectRepository(RegularUser)
-    private userRepository: Repository<RegularUser>,
+    private regularUserRepository: Repository<RegularUser>,
   ) { }
 
 
@@ -49,6 +50,36 @@ export class WordService {
       );
     }
 
+    const buffer= await this.generateBuffer(jsonData);
+    const fileName = jsonData.nombreEmpresa.replace(/[^a-zA-Z0-9]/g, '_');
+
+    if(!jsonData.userId){
+      throw new Error('Cannot create a document without an assigned user')
+    }
+
+    const word = this.wordRepository.create({
+      userId: jsonData.userId,
+      content: buffer,
+      fileName:fileName,
+      nombreEmpresa: jsonData.nombreEmpresa,
+      realizadoPor: jsonData.realizadoPor,
+      revisadoPor: jsonData.revisadoPor,
+      aprobadoPor: jsonData.aprobadoPor,
+      estado: jsonData.estado,
+      creationDate:new Date(),
+      modifyDate: new Date(),
+      type: 1
+    })
+    try {
+     const wordC= await this.wordRepository.save(word);
+      return wordC
+    } catch (error) {
+
+      throw new Error(`Failed to save the word document: ${error.message}`);
+
+    }
+  }
+  async generateBuffer(jsonData:DocuDto):Promise<Buffer>{
     const doc = new Document({
       styles: {
         paragraphStyles: [
@@ -1072,28 +1103,52 @@ export class WordService {
 
     const buffer = await Packer.toBuffer(doc);
 
-    const fileName = jsonData.nombreEmpresa.replace(/[^a-zA-Z0-9]/g, '_');
 
-    if(!jsonData.userId){
-      throw new Error('Cannot create a document without an assigned user')
+    return buffer;
+
+  }
+
+
+  async updateUserDocument(userId: number, documentId: number, dto: UpdateDocuDto): Promise<WordDoc> {
+    const user = await this.regularUserRepository.findOne({
+      where: { id: userId },
+      relations: ['wordDocuments']
+    });
+  
+    if (!user) {
+      throw new Error(`User with ID ${userId} not found`);
     }
-
-    const word = this.wordRepository.create({
-      userId: jsonData.userId,
-      content: buffer,
-      fileName:fileName,
-      creationDate: new Date(),
-      modifyDate: new Date(),
-      type: 1
-    })
-    try {
-     const wordC= await this.wordRepository.save(word);
-      return wordC
-    } catch (error) {
-
-      throw new Error(`Failed to save the word document: ${error.message}`);
-
+  
+    const document = user.wordDocuments.find(doc => doc.id === documentId);
+    if (!document) {
+      throw new Error(`Document with ID ${documentId} not found`);
     }
+  
+    const docu: DocuDto = {
+      userId: userId,
+      nombreEmpresa: dto.nombreEmpresa !== undefined ? dto.nombreEmpresa : document.nombreEmpresa,
+      realizadoPor: dto.realizadoPor !== undefined ? dto.realizadoPor : document.realizadoPor,
+      revisadoPor: dto.revisadoPor !== undefined ? dto.revisadoPor : document.revisadoPor,
+      aprobadoPor: dto.aprobadoPor !== undefined ? dto.aprobadoPor : document.aprobadoPor,
+      estado: dto.estado !== undefined ? dto.estado : document.estado,
+      fecha: document.creationDate
+    };
+  document.nombreEmpresa = docu.nombreEmpresa;
+  document.realizadoPor = docu.realizadoPor;
+  document.revisadoPor = docu.revisadoPor;
+  document.aprobadoPor = docu.aprobadoPor;
+  document.estado = docu.estado;
+  document.modifyDate= new Date()
+
+  await this.wordRepository.save(document);
+
+    const docUpdate= await this.generateBuffer(docu);
+
+    document.content=docUpdate;  
+  
+    await this.wordRepository.save(document);
+
+    return document;
   }
 
 

@@ -1,8 +1,8 @@
-import { Controller, Post, Body, Res, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Res, Param, Delete, Put } from '@nestjs/common';
 import { Response } from 'express';
 import { WordService } from './wordDocu.service';
 import * as fs from 'fs';
-import { DocuDto } from './dto/wordDocu.dto';
+import { DocuDto, UpdateDocuDto } from './dto/wordDocu.dto';
 import { WordService2 } from './wordDocu2.service';
 
 @Controller('word')
@@ -40,10 +40,19 @@ export class WordController {
     }
   }
 
+
+  @Put('psi/:id/user/:idUser')
+  async updateWordPSI(@Param('idUser') userId:number, @Param('id') documentId: string, @Body() dto: UpdateDocuDto ){
+    const word=await this.wordServicePSI.updateUserDocument(userId,parseInt(documentId),dto);
+    return word;
+  }
   @Delete('psi/:id')
   async deleteWordPSI(@Param('id') id:number){
     await this.wordServicePSI.deleteWord(id)
   }
+
+  
+  
 
   @Post('create/sgsi')
   async createWordDocumentSGSI(
@@ -71,6 +80,12 @@ export class WordController {
     } catch (error) {
       res.status(500).send(`Error creating Word document: ${error.message}`);
     }
+  }
+  
+  @Put('sgsi/:id/user/:idUser')
+  async updateWordSGSI(@Param('idUser') userId:number, @Param('id') documentId: string, @Body() dto: UpdateDocuDto ){
+    const word=await this.wordServiceSGSI.updateUserDocument(userId,parseInt(documentId),dto);
+    return word;
   }
   @Delete('sgsi/:id')
   async deleteWordSGSI(@Param('id') id:number){
