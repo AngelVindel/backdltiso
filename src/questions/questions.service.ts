@@ -4,9 +4,10 @@ import { Question } from "./questions.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { HttpService } from '@nestjs/axios';
-import axios, { AxiosError } from "axios";
-import { questionData } from "./dto/opQuestion.dto";
+import axios from "axios";
 import { OpenSearchService } from "src/opensearch/OpServices";
+import { Observable} from "rxjs";
+import { MessageDto } from "./dto/message.dto";
 
 
 @Injectable()
@@ -16,6 +17,8 @@ export class QuestionsService{
         private questionRepository: Repository<Question>,
         private httpService: HttpService,
         private openSearchService: OpenSearchService,
+
+
      ) {}
 
   
@@ -77,46 +80,67 @@ export class QuestionsService{
     */
     
       
-    async postNewQuestion(email: string, text: string): Promise<any> {
+    async postNewQuestion(email: string, text: string): Promise<Observable<MessageDto>>{
       const apiUrl = "https://secretary-drives-baptist-vulnerability.trycloudflare.com/v1/chat-messages";
       const apiKey = "app-Hj0ua51GZsNgm7ZxoMne3zw3";
-
+ 
       console.log(email, text);
       
       try {
         const data = {
           inputs: {},
           query: text,
-          response_mode: 'blocking',
+          response_mode: 'streaming',
           user: email
         };
         const headers = {
           Authorization: `Bearer ${apiKey}`,
           'Content-Type': 'application/json'
         };
-        const res = await axios.post(`${apiUrl}`, data, { headers });
-        console.log(res)
+        const answer=[]
+        return new Observable(observer => {
+          axios({
+            method: 'post',
+            url: apiUrl,
+            data: data,
+            headers: headers,
+            responseType: 'stream'
+          }).then(response => {
+            const stream = response.data;
+            answer.push(response.data.answer);
+            stream.on('data', (chunk) => {
+              observer.next(chunk.toString());
+            });
+            stream.on('end', () => {
+              observer.complete();
+              const questionData = {
+                email: email,
+                question: text,
+                answer: answer
+              };
+              this.openSearchService.indexDocument('questionai', questionData); // Asegúrate de usar el nombre del índice correcto
+            }); 
+            stream.on('error', (err) => {
+              observer.error(err);
+            });
+          }).catch(error => {
+            observer.error(error);
+          });
+        });;   
+        /*console.log(res)
   
         const generatedText = res.data.answer;
         
   
         // Crear el objeto questionData para OpenSearch
-        const questionData: questionData = {
-          email: email,
-          question: text,
-          answer: generatedText
-        };
+        
         // Almacenar en OpenSearch
-        const indexResponse = await this.openSearchService.indexDocument('questionai', questionData); // Asegúrate de usar el nombre del índice correcto
-        console.log('Pregunta indexada en OpenSearch:', indexResponse);
+        
   
         console.log(generatedText)
-        return {generatedText}; 
+        return {generatedText}; */
       } catch (error) {
-        if (axios.isAxiosError(error)) {
-          const axiosError = error as AxiosError;
-          return axiosError.message;
-        }
+        throw new Error(`Error al generar texto: ${error}`);
       }
     }
 

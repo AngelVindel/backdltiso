@@ -7,6 +7,7 @@ import { Question } from './questions.entity';
 import { HttpModule } from '@nestjs/axios';
 import { RegularUser } from 'src/user/regularU.entity';
 import { OpenSearchService } from 'src/opensearch/OpServices';
+import { EventEmitter } from 'typeorm/platform/PlatformTools';
 
 
 @Module({ 
@@ -16,7 +17,7 @@ import { OpenSearchService } from 'src/opensearch/OpServices';
 
         TypeOrmModule.forFeature([Question,RegularUser])],
     controllers: [QuestionsController],
-    providers: [QuestionsService,OpenSearchService],
+    providers: [QuestionsService,OpenSearchService,EventEmitter],
     exports: [QuestionsService]
 })
 export class QuestionsModule {}
