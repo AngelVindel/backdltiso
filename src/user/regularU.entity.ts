@@ -15,11 +15,17 @@ export class RegularUser implements User {
   @Column()
   username: string;
 
+  @Column({ nullable: true })
+  fullname?: string;
+
   @Column() 
   password: string;
 
   @Column()
   email: string;
+
+  @Column({ nullable: true })
+  userPhoto?: string;
 
   @Column()
   company: string;

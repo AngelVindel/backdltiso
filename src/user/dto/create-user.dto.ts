@@ -1,36 +1,39 @@
-/* eslint-disable prettier/prettier */
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
-// create-user.dto.ts
 export class CreateUserDto {
+  @IsEmail()
+  @IsString()
+  @IsNotEmpty()
+  email: string;
 
-    @IsEmail()  
-    @IsString()
-    @IsNotEmpty()
-     email: string;
+  @IsString()
+  @IsNotEmpty()
+  username: string;
 
-    @IsString()
-    @IsNotEmpty()
-     username: string;
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 
+  activation_token: number;
+  premium: boolean;
+}
 
-    @IsString()
-    @IsNotEmpty()
-     password: string;
+export class UpdateUserDto {
+  @IsString()
+  username?: string;
 
+  @IsString()
+  fullname?: string;
 
+  @IsEmail()
+  email?: string;
 
-     activation_token: number;
-     premium: boolean;
+  @IsString()
+  actualPassword?: string;
 
-  
-  }
-  export class UpdateUserDto{
+  @IsString()
+  newPassword?: string;
 
-    username?: string;
-
-
-  }
-
-  
-  
+  @IsString()
+  userPhoto?: string;
+}
