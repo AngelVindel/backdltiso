@@ -851,6 +851,28 @@ export class WordService2 {
       return document;
     }
 
+    async updateBufferUserDocument(userId: number, documentId: number, buffer:Buffer){
+      const user = await this.regularUserRepository.findOne({
+        where: { id: userId },
+        relations: ['wordDocuments']
+      });
+    
+      if (!user) {
+        throw new Error(`User with ID ${userId} not found`);
+      }
+    
+      const document = user.wordDocuments.find(doc => doc.id === documentId);
+      if (!document) {
+        throw new Error(`Document with ID ${documentId} not found`);
+      }
+    
+      document.content= buffer;
+
+    await this.wordRepository.save(document);
+
+
+    }
+
      async downloadWord(documentID: number): Promise<{ wordBuffer: Buffer; fileName: string }>{
       const document = await this.wordRepository.findOne({
         where: {

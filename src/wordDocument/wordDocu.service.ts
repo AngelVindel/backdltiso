@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   AlignmentType,
   Document,
@@ -21,13 +21,16 @@ import {
   TableOfContents,
 } from 'docx';
 import * as fs from 'fs';
-import * as libre from 'libreoffice-convert';
+import * as docxConverter from 'docx-pdf';
 import * as path from 'path';
+import * as tmp from 'tmp';
 import { DocuDto, UpdateDocuDto } from './dto/wordDocu.dto';
 import { WordDoc } from './wordDocu.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RegularUser } from 'src/user/regularU.entity';
+
+
 
 @Injectable()
 export class WordService {
@@ -1151,24 +1154,68 @@ export class WordService {
     return document;
   }
 
+  async updateBufferUserDocument(userId: number, documentId: number, buffer:Buffer){
+    const user = await this.regularUserRepository.findOne({
+      where: { id: userId },
+      relations: ['wordDocuments']
+    });
+  
+    if (!user) {
+      throw new Error(`User with ID ${userId} not found`);
+    }
+  
+    const document = user.wordDocuments.find(doc => doc.id === documentId);
+    if (!document) {
+      throw new Error(`Document with ID ${documentId} not found`);
+    }
+  
+    document.content= buffer;
 
-  async downloadWord(documentID: number): Promise<{ wordBuffer: Buffer; fileName: string }>{
+  await this.wordRepository.save(document);
+
+
+  }
+
+
+  
+  
+  async downloadWord(documentID: number): Promise<{ wordBuffer: Buffer; fileName: string }> {
     const document = await this.wordRepository.findOne({
-      where: {
-        id: documentID
-      },
+      where: { id: documentID },
     });
 
     if (!document) {
-      throw new Error('Document not found or does not belong to the user.');
+      throw new NotFoundException('Document not found or does not belong to the user.');
     }
-  
+
     return {
       wordBuffer: document.content,
-      fileName: document.fileName, 
+      fileName: document.fileName,
     };
+  }
 
+  async convertWordToPDF(wordBuffer: Buffer): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+      // Crear un archivo temporal para el Word
+      const wordTmpFile = tmp.fileSync({ postfix: '.docx' });
+      fs.writeFileSync(wordTmpFile.name, wordBuffer);
 
+      // Crear un archivo temporal para el PDF
+      const pdfTmpFile = tmp.fileSync({ postfix: '.pdf' });
+
+      docxConverter(wordTmpFile.name, pdfTmpFile.name, (err, result) => {
+        if (err) {
+          reject(new Error(`Error converting file: ${err.message}`));
+        } else {
+          const pdfBuffer = fs.readFileSync(pdfTmpFile.name);
+          resolve(pdfBuffer);
+        }
+
+        // Limpiar archivos temporales
+        wordTmpFile.removeCallback();
+        pdfTmpFile.removeCallback();
+      });
+    });
   }
 
   createFooterUso(): Footer {
@@ -1983,25 +2030,7 @@ export class WordService {
   }
 
 
-  async convertWordToPdf(wordFilePath: string): Promise<Buffer> {
-    return new Promise((resolve, reject) => {
-      const extend = '.pdf';
-      const outputPath = path.join(wordFilePath, extend);
 
-      fs.readFile(wordFilePath, (err, data) => {
-        if (err) {
-          reject(`Error reading Word file: ${err.message}`);
-        }
 
-        libre.convert(data, extend, undefined, (err, done) => {
-          if (err) {
-            reject(`Error converting Word to PDF: ${err.message}`);
-          }
-
-          resolve(done);
-        });
-      });
-    });
-  }
 
 }

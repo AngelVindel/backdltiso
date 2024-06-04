@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Post, Body, Res, Param, Delete, Put, NotFoundException, HttpStatus, ForbiddenException } from '@nestjs/common';
 import { Response } from 'express';
 import { WordService } from './wordDocu.service';
 import * as fs from 'fs';
@@ -46,6 +46,13 @@ export class WordController {
     const word=await this.wordServicePSI.updateUserDocument(userId,parseInt(documentId),dto);
     return word;
   }
+
+  
+  @Put('psi/:id/user/buffer/:idUser')
+  async updateWordBufferPSI(@Param('idUser') userId:number, @Param('id') documentId: string, @Body() buffer: Buffer ){
+    await this.wordServicePSI.updateBufferUserDocument(userId,parseInt(documentId),buffer);
+   
+  }
   @Delete('psi/:id')
   async deleteWordPSI(@Param('id') id:number){
     await this.wordServicePSI.deleteWord(id)
@@ -87,38 +94,50 @@ export class WordController {
     const word=await this.wordServiceSGSI.updateUserDocument(userId,parseInt(documentId),dto);
     return word;
   }
+
+  @Put('sgsi/:id/user/buffer/:idUser')
+  async updateWordBufferSGSI(@Param('idUser') userId:number, @Param('id') documentId: string, @Body() buffer: Buffer ){
+    await this.wordServiceSGSI.updateBufferUserDocument(userId,parseInt(documentId),buffer);
+   
+  }
   @Delete('sgsi/:id')
   async deleteWordSGSI(@Param('id') id:number){
     await this.wordServiceSGSI.deleteWord(id)
   }
 
-  @Post('toPDF')
-  async convertToPDF(@Res() res: Response): Promise<void> {
+
+  @Post(':id/download/pdf')
+  async convertToPDF(@Res() res: Response, @Param('id') idPdf: number): Promise<void> {
     try {
-      if (!this.createdWordFileName) {
-        throw new Error('No Word document has been created.');
+      const { wordBuffer, fileName } = await this.wordServicePSI.downloadWord(idPdf);
+
+      if (!wordBuffer) {
+        throw new NotFoundException('Word not found.');
       }
 
-      const wordFilePath = ` ../../../../../../Downloads/${this.createdWordFileName}.docx`; 
-
-      const pdfBuffer = await this.wordServicePSI.convertWordToPdf(wordFilePath);
-
-      const pdfFilePath = ` ../../../../../../Downloads/${this.createdWordFileName}.pdf`; 
-      fs.writeFileSync(pdfFilePath, pdfBuffer);
+      const pdfBuffer = await this.wordServicePSI.convertWordToPDF(wordBuffer);
 
       res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader(
-        'Content-Disposition',
-        `attachment; filename=${this.createdWordFileName}.pdf`, 
-      );
-
+      res.setHeader('Content-Disposition', `attachment; filename=${fileName}.pdf`);
       res.send(pdfBuffer);
 
       console.log('PDF created successfully.');
     } catch (error) {
-      res
-        .status(500)
-        .send(`Error converting document to PDF: ${error.message}`); 
+      let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+      let message = 'Error downloading PDF';
+      if (error instanceof NotFoundException) {
+        statusCode = HttpStatus.NOT_FOUND;
+        message = error.message;
+      } else if (error instanceof ForbiddenException) {
+        statusCode = HttpStatus.FORBIDDEN;
+        message = error.message;
+      } else {
+        console.error("Error during PDF download:", error);
+      }
+
+      res.status(statusCode).send(message);
     }
   }
 }
+
+

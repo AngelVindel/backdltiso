@@ -32,6 +32,7 @@ export class UserInitService {
         premium: true,
       };
   
+      
       await this.adminUserRepository.save(newAdmin); 
       console.log('Usuario admin creado');
     } else {

@@ -156,7 +156,7 @@ console.log(questionDttt.answer);
 
     return user.documents;
   }
-  async getUserDocuments(userId: number): Promise<{ id: number, type: number }[]> {
+  async getUserDocuments(userId: number): Promise<{ id: number, name:string, createdAt: Date, createdBy:string}[]> {
     const user = await this.regularUserRepository.findOne({
       where: { id: userId },
       relations: ['wordDocuments']
@@ -168,7 +168,9 @@ console.log(questionDttt.answer);
   
     return user.wordDocuments.map(doc => ({
       id: doc.id,
-      type: doc.type
+      name: doc.fileName,
+      createdAt: doc.creationDate,
+      createdBy: doc.realizadoPor
     }));
   }
   

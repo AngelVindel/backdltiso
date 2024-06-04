@@ -63,4 +63,4 @@ async downloadPdf(@Param('id') id: number, @Res() res:Response) {
 }
 }
 
-   
+     
